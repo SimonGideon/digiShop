@@ -6,6 +6,14 @@ export default {
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
       },
+      colors: {
+        primary: "#FF6363",
+        navbg: "#ed1f24",
+        secondary: {
+          100: "#E2E2D5",
+          200: "#888883",
+        },
+      },
     },
   },
   plugins: [],
