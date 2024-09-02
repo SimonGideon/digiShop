@@ -9,6 +9,7 @@ export default {
       colors: {
         primary: "#FF6363",
         navbg: "#ed1f24",
+        displaybg: "#231f20",
         secondary: {
           100: "#E2E2D5",
           200: "#888883",

@@ -23,7 +23,7 @@ const Category = ({ icon, title, items }) => (
         <h3 className="text-lg font-semibold">{title}</h3>
       </div>
     </div>
-    <ul className="bg-black text-white">
+    <ul className="bg-displaybg text-white">
       {items.map((item, index) => (
         <li key={index} className="p-2 border-t border-gray-700">
           {item}
@@ -238,9 +238,6 @@ const CategoriesGrid = () => {
           "Laptop Chargers",
           "Laptop Batteries",
           "Phone Chargers",
-          "Phone Batteries",
-          "Phone Covers",
-          "Phone Screen Protectors",
         ]}
       />
 
@@ -279,12 +276,8 @@ const CategoriesGrid = () => {
           "Canon",
           "Nikon",
           "Sony",
-          "GoPro",
-          "DJI",
-          "Camera Bags",
           "Camera Lenses",
           "Camera Batteries",
-          "Camera Chargers",
           "Camera Tripods",
           "Camera Memory Cards",
         ]}
@@ -300,12 +293,7 @@ const CategoriesGrid = () => {
           "Ksh 30, 000- Ksh 40, 000",
           "Ksh 40,000- Ksh 100,000",
           "Above Ksh 100,000",
-          "Office Chairs",
-          "Office Desks",
-          "Office Cabinets",
-          "Office Shelves",
-          "Office Tables",
-          "Office Stationery",
+
           "Office Printers",
           "Office Scanners",
           "Office Projectors",
