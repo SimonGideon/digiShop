@@ -1,4 +1,5 @@
 import NavBar from "./NaxBar";
 import CategoriesGrid from "./Display";
+import Category from "./Category";
 
-export { NavBar, CategoriesGrid };
+export { NavBar, Category, CategoriesGrid };
