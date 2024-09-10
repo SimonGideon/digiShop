@@ -5,18 +5,14 @@ const ContactDetails = () => {
         <p className="text-black text-lg font-bold">
           Call or Whatsapp: 0705656565
         </p>
-        <p className="text-lg font-bold">
-          Pioneer House, Moi Avenue (above Quickmart Pioneer) 4th Floor Shop
-          402, Nairobi
+        <p className="text-md font-bold">
+          Pioneer House, Moi Avenue 4th Floor Shop 402, Nairobi
         </p>
         <p className="text-sm mt-1">
           Explore our extensive collection of electronics from trusted brands,
           and enjoy competitive prices that make technology more accessible. Our
           knowledgeable staff is dedicated to providing exceptional customer
-          service, ensuring you find exactly what you&apos;re looking for. At
-          Digicom, we&apos;re committed to helping you stay ahead in the
-          fast-paced world of technology with products that offer both
-          performance and style.
+          service, ensuring you find exactly what you&apos;re looking for.
         </p>
       </div>
     </div>
