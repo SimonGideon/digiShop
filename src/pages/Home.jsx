@@ -1,15 +1,20 @@
-import { NavBar } from "../componets";
+import { NavBar, CategoriesGrid, MobileDisplay } from "../componets";
+
 const Home = () => {
   return (
     <>
-      <div>
+      <div className="bg-gray-800">
         <NavBar />
-        <h1>Home</h1>
-        <p>Welcome to the Digiapplication home page!</p>
       </div>
-      <div>
-        <h1>Home</h1>
-        <p>Welcome to the Digiapplication home page!</p>
+      <div className="p-4">
+        {/* For mobile screens, show MobileDisplay */}
+        <div className="block md:hidden">
+          <MobileDisplay />
+        </div>
+        {/* For medium and larger screens, show CategoriesGrid */}
+        <div className="hidden md:block">
+          <CategoriesGrid />
+        </div>
       </div>
     </>
   );
