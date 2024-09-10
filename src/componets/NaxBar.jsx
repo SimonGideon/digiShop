@@ -22,8 +22,6 @@ const MobileNavbar = () => {
           <div className="hidden md:flex">
             <SearchBar />
           </div>
-
-          {/* Icons */}
           <div className="flex items-center space-x-2 md:space-x-6">
             <a
               href="#"
@@ -59,8 +57,6 @@ const MobileNavbar = () => {
             </a>
           </div>
         </div>
-
-        {/* Search Bar for Mobile Screens */}
         <div className="md:hidden">
           <SearchBar isMobile />
         </div>
