@@ -1,5 +1,5 @@
 import { MobileCategoryCard, Category } from "./";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import {
   Smartphone,
@@ -241,6 +241,7 @@ const categories = [
 
 const MobileDisplay = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const sidebarRef = useRef(null);
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -249,6 +250,19 @@ const MobileDisplay = () => {
   const handleCloseSidebar = () => {
     setSelectedCategory(null);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        handleCloseSidebar();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="relative">
@@ -259,6 +273,7 @@ const MobileDisplay = () => {
         />
       </div>
       <div
+        ref={sidebarRef}
         className={`fixed top-0 right-0 w-80 bg-white border border-gray-300 h-full z-50 transform transition-transform duration-300 ease-in-out ${
           selectedCategory ? "translate-x-0" : "translate-x-full"
         }`}
