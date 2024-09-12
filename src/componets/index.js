@@ -5,6 +5,8 @@ import MobileCategoryCard from "./MobileCategoryCard";
 import MobileDisplay from "./MobileDisplay";
 import ContactDetails from "./ContactDetails";
 import Footer from "./Footer";
+import Product from "./Product";
+import FilterAndSort from "./FilterAndSort";
 
 export {
   NavBar,
@@ -14,4 +16,6 @@ export {
   MobileDisplay,
   ContactDetails,
   Footer,
+  Product,
+  FilterAndSort,
 };
