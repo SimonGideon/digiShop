@@ -15,17 +15,16 @@ const SearchBar = ({ isMobile }) => {
       />
       <select className="bg-white text-gray-700 p-2 border-l focus:outline-none">
         <option>All categories</option>
-        {/* Add more options as needed */}
       </select>
       <button className="p-3 bg-red-600 md:bg-white text-white md:text-slate-500">
-        <Search w-4 h-4 />
+        <Search />
       </button>
     </div>
   );
 };
 
 SearchBar.propTypes = {
-  isMobile: PropTypes.bool.isRequired,
+  isMobile: PropTypes.bool,
 };
 
 export default SearchBar;
