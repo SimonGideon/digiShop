@@ -1,19 +1,44 @@
+import { Heart, Shuffle } from "feather-icons-react";
 import PropTypes from "prop-types";
 
 const Product = ({ product }) => {
   return (
-    <div className="border p-4 flex flex-col items-center">
+    <div className="border p-4 flex flex-col bg-white">
       <img
         src={product.image}
         alt={product.title}
-        className="w-3/4 h-50 object-cover mb-2"
+        className="w-full h-40 object-cover mb-2"
       />
-      <div className="text-lg font-semibold">{product.title}</div>
-      <div className="text-gray-500 mb-2">Ksh {product.price}</div>
-      <div className="text-yellow-400">
-        {Array.from({ length: Math.floor(product.rating.rate) }, (_, i) => (
-          <span key={i}>★</span>
-        ))}
+      <div className="flex flex-col w-full">
+        <div className="text-sm truncate-lines font-semibold text-left mb-1 px-4">
+          {product.title}
+        </div>
+        <div className="flex flex-col px-4 mb-2">
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-[#ff823a] font-bold bg-slate-200 p-1 px-2 rounded-[5px] whitespace-nowrap">
+              Ksh {product.price.toLocaleString()}
+            </div>
+            <div className="text-sm text-green-500">↓ 24%</div>
+          </div>
+          <div className="flex mt-2">
+            {Array.from({ length: 5 }, (_, i) => (
+              <span
+                key={i}
+                className={`text-yellow-400 ${
+                  i < Math.floor(product.rating.rate)
+                    ? "text-yellow-400"
+                    : "text-gray-300"
+                }`}
+              >
+                ★
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="flex space-x-2 justify-end items-center text-gray-400  w-full px-4">
+        <Heart aria-label="Add to favorites" className="hover:text-navbg " />
+        <Shuffle aria-label="Shuffle" className="hover:text-navbg" />
       </div>
     </div>
   );
@@ -24,6 +49,7 @@ Product.propTypes = {
     image: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
+    discount: PropTypes.number,
     rating: PropTypes.shape({
       rate: PropTypes.number.isRequired,
     }),

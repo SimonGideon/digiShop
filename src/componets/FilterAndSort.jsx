@@ -1,20 +1,10 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSort } from "@fortawesome/free-solid-svg-icons";
 
-const FilterAndSort = ({
-  onFilterChange,
-  onSortChange,
-  filters,
-  sortOptions,
-}) => {
-  const [selectedFilter, setSelectedFilter] = useState(filters[0]);
+const SortOptions = ({ onSortChange, sortOptions }) => {
   const [selectedSort, setSelectedSort] = useState(sortOptions[0]);
-
-  const handleFilterChange = (event) => {
-    const newFilter = event.target.value;
-    setSelectedFilter(newFilter);
-    onFilterChange(newFilter);
-  };
 
   const handleSortChange = (event) => {
     const newSort = event.target.value;
@@ -23,52 +13,37 @@ const FilterAndSort = ({
   };
 
   return (
-    <div className="p-4 bg-white border border-gray-300 rounded-lg shadow-sm">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex items-center space-x-4">
-          <label htmlFor="filter" className="text-sm font-medium text-gray-700">
-            Filter:
-          </label>
-          <select
-            id="filter"
-            value={selectedFilter}
-            onChange={handleFilterChange}
-            className="p-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-900"
-          >
-            {filters.map((filter) => (
-              <option key={filter} value={filter}>
-                {filter}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex items-center space-x-4">
-          <label htmlFor="sort" className="text-sm font-medium text-gray-700">
-            Sort By:
-          </label>
+    <div className="pt-5 px-10">
+      <div className="flex items-center justify-center lg:justify-end space-x-2 sm:space-x-4">
+        <div className="relative">
           <select
             id="sort"
             value={selectedSort}
             onChange={handleSortChange}
-            className="p-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-900"
+            className="appearance-none p-1 px-3 border border-gray-300 rounded-[5px] bg-white flex items-center pr-10 focus:outline-none focus:ring-0 transition-all duration-300 ease-in-out"
           >
             {sortOptions.map((option) => (
-              <option key={option} value={option}>
+              <option
+                key={option}
+                value={option}
+                className="hover:bg-red-100 transition-colors duration-200 "
+              >
                 {option}
               </option>
             ))}
           </select>
+          <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+            <FontAwesomeIcon icon={faSort} className="text-gray-500" />
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-FilterAndSort.propTypes = {
-  onFilterChange: PropTypes.func.isRequired,
+SortOptions.propTypes = {
   onSortChange: PropTypes.func.isRequired,
-  filters: PropTypes.arrayOf(PropTypes.string).isRequired,
   sortOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default FilterAndSort;
+export default SortOptions;
