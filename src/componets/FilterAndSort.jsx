@@ -20,7 +20,7 @@ const SortOptions = ({ onSortChange, sortOptions }) => {
             id="sort"
             value={selectedSort}
             onChange={handleSortChange}
-            className="appearance-none p-1 px-3 border border-gray-300 rounded-[5px] bg-gray-50 text-gray-900 flex items-center pr-10 focus:outline-none focus:ring-0 transition-all duration-300 ease-in-out"
+            className="appearance-none p-1 px-3 border border-gray-300 rounded-[5px] bg-white flex items-center pr-10 focus:outline-none focus:ring-0 transition-all duration-300 ease-in-out"
           >
             {sortOptions.map((option) => (
               <option
