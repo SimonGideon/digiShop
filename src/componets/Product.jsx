@@ -1,14 +1,18 @@
 import { Heart, Shuffle } from "feather-icons-react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
 
 const Product = ({ product }) => {
-  const HandleRedirect = (id) => () => {
-    Link.push(`/products/${id}`);
+  const HandleRedirect = (id) => {
+    const navigate = useNavigate();
+    return () => {
+      navigate(`/products/${id}`);
+    };
   };
   return (
     <div
-      className="border p-4 flex flex-col bg-white"
+      className="border p-4 flex flex-col bg-white cursor-pointer"
       onClick={HandleRedirect(1)}
     >
       <img
