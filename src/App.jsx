@@ -1,5 +1,6 @@
 import React from "react";
-import { Home, ProductDetailsPage } from "./pages";
+import { Home, ProductDetailsPage, ProductItem } from "./pages";
+import { NavBar } from "././componets";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -13,9 +14,14 @@ function App() {
       path: "/products",
       element: <ProductDetailsPage />,
     },
+    {
+      path: "/products/:id",
+      element: <ProductItem />,
+    },
   ]);
   return (
     <React.StrictMode>
+      <NavBar />
       <RouterProvider router={router} />
     </React.StrictMode>
   );

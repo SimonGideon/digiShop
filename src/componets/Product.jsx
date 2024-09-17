@@ -1,9 +1,16 @@
 import { Heart, Shuffle } from "feather-icons-react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const Product = ({ product }) => {
+  const HandleRedirect = (id) => () => {
+    Link.push(`/products/${id}`);
+  };
   return (
-    <div className="border p-4 flex flex-col bg-white">
+    <div
+      className="border p-4 flex flex-col bg-white"
+      onClick={HandleRedirect(1)}
+    >
       <img
         src={product.image}
         alt={product.title}
