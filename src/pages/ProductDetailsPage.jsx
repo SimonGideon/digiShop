@@ -1,4 +1,4 @@
-import { Product, NavBar, Footer, FilterAndSort } from "./../componets";
+import { Product, Footer, FilterAndSort } from "./../componets";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -38,7 +38,6 @@ const ProductDetailsPage = () => {
 
   return (
     <div>
-      <NavBar />
       <FilterAndSort
         onFilterChange={setFilter}
         onSortChange={setSort}
