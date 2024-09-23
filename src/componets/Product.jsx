@@ -1,19 +1,46 @@
 import { Heart, Shuffle } from "feather-icons-react";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishlist, removeFromWishlist } from "./../redux/wishlistSlice";
+import { addToCompare, removeFromCompare } from "./../redux/compareSlice";
 
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const Product = ({ product }) => {
-  const HandleRedirect = (id) => {
-    const navigate = useNavigate();
-    return () => {
-      navigate(`/products/${id}`);
-    };
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const wishlist = useSelector((state) => state.wishlist.wishlist || []);
+  const compareList = useSelector((state) => state.compare.compareList || []);
+
+  const isInWishlist = wishlist.some((item) => item.id === product.id);
+  const isInCompareList = compareList.some((item) => item.id === product.id);
+
+  const handleRedirect = (id) => {
+    navigate(`/products/${id}`);
   };
+
+  const handleWishlistClick = (e) => {
+    e.stopPropagation();
+    if (isInWishlist) {
+      dispatch(removeFromWishlist(product));
+    } else {
+      dispatch(addToWishlist(product));
+    }
+  };
+
+  const handleCompareClick = (e) => {
+    e.stopPropagation();
+    if (isInCompareList) {
+      dispatch(removeFromCompare(product));
+    } else {
+      dispatch(addToCompare(product));
+    }
+  };
+
   return (
     <div
       className="border p-4 flex flex-col bg-white cursor-pointer"
-      onClick={HandleRedirect(1)}
+      onClick={() => handleRedirect(product.id)}
     >
       <img
         src={product.image}
@@ -35,7 +62,7 @@ const Product = ({ product }) => {
             {Array.from({ length: 5 }, (_, i) => (
               <span
                 key={i}
-                className={`text-yellow-400 ${
+                className={`${
                   i < Math.floor(product.rating.rate)
                     ? "text-yellow-400"
                     : "text-gray-300"
@@ -47,9 +74,23 @@ const Product = ({ product }) => {
           </div>
         </div>
       </div>
-      <div className="flex space-x-2 justify-end items-center text-gray-400  w-full px-4">
-        <Heart aria-label="Add to favorites" className="hover:text-navbg " />
-        <Shuffle aria-label="Shuffle" className="hover:text-navbg" />
+      <div className="flex space-x-2 justify-end items-center text-gray-400 w-full px-4">
+        <Heart
+          aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+          className={`cursor-pointer ${
+            isInWishlist ? "text-navbg" : "hover:text-navbg"
+          } ${isInWishlist ? "fill-current text-navbg" : ""}`}
+          onClick={handleWishlistClick}
+        />
+        <Shuffle
+          aria-label={
+            isInCompareList ? "Remove from compare" : "Add to compare"
+          }
+          className={`cursor-pointer ${
+            isInCompareList ? "text-navbg" : "hover:text-navbg"
+          } ${isInCompareList ? "fill-current text-navbg" : ""}`}
+          onClick={handleCompareClick}
+        />
       </div>
     </div>
   );
@@ -57,14 +98,14 @@ const Product = ({ product }) => {
 
 Product.propTypes = {
   product: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     image: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    discount: PropTypes.number,
     rating: PropTypes.shape({
       rate: PropTypes.number.isRequired,
     }),
-  }),
+  }).isRequired,
 };
 
 export default Product;
