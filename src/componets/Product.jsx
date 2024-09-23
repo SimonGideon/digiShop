@@ -1,15 +1,38 @@
 import { Heart, Shuffle } from "feather-icons-react";
-import { useDispatch } from "react-redux";
-import { addToWishlist } from "./../redux/wishlistSlice";
-import { addToCompare } from "./../redux/compareSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishlist, removeFromWishlist } from "./../redux/wishlistSlice";
+import { addToCompare, removeFromCompare } from "./../redux/compareSlice";
 import { useNavigate } from "react-router-dom";
 
 const Product = ({ product }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const wishlist = useSelector((state) => state.wishlist.wishlist || []);
+  const compareList = useSelector((state) => state.compare.compareList || []);
 
   const handleRedirect = (id) => {
     navigate(`/products/${id}`);
+  };
+
+  const isInWishlist = wishlist.some((item) => item.id === product.id);
+  const isInCompareList = compareList.some((item) => item.id === product.id);
+
+  const handleWishlistClick = (e) => {
+    e.stopPropagation();
+    if (isInWishlist) {
+      dispatch(removeFromWishlist(product));
+    } else {
+      dispatch(addToWishlist(product));
+    }
+  };
+
+  const handleCompareClick = (e) => {
+    e.stopPropagation();
+    if (isInCompareList) {
+      dispatch(removeFromCompare(product));
+    } else {
+      dispatch(addToCompare(product));
+    }
   };
 
   return (
