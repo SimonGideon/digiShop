@@ -1,19 +1,21 @@
 import { Heart, Shuffle } from "feather-icons-react";
-import PropTypes from "prop-types";
-
+import { useDispatch } from "react-redux";
+import { addToWishlist } from "./../redux/wishlistSlice";
+import { addToCompare } from "./../redux/compareSlice";
 import { useNavigate } from "react-router-dom";
 
 const Product = ({ product }) => {
-  const HandleRedirect = (id) => {
-    const navigate = useNavigate();
-    return () => {
-      navigate(`/products/${id}`);
-    };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleRedirect = (id) => {
+    navigate(`/products/${id}`);
   };
+
   return (
     <div
       className="border p-4 flex flex-col bg-white cursor-pointer"
-      onClick={HandleRedirect(1)}
+      onClick={() => handleRedirect(product.id)}
     >
       <img
         src={product.image}
@@ -35,7 +37,7 @@ const Product = ({ product }) => {
             {Array.from({ length: 5 }, (_, i) => (
               <span
                 key={i}
-                className={`text-yellow-400 ${
+                className={`${
                   i < Math.floor(product.rating.rate)
                     ? "text-yellow-400"
                     : "text-gray-300"
@@ -47,24 +49,39 @@ const Product = ({ product }) => {
           </div>
         </div>
       </div>
-      <div className="flex space-x-2 justify-end items-center text-gray-400  w-full px-4">
-        <Heart aria-label="Add to favorites" className="hover:text-navbg " />
-        <Shuffle aria-label="Shuffle" className="hover:text-navbg" />
+      <div className="flex space-x-2 justify-end items-center text-gray-400 w-full px-4">
+        <Heart
+          aria-label="Add to wishlist"
+          className="hover:text-navbg cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(addToWishlist(product));
+          }}
+        />
+        <Shuffle
+          aria-label="Add to compare"
+          className="hover:text-navbg cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(addToCompare(product));
+          }}
+        />
       </div>
     </div>
   );
 };
+import PropTypes from "prop-types";
 
 Product.propTypes = {
   product: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     image: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    discount: PropTypes.number,
     rating: PropTypes.shape({
       rate: PropTypes.number.isRequired,
     }),
-  }),
+  }).isRequired,
 };
 
 export default Product;

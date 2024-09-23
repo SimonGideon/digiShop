@@ -2,8 +2,15 @@ import { ShoppingBag, Shuffle, Heart } from "feather-icons-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "./SearchBar";
+import { useSelector } from "react-redux";
 
 const MobileNavbar = () => {
+  const wishlistCount = useSelector((state) => state.wishlist.length);
+  const compareCount = useSelector((state) => state.compare.length);
+  const cartCount = useSelector((state) =>
+    state.cart.reduce((acc, item) => acc + item.quantity, 0)
+  );
+
   return (
     <nav className="bg-navbg px-5 md:px-14 py-4">
       <div className="">
@@ -22,6 +29,7 @@ const MobileNavbar = () => {
           <div className="hidden md:flex">
             <SearchBar />
           </div>
+
           <div className="flex items-center space-x-2 md:space-x-6">
             <a
               href="#"
@@ -29,6 +37,11 @@ const MobileNavbar = () => {
             >
               <Heart className="w-6 h-6" />
               <p className="mt-1 text-sm">Wishlist</p>
+              {wishlistCount > 0 && (
+                <span className="absolute -top-2 -right-4 bg-white text-black text-xs rounded-full px-1">
+                  {wishlistCount}
+                </span>
+              )}
             </a>
 
             <a
@@ -37,9 +50,11 @@ const MobileNavbar = () => {
             >
               <div className="relative">
                 <Shuffle className="w-6 h-6" />
-                <span className="absolute -top-2 -right-4 bg-white text-black text-xs rounded-full px-1">
-                  3
-                </span>
+                {compareCount > 0 && (
+                  <span className="absolute -top-2 -right-4 bg-white text-black text-xs rounded-full px-1">
+                    {compareCount}
+                  </span>
+                )}
               </div>
               <p className="mt-1 text-sm">Compare</p>
             </a>
@@ -50,9 +65,11 @@ const MobileNavbar = () => {
             >
               <div className="relative">
                 <FontAwesomeIcon icon={faBasketShopping} className="w-7 h-7" />
-                <span className="absolute -top-3 -right-1 bg-white text-black text-xs rounded-full px-1">
-                  5
-                </span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-3 -right-1 bg-white text-black text-xs rounded-full px-4">
+                    {cartCount}
+                  </span>
+                )}
               </div>
             </a>
           </div>
