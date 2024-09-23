@@ -2,20 +2,22 @@ import { Heart, Shuffle } from "feather-icons-react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist, removeFromWishlist } from "./../redux/wishlistSlice";
 import { addToCompare, removeFromCompare } from "./../redux/compareSlice";
+
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const Product = ({ product }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const wishlist = useSelector((state) => state.wishlist.wishlist || []);
   const compareList = useSelector((state) => state.compare.compareList || []);
+
+  const isInWishlist = wishlist.some((item) => item.id === product.id);
+  const isInCompareList = compareList.some((item) => item.id === product.id);
 
   const handleRedirect = (id) => {
     navigate(`/products/${id}`);
   };
-
-  const isInWishlist = wishlist.some((item) => item.id === product.id);
-  const isInCompareList = compareList.some((item) => item.id === product.id);
 
   const handleWishlistClick = (e) => {
     e.stopPropagation();
@@ -74,26 +76,25 @@ const Product = ({ product }) => {
       </div>
       <div className="flex space-x-2 justify-end items-center text-gray-400 w-full px-4">
         <Heart
-          aria-label="Add to wishlist"
-          className="hover:text-navbg cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            dispatch(addToWishlist(product));
-          }}
+          aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+          className={`cursor-pointer ${
+            isInWishlist ? "text-navbg" : "hover:text-navbg"
+          } ${isInWishlist ? "fill-current text-navbg" : ""}`}
+          onClick={handleWishlistClick}
         />
         <Shuffle
-          aria-label="Add to compare"
-          className="hover:text-navbg cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            dispatch(addToCompare(product));
-          }}
+          aria-label={
+            isInCompareList ? "Remove from compare" : "Add to compare"
+          }
+          className={`cursor-pointer ${
+            isInCompareList ? "text-navbg" : "hover:text-navbg"
+          } ${isInCompareList ? "fill-current text-navbg" : ""}`}
+          onClick={handleCompareClick}
         />
       </div>
     </div>
   );
 };
-import PropTypes from "prop-types";
 
 Product.propTypes = {
   product: PropTypes.shape({
