@@ -2,9 +2,9 @@ import { Heart, Shuffle } from "feather-icons-react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist, removeFromWishlist } from "./../redux/wishlistSlice";
 import { addToCompare, removeFromCompare } from "./../redux/compareSlice";
-
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { toast } from "react-toastify";
 
 const Product = ({ product }) => {
   const navigate = useNavigate();
@@ -23,8 +23,10 @@ const Product = ({ product }) => {
     e.stopPropagation();
     if (isInWishlist) {
       dispatch(removeFromWishlist(product));
+      toast.success(`Product removed from wishlist!`);
     } else {
       dispatch(addToWishlist(product));
+      toast.success(`Product added to wishlist!`);
     }
   };
 
@@ -32,8 +34,10 @@ const Product = ({ product }) => {
     e.stopPropagation();
     if (isInCompareList) {
       dispatch(removeFromCompare(product));
+      toast.success(`Product removed from compare list!`);
     } else {
       dispatch(addToCompare(product));
+      toast.success(`Product added to compare list!`);
     }
   };
 
