@@ -12,6 +12,7 @@ import LatestDeals from "./LatestDeals";
 import ProductDescription from "./ProductDescription";
 import ProductReview from "./ProductReview";
 import ProductTabs from "./ProductTabs";
+import FavoriteCard from "./FavoriteCard";
 
 export {
   NavBar,
@@ -28,4 +29,5 @@ export {
   ProductDescription,
   ProductReview,
   ProductTabs,
+  FavoriteCard,
 };
