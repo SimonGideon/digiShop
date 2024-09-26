@@ -9,9 +9,12 @@ import { toast } from "react-toastify";
 const Product = ({ product }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const wishlist = useSelector((state) => state.wishlist.wishlist || []);
-  const compareList = useSelector((state) => state.compare.compareList || []);
 
+  // Correctly accessing the wishlist and compareList
+  const wishlist = useSelector((state) => state.wishlist || []);
+  const compareList = useSelector((state) => state.compare || []);
+
+  // Check if product is in wishlist or compare list
   const isInWishlist = wishlist.some((item) => item.id === product.id);
   const isInCompareList = compareList.some((item) => item.id === product.id);
 
