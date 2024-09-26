@@ -37,9 +37,11 @@ const MobileNavbar = () => {
             >
               <Heart className="w-6 h-6" />
               <p className="mt-1 text-sm">Wishlist</p>
-              <span className="absolute -top-2 -right-0 bg-white text-black text-xs rounded-full px-1">
-                {wishlistCount > 0 ? { wishlistCount } : 0}
-              </span>
+              {wishlistCount > 0 && (
+                <span className="absolute -top-2 -right-4 bg-white text-black text-xs rounded-full px-1">
+                  {wishlistCount}
+                </span>
+              )}
             </a>
 
             <a
@@ -48,9 +50,11 @@ const MobileNavbar = () => {
             >
               <div className="relative">
                 <Shuffle className="w-6 h-6" />
-                <span className="absolute -top-2 -right-4 bg-white text-black text-xs rounded-full px-1">
-                  {compareCount > 0 ? { compareCount } : 0}
-                </span>
+                {compareCount > 0 && (
+                  <span className="absolute -top-2 -right-4 bg-white text-black text-xs rounded-full px-1">
+                    {compareCount}
+                  </span>
+                )}
               </div>
               <p className="mt-1 text-sm">Compare</p>
             </a>
@@ -61,9 +65,11 @@ const MobileNavbar = () => {
             >
               <div className="relative">
                 <FontAwesomeIcon icon={faBasketShopping} className="w-7 h-7" />
-                <span className="absolute -top-3 -right-1 bg-white text-black text-xs rounded-full px-1">
-                  {cartCount > 0 ? { cartCount } : 0}
-                </span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-3 -right-1 bg-white text-black text-xs rounded-full px-4">
+                    {cartCount}
+                  </span>
+                )}
               </div>
             </a>
           </div>

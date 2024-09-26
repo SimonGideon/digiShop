@@ -1,5 +1,5 @@
 import React from "react";
-import { Home, ProductDetailsPage, ProductItem, FavoritePage } from "./pages";
+import { Home, ProductDetailsPage, ProductItem } from "./pages";
 import { NavBar } from "././componets";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -20,14 +20,6 @@ function App() {
       path: "/products/:id",
       element: <ProductItem />,
     },
-    {
-      path: "/favorite",
-      element: <FavoritePage />,
-    },
-    // {
-    //   path: "/compare",
-    //   element: <ComparePage />,
-    // },
   ]);
   return (
     <React.StrictMode>
