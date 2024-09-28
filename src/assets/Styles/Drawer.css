@@ -1,0 +1,17 @@
+.drawer-enter {
+  transform: translateX(100%);
+}
+
+.drawer-enter-active {
+  transform: translateX(0);
+  transition: transform 300ms;
+}
+
+.drawer-exit {
+  transform: translateX(0);
+}
+
+.drawer-exit-active {
+  transform: translateX(100%);
+  transition: transform 300ms;
+}

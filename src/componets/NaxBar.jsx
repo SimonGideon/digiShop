@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { ShoppingBag, Shuffle, Heart } from "feather-icons-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "./SearchBar";
 import { useSelector } from "react-redux";
+import CompareDrawer from "./CompareDrawer";
 
 const MobileNavbar = () => {
   const wishlistCount = useSelector((state) => state.wishlist.length);
@@ -10,6 +12,7 @@ const MobileNavbar = () => {
   const cartCount = useSelector((state) =>
     state.cart.reduce((acc, item) => acc + item.quantity, 0)
   );
+  const [isCompareOpen, setCompareOpen] = useState(false);
 
   return (
     <nav className="bg-navbg px-5 md:px-14 py-4">
@@ -42,8 +45,8 @@ const MobileNavbar = () => {
               </span>
             </a>
 
-            <a
-              href="#"
+            <button
+              onClick={() => setCompareOpen(!isCompareOpen)}
               className="text-white relative flex flex-col items-center"
             >
               <div className="relative">
@@ -53,7 +56,7 @@ const MobileNavbar = () => {
                 </span>
               </div>
               <p className="mt-1 text-sm">Compare</p>
-            </a>
+            </button>
 
             <a
               href="#"
@@ -68,6 +71,11 @@ const MobileNavbar = () => {
             </a>
           </div>
         </div>
+        <CompareDrawer
+          isOpen={isCompareOpen}
+          onClose={() => setCompareOpen(false)}
+          items={useSelector((state) => state.compare)}
+        />
         <div className="md:hidden">
           <SearchBar isMobile />
         </div>
