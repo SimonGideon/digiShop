@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCompare } from "../redux/compareSlice";
-import ProductCard from "../components/ProductCard";
+import { Product } from "./../componets";
 
 const ComparePage = () => {
   const compareList = useSelector((state) => state.compare.compareList);
@@ -18,7 +18,7 @@ const ComparePage = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {compareList.map((product) => (
-            <ProductCard
+            <Product
               key={product.id}
               product={product}
               onRemove={handleRemove}

@@ -15,8 +15,6 @@ const CompareDrawer = ({ isOpen, onClose, items }) => {
             <FontAwesomeIcon icon={faXmark} className="h-6 w-6 text-black" />
           </button>
         </div>
-
-        {/* Compare List */}
         <div className="p-4 space-y-4 overflow-y-auto">
           {items.map((item, index) => (
             <div
@@ -49,6 +47,7 @@ const CompareDrawer = ({ isOpen, onClose, items }) => {
         {/* Footer */}
         <div className="bg-gray-100 flex justify-center mt-10">
           <button
+            // onClick={() => navigate("/compare")}
             className=" w-4/5 bg-green-500 text-white px-6 py-2 rounded-[20px] flex items-center justify-center disabled:bg-gray-300"
             disabled={items.length === 0}
           >
