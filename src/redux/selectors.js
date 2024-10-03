@@ -1,6 +1,4 @@
 import { createSelector } from "@reduxjs/toolkit";
-
-// Assuming your state structure is something like this:
 // state = { wishlist: { wishlist: [] }, compare: { compareList: [] } }
 
 export const selectWishlist = (state) => state.wishlist.wishlist;
