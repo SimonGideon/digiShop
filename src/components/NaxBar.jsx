@@ -3,8 +3,9 @@ import { ShoppingBag, Shuffle, Heart } from "feather-icons-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "./SearchBar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CompareDrawer from "./CompareDrawer";
+import { removeFromCompare } from "../redux/compareSlice";
 
 const MobileNavbar = () => {
   const wishlistCount = useSelector((state) => state.wishlist.length);
@@ -12,8 +13,11 @@ const MobileNavbar = () => {
   const cartCount = useSelector((state) =>
     state.cart.reduce((acc, item) => acc + item.quantity, 0)
   );
+  const dispatch = useDispatch();
   const [isCompareOpen, setCompareOpen] = useState(false);
-
+  const handleRemove = (product) => {
+    dispatch(removeFromCompare(product));
+  };
   return (
     <nav className="bg-navbg px-5 md:px-14 py-4">
       <div className="">
@@ -75,6 +79,7 @@ const MobileNavbar = () => {
           isOpen={isCompareOpen}
           onClose={() => setCompareOpen(false)}
           items={useSelector((state) => state.compare)}
+          removeItem={handleRemove}
         />
         <div className="md:hidden">
           <SearchBar isMobile />
