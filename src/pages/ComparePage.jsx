@@ -3,7 +3,7 @@ import { removeFromCompare } from "../redux/compareSlice";
 import { Product } from "../components";
 
 const ComparePage = () => {
-  const compareList = useSelector((state) => state.compare.compareList);
+  const compareList = useSelector((state) => state.compare);
   const dispatch = useDispatch();
 
   const handleRemove = (product) => {
