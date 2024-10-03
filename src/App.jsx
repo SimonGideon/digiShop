@@ -1,38 +1,56 @@
-import React from "react";
-import {
-  Home,
-  ProductDetailsPage,
-  ProductItem,
-  FavoritePage,
-  ComparePage,
-} from "./pages";
-import { NavBar } from "./components";
+import React, { Suspense, lazy } from "react";
+import { NavBar, Loader } from "./components";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+const Home = lazy(() => import("./pages/Home"));
+const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
+const ProductItem = lazy(() => import("./pages/ProductItem"));
+const FavoritePage = lazy(() => import("./pages/FavoritePage"));
+const ComparePage = lazy(() => import("./pages/ComparePage"));
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
+      element: (
+        <Suspense fallback={<Loader />}>
+          <Home />
+        </Suspense>
+      ),
     },
     {
       path: "/products",
-      element: <ProductDetailsPage />,
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProductDetailsPage />
+        </Suspense>
+      ),
     },
     {
-      path: ":id",
-      element: <ProductItem />,
+      path: "/products/:id", // Ensure to specify the parent path
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ProductItem />
+        </Suspense>
+      ),
     },
     {
       path: "/favorite",
-      element: <FavoritePage />,
+      element: (
+        <Suspense fallback={<Loader />}>
+          <FavoritePage />
+        </Suspense>
+      ),
     },
     {
-      path: "products/compare",
-      element: <ComparePage />,
+      path: "/products/compare",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <ComparePage />
+        </Suspense>
+      ),
     },
     {
       path: "*",

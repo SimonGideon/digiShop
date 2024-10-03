@@ -13,6 +13,7 @@ import ProductDescription from "./ProductDescription";
 import ProductReview from "./ProductReview";
 import ProductTabs from "./ProductTabs";
 import FavoriteCard from "./FavoriteCard";
+import Loader from "./Loader";
 
 export {
   NavBar,
@@ -22,6 +23,7 @@ export {
   MobileDisplay,
   ContactDetails,
   Footer,
+  Loader,
   Product,
   FilterAndSort,
   Breadcrumb,
