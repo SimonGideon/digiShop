@@ -14,12 +14,14 @@ import ProductReview from "./ProductReview";
 import ProductTabs from "./ProductTabs";
 import FavoriteCard from "./FavoriteCard";
 import Loader from "./Loader";
+import ProductComparison from "./ProductComparison";
 
 export {
   NavBar,
   Category,
   CategoriesGrid,
   MobileCategoryCard,
+  ProductComparison,
   MobileDisplay,
   ContactDetails,
   Footer,
