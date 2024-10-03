@@ -3,7 +3,7 @@ import {
   MobileDisplay,
   ContactDetails,
   Footer,
-} from "../componets";
+} from "../components";
 
 const Home = () => {
   return (

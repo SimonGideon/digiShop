@@ -1,4 +1,4 @@
-import { Product, Footer, FilterAndSort } from "./../componets";
+import { Product, Footer, FilterAndSort } from "../components";
 import { useState, useEffect } from "react";
 import axios from "axios";
 

@@ -1,7 +1,7 @@
 import { Heart, Shuffle } from "feather-icons-react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToWishlist, removeFromWishlist } from "./../redux/wishlistSlice";
-import { addToCompare, removeFromCompare } from "./../redux/compareSlice";
+import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
+import { addToCompare, removeFromCompare } from "../redux/compareSlice";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";

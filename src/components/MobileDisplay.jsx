@@ -1,6 +1,6 @@
-import { MobileCategoryCard, Category } from "./";
+import { MobileCategoryCard, Category } from ".";
 import { useState, useRef, useEffect } from "react";
-import { categoriesItems } from "./../assets/constants";
+import { categoriesItems } from "../assets/constants";
 
 const MobileDisplay = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);

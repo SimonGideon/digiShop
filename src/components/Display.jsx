@@ -1,4 +1,4 @@
-import { Category } from "./";
+import { Category } from ".";
 import { categoriesItems as categories } from "../assets/constants";
 const CategoriesGrid = () => {
   return (

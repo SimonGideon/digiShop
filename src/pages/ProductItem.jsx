@@ -1,4 +1,4 @@
-import { Breadcrumb, LatestDeals, ProductTabs } from "../componets";
+import { Breadcrumb, LatestDeals, ProductTabs } from "../components";
 
 const ProductItem = () => {
   return (

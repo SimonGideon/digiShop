@@ -6,6 +6,11 @@ import FeatherIcon from "feather-icons-react";
 import "./../assets/Styles/Drawer.css";
 
 const CompareDrawer = ({ isOpen, onClose, items }) => {
+  const handleCompareClick = () => {
+    if (items.length > 0) {
+      window.location.href = "/Products/Compare";
+    }
+  };
   return (
     <CSSTransition in={isOpen} timeout={300} classNames="drawer" unmountOnExit>
       <div className="fixed inset-y-0 right-0 bg-white shadow-lg z-50 transform w-full sm:w-96">
@@ -47,7 +52,7 @@ const CompareDrawer = ({ isOpen, onClose, items }) => {
         {/* Footer */}
         <div className="bg-gray-100 flex justify-center mt-10">
           <button
-            // onClick={() => navigate("/compare")}
+            onClick={handleCompareClick}
             className=" w-4/5 bg-green-500 text-white px-6 py-2 rounded-[20px] flex items-center justify-center disabled:bg-gray-300"
             disabled={items.length === 0}
           >

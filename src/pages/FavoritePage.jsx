@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromWishlist } from "../redux/wishlistSlice";
-import { FavoriteCard } from "../componets";
+import { FavoriteCard } from "../components";
 
 const WishlistPage = () => {
   const wishlist = useSelector((state) => state.wishlist.items);
