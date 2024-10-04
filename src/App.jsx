@@ -29,7 +29,7 @@ function App() {
       ),
     },
     {
-      path: "/products/:id", // Ensure to specify the parent path
+      path: "/products/:id",
       element: (
         <Suspense fallback={<Loader />}>
           <ProductItem />
@@ -37,7 +37,7 @@ function App() {
       ),
     },
     {
-      path: "/favorite",
+      path: "products/favorite",
       element: (
         <Suspense fallback={<Loader />}>
           <FavoritePage />
