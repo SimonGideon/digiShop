@@ -11,7 +11,7 @@ const ComparePage = () => {
   };
 
   return (
-    <div className="p-4 md:p-12">
+    <div className="p-4 md:py-12 md:px-20">
       <h1 className="text-2xl font-bold mb-4">Compare Products</h1>
       {compareList && compareList.length === 0 ? (
         <p>No products to compare.</p>

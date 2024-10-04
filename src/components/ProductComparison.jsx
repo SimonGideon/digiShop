@@ -1,24 +1,24 @@
 import { useState, useEffect } from "react";
 import { products } from "../assets/constants/assetData";
+import { Search } from "feather-icons-react";
+import { useNavigate } from "react-router-dom";
 
 const ProductComparison = () => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [maxProductsPerView, setMaxProductsPerView] = useState(4); // Default is 4 for larger screens
-
+  const [maxProductsPerView, setMaxProductsPerView] = useState(4);
+  const navigate = useNavigate();
   useEffect(() => {
-    // Update maxProductsPerView based on screen size
     const handleResize = () => {
       if (window.innerWidth < 640) {
-        setMaxProductsPerView(2); // Show 2 products on small screens
+        setMaxProductsPerView(2);
       } else {
-        setMaxProductsPerView(4); // Show 4 products on larger screens
+        setMaxProductsPerView(4);
       }
     };
 
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    // Cleanup listener on component unmount
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -48,10 +48,19 @@ const ProductComparison = () => {
     <div className="p-4">
       <div className="container mx-auto">
         <div className="flex flex-col ">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold sm:text-xl">Compare Products</h1>
-            <div className="">
-              <div className="flex justify-between items-center mb-4 gap-2">
+          <div className="flex flex-col justify-between mb-4 gap-3">
+            <h1 className="text-2xl font-bold sm:text-xl md:text-left">
+              Compare Products
+            </h1>
+
+            <div className="flex justify-end md:justify-between items-center text-left w-full">
+              <button
+                className="bg-gray-300 text-white px-2 py-1 rounded hover:bg-green-600 flex"
+                onClick={() => navigate("/products")}
+              >
+                <Search /> Add items
+              </button>
+              <div className="flex justify-between items-center gap-2 md:ml-auto">
                 <button
                   onClick={prevPage}
                   className="border border-gray-300 py-0 px-2 rounded hover:bg-gray-200 disabled:opacity-50"
@@ -81,8 +90,7 @@ const ProductComparison = () => {
               </div>
             </div>
           </div>
-
-          <table className="min-w-full bg-white rounded-lg shadow-md">
+          <table className="min-w-full bg-white rounded-lg table-auto border-collapse border">
             <thead></thead>
             <tbody>
               <tr className="border-t">
