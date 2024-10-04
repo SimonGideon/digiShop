@@ -15,7 +15,6 @@ const ProductComparison = () => {
       }
     };
 
-    // Set initial value and add event listener
     handleResize();
     window.addEventListener("resize", handleResize);
 
