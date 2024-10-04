@@ -39,7 +39,7 @@ const MobileNavbar = () => {
 
           <div className="flex items-center space-x-2 md:space-x-6">
             <a
-              href="#"
+              href="/products/favorite"
               className="text-white relative flex flex-col items-center"
             >
               <Heart className="w-6 h-6" />
@@ -63,7 +63,7 @@ const MobileNavbar = () => {
             </button>
 
             <a
-              href="#"
+              href="/products/cart"
               className="text-white relative flex flex-col items-center"
             >
               <div className="relative">

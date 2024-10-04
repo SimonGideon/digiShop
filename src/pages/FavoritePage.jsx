@@ -17,11 +17,11 @@ const FavoritePage = () => {
         {favorites.map((product) => (
           <div
             key={product.id}
-            className="border border-gray-200 p-4 rounded-lg flex flex-col sm:flex-row items-center"
+            className="relative border border-gray-200 p-4 rounded-lg flex flex-col sm:flex-row items-center"
           >
             <button
               onClick={() => removeFavorite(product.id)}
-              className="text-red-500 text-lg p-2 hover:text-red-700"
+              className="absolute top-2 right-0 text-red-500 text-lg p-2 hover:text-red-700 sm:static sm:top-auto sm:right-auto"
             >
               <X />
             </button>
@@ -32,11 +32,12 @@ const FavoritePage = () => {
                 className="object-cover w-full h-full"
               />
             </div>
+
             <div className="flex-grow px-4 text-center sm:text-left">
               <p className="text-orange-500 font-normal text-[1em]">
                 {product.name}
               </p>
-              <button className="mt-2 flex items-center justify-center sm:justify-start text-gray-400  px-2 py-1 rounded-md border bg-gray-100 cursor-not-allowed">
+              <button className="mt-2 flex items-center justify-center sm:justify-start text-gray-400 px-2 py-1 rounded-md border bg-gray-100 cursor-not-allowed">
                 <Shuffle className="w-4 h-4 mr-1" /> compare
               </button>
             </div>
