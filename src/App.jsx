@@ -10,6 +10,7 @@ const ProductItem = lazy(() => import("./pages/ProductItem"));
 const FavoritePage = lazy(() => import("./pages/FavoritePage"));
 const ComparePage = lazy(() => import("./pages/ComparePage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 
 function App() {
   const router = createBrowserRouter([
@@ -58,6 +59,14 @@ function App() {
       element: (
         <Suspense fallback={<Loader />}>
           <ComparePage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/products/checkout",
+      element: (
+        <Suspense fallback={<Loader />}>
+          <CheckoutPage />
         </Suspense>
       ),
     },

@@ -4,6 +4,7 @@ import ProductItem from "./ProductItem";
 import FavoritePage from "./FavoritePage";
 import ComparePage from "./ComparePage";
 import CartPage from "./CartPage";
+import CheckoutPage from "./CheckoutPage";
 
 export {
   Home,
@@ -12,4 +13,5 @@ export {
   FavoritePage,
   ComparePage,
   CartPage,
+  CheckoutPage,
 };
