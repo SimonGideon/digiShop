@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { products } from "../assets/constants/assetData";
-import { Search } from "feather-icons-react";
+import { Search, Heart } from "feather-icons-react";
 import { useNavigate } from "react-router-dom";
 
 const ProductComparison = () => {
@@ -90,7 +90,7 @@ const ProductComparison = () => {
               </div>
             </div>
           </div>
-          <table className="min-w-full bg-white rounded-lg table-auto border-collapse border">
+          <table className="min-w-full bg-white rounded-lg  border-collapse border">
             <thead></thead>
             <tbody>
               <tr className="border-t">
@@ -106,18 +106,21 @@ const ProductComparison = () => {
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="w-24 h-24 sm:w-20 sm:h-20 object-cover mx-auto"
+                        className="w-1/2 max-w-xs h-auto object-cover mx-auto sm:max-w-sm md:max-w-md lg:max-w-lg"
                       />
                       <p className="text-sm sm:text-xs">{product.name}</p>
-                      <p className="text-lg font-bold text-green-500 mt-2 text-center sm:text-base">
+                      <p className="text-sm md:text-lg font-bold text-green-500 mt-2 text-center sm:text-base">
                         {product.price}
                       </p>
-                      <button className="mt-2 w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 sm:py-1">
-                        ADD TO CART
-                      </button>
-                      <button className="mt-2 w-full border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100 sm:py-1">
-                        Add to wishlist
-                      </button>
+                      <div className="text-center">
+                        <button className="mt-2 mx-auto w-3/4 sm:w-full text-sm sm:text-xs bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 sm:py-2">
+                          ADD TO CART
+                        </button>
+                        <button className="mt-2 mx-auto w-3/4 sm:w-full border flex justify-center items-center gap-2 text-sm sm:text-xs border-gray-300 text-gray-700 px-4  rounded-lg hover:bg-gray-100 sm:py-1">
+                          <Heart className="w-4 sm:w-3" />
+                          Add to wishlist
+                        </button>
+                      </div>
                     </div>
                   </td>
                 ))}

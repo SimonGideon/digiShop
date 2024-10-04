@@ -56,7 +56,7 @@ const CompareDrawer = ({ isOpen, onClose, items, removeItem }) => {
           <button
             onClick={handleCompareClick}
             className="w-4/5 bg-green-500 text-white px-6 py-2 rounded-[20px] flex items-center justify-center disabled:bg-gray-300"
-            disabled={items.length === 0}
+            disabled={items.length < 2}
           >
             <span className="mr-3">COMPARE</span>
             <FeatherIcon icon="arrow-right-circle" />
