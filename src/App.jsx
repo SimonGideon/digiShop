@@ -20,6 +20,7 @@ const CartPage = lazy(() => import("./pages/CartPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const Dashboard = lazy(() => import("./pages/Admin/Dashboard"));
 const AccountsPage = lazy(() => import("./pages/Admin/AccountsPage"));
+const StockList = lazy(() => import("./pages/Admin/StockList"));
 
 function Layout() {
   const location = useLocation();
@@ -114,7 +115,7 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "dashboard", // Nested route
+        path: "dashboard",
         element: (
           <Suspense fallback={<Loader />}>
             <Dashboard />
@@ -126,6 +127,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loader />}>
             <AccountsPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/products",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <StockList />
           </Suspense>
         ),
       },

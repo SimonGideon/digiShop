@@ -24,9 +24,7 @@ const AccountsPage = () => {
     formData.append("currentPassword", currentPassword);
     formData.append("newPassword", newPassword);
 
-    // Example: Sending the form data to an API
     console.log("Changing password...");
-    // Uncomment the following lines and add your API endpoint
     /*
     fetch("/api/change-password", {
       method: "POST",
@@ -46,9 +44,7 @@ const AccountsPage = () => {
     formData.append("phone", newUser.phone);
     formData.append("password", newUser.password);
 
-    // Example: Sending the form data to an API
     console.log("Adding new user:", newUser);
-    // Uncomment the following lines and add your API endpoint
     /*
     fetch("/api/add-user", {
       method: "POST",
