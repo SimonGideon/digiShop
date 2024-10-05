@@ -1,5 +1,4 @@
-import React from "react";
-import image from "../assets/images/bg.jpg"; // Importing the image
+import image from "../assets/images/bg.jpg";
 
 const NotFound = () => {
   return (

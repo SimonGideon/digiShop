@@ -10,6 +10,7 @@ import AccountsPage from "./Admin/AccountsPage";
 import StockList from "./Admin/StockList";
 import NewProduct from "./Admin/NewProduct";
 import NotFound from "./NotFound";
+import Login from "./Admin/Login";
 
 export {
   Home,
@@ -24,4 +25,5 @@ export {
   StockList,
   NewProduct,
   NotFound,
+  Login,
 };

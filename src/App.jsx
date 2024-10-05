@@ -23,6 +23,7 @@ const Dashboard = lazy(() => import("./pages/Admin/Dashboard"));
 const AccountsPage = lazy(() => import("./pages/Admin/AccountsPage"));
 const StockList = lazy(() => import("./pages/Admin/StockList"));
 const NewProduct = lazy(() => import("./pages/Admin/NewProduct"));
+const Login = lazy(() => import("./pages/Admin/Login"));
 
 function Layout() {
   const location = useLocation();
@@ -111,6 +112,14 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "/admin",
+    element: (
+      <Suspense fallback={<Loader />}>
+        <Login />
+      </Suspense>
+    ),
   },
   {
     path: "/admin",
