@@ -5,6 +5,7 @@ import FavoritePage from "./FavoritePage";
 import ComparePage from "./ComparePage";
 import CartPage from "./CartPage";
 import CheckoutPage from "./CheckoutPage";
+import Dashboard from "./Admin/Dashboard";
 
 export {
   Home,
@@ -14,4 +15,5 @@ export {
   ComparePage,
   CartPage,
   CheckoutPage,
+  Dashboard,
 };

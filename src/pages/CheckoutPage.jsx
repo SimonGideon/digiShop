@@ -25,7 +25,6 @@ const CheckoutPage = () => {
   return (
     <div className="p-8 bg-gray-100 md:px-20">
       <div className="grid lg:grid-cols-2 gap-8">
-        {/* Billing Details Form */}
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-lg lg:text-xl font-bold mb-4">Billing details</h2>
           <form className="space-y-4">

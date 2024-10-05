@@ -15,6 +15,9 @@ import ProductTabs from "./ProductTabs";
 import FavoriteCard from "./FavoriteCard";
 import Loader from "./Loader";
 import ProductComparison from "./ProductComparison";
+import SidebarMenu from "./Admin/SideBarMenu";
+import StatCard from "./Admin/StatCard";
+import Sidebar from "./Admin/Sidebar";
 
 export {
   NavBar,
@@ -34,4 +37,7 @@ export {
   ProductReview,
   ProductTabs,
   FavoriteCard,
+  SidebarMenu,
+  StatCard,
+  Sidebar,
 };
