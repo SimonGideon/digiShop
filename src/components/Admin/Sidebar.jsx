@@ -17,7 +17,7 @@ const Sidebar = ({ showMobileMenu, toggleMobileMenu }) => {
         </button>
 
         <div className="p-6 text-white">
-          <SidebarMenu />
+          <SidebarMenu toggleMobileMenu={toggleMobileMenu} />
         </div>
       </div>
 

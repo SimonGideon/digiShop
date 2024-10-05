@@ -11,7 +11,6 @@ import { NavBar, Loader } from "./components";
 import { AdminLayout } from "./components";
 import "./App.css";
 
-// Lazy load your pages
 const Home = lazy(() => import("./pages/Home"));
 const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
 const ProductItem = lazy(() => import("./pages/ProductItem"));
@@ -20,6 +19,7 @@ const ComparePage = lazy(() => import("./pages/ComparePage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const Dashboard = lazy(() => import("./pages/Admin/Dashboard"));
+const AccountsPage = lazy(() => import("./pages/Admin/AccountsPage"));
 
 function Layout() {
   const location = useLocation();
@@ -121,7 +121,14 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
-      // Add more admin routes here if needed
+      {
+        path: "/admin/accounts",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <AccountsPage />
+          </Suspense>
+        ),
+      },
     ],
   },
 ]);
