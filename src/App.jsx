@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { NavBar, Loader } from "./components";
 import { AdminLayout } from "./components";
 import "./App.css";
+import { NotFound } from "./pages";
 
 const Home = lazy(() => import("./pages/Home"));
 const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
@@ -103,7 +104,11 @@ const router = createBrowserRouter([
       },
       {
         path: "*",
-        element: <h1>404 Not Found</h1>,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <NotFound />
+          </Suspense>
+        ),
       },
     ],
   },

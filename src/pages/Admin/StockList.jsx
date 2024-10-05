@@ -1,4 +1,6 @@
 import { InventoryTable } from "../../components";
+import { PlusCircle } from "feather-icons-react";
+import { Link } from "react-router-dom";
 
 const stockData = [
   {
@@ -94,6 +96,13 @@ const stockColumns = [
 const StockList = () => {
   return (
     <div className="py-4">
+      <div className="flex justify-end mb-4">
+        <Link to="/admin/products/new" className="flex items-center">
+          <button className="bg-green-500 text-white px-4 py-2 rounded-lg text-nowrap flex gap-2">
+            <PlusCircle className="text-white" /> New
+          </button>
+        </Link>
+      </div>
       <InventoryTable
         title="Product Inventory"
         columns={stockColumns}

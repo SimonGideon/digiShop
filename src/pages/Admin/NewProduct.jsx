@@ -2,15 +2,27 @@
 import { useState } from "react";
 import { NewCategory, Modal, NewBrand } from "./../../components";
 import { PlusCircle } from "feather-icons-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { availableTags } from "./../../assets/constants/assetData";
+import Select, { components } from "react-select";
 
-import Select from "react-select";
+const categories = [
+  "Smartphone",
+  "Phone Accessories",
+  "TVs",
+  "Audio",
+  "Kitchen Appliances",
+  "Home Appliances",
+  "Camera and Accessories",
+  "Computers Laptops",
+  "TV accessories",
+];
 
 const NewProduct = () => {
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
-  const [descriptionTags, setDescriptionTags] = useState([]);
   const [colors, setColors] = useState([]);
   const [price, setPrice] = useState("");
   const [discountPrice, setDiscountPrice] = useState("");
@@ -18,36 +30,9 @@ const NewProduct = () => {
   const [specifications, setSpecifications] = useState([
     { tag: "", detail: "" },
   ]);
-
   const [images, setImages] = useState([]);
 
-  //   ===============> Dorop down logic
-
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [inputValue, setInputValue] = useState("");
-
-  const handleChange = (selectedOptions) => {
-    setSelectedTags(selectedOptions || []);
-  };
-
-  const handleInputChange = (inputValue) => {
-    setInputValue(inputValue);
-  };
-
-  const handleCreate = () => {
-    const newTag = { value: inputValue, label: inputValue };
-    availableTags.push(newTag); // Add new tag to the available tags
-    setSelectedTags((prevTags) => [...prevTags, newTag]);
-    setInputValue("");
-  };
-
-  const filteredOptions = availableTags.filter((tag) =>
-    tag.label.toLowerCase().includes(inputValue.toLowerCase())
-  );
-
-  // ==================>   dropdown ends logic
-
-  //===============>   modal logic
+  // ===============>  Modal Logic
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalTitle, setModalTitle] = useState("");
@@ -62,20 +47,10 @@ const NewProduct = () => {
     setModalTitle(title);
     toggleModal();
   };
-  // ================>  modal logic ends here
+  // ===============>  Modal Logic Ends
 
   // Categories and Brands
-  const categories = [
-    "Smartphone",
-    "Phone Accessories",
-    "TVs",
-    "Audio",
-    "Kitchen Appliances",
-    "Home Appliances",
-    "Camera and Accessories",
-    "Computers Laptops",
-    "TV accessories",
-  ];
+
   const brands = ["Samsung", "Techno", "Von", "Hisense", "Infinix", "Toyota"];
 
   const addSpecification = () => {
@@ -92,7 +67,6 @@ const NewProduct = () => {
       productName,
       category,
       brand,
-      descriptionTags,
       colors,
       price,
       discountPrice,
@@ -102,6 +76,75 @@ const NewProduct = () => {
     };
     console.log(productData);
     // handle form submission here (e.g., via an API call)
+  };
+
+  // Initialize a state for tag-description sets
+  const [tagDescriptionSets, setTagDescriptionSets] = useState([
+    { tags: [], inputValue: "", description: "" },
+  ]);
+
+  const filteredOptions = availableTags;
+
+  // Handle change for individual tag sets
+  const handleTagChange = (index, selectedTags) => {
+    const newSets = [...tagDescriptionSets];
+    newSets[index].tags = selectedTags || [];
+    setTagDescriptionSets(newSets);
+  };
+
+  // Handle change for individual description inputs
+  const handleDescriptionChange = (index, value) => {
+    const newSets = [...tagDescriptionSets];
+    newSets[index].description = value;
+    setTagDescriptionSets(newSets);
+  };
+
+  // Add new tag-description set
+  const addTagDescriptionSet = () => {
+    setTagDescriptionSets([
+      ...tagDescriptionSets,
+      { tags: [], inputValue: "", description: "" },
+    ]);
+  };
+
+  // Delete tag-description set
+  const deleteTagDescriptionSet = (index) => {
+    if (tagDescriptionSets.length > 1) {
+      const newSets = tagDescriptionSets.filter((_, i) => i !== index);
+      setTagDescriptionSets(newSets);
+    }
+  };
+
+  // Logic to add a new tag if it's not in the list
+  const createOption = (label) => ({
+    label,
+    value: label.toLowerCase().replace(/\W/g, ""),
+  });
+
+  const handleCreateTag = (inputValue, index) => {
+    const newOption = createOption(inputValue);
+    const newSets = [...tagDescriptionSets];
+    newSets[index].tags = [...newSets[index].tags, newOption];
+    setTagDescriptionSets(newSets);
+  };
+
+  const NoOptionsMessage = (props) => {
+    const index = props.selectProps.index; // Use the current select box index
+
+    return (
+      <components.NoOptionsMessage {...props}>
+        <span>
+          No tags found.{" "}
+          <button
+            type="button"
+            onClick={() => handleCreateTag(props.selectProps.inputValue, index)}
+            className="text-blue-500 hover:underline"
+          >
+            Add "{props.selectProps.inputValue}" as a new tag
+          </button>
+        </span>
+      </components.NoOptionsMessage>
+    );
   };
 
   return (
@@ -121,13 +164,14 @@ const NewProduct = () => {
             required
           />
         </div>
+
         <div className="mb-4 flex gap-3">
           {/* Category */}
           <div className="flex flex-col justify-between w-1/2">
             <label className="block text-sm font-medium text-gray-700">
               Category
             </label>
-            <div className="flex  w-full gap-5">
+            <div className="flex w-full gap-5">
               <select
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
                 value={category}
@@ -157,6 +201,7 @@ const NewProduct = () => {
             </div>
           </div>
 
+          {/* Brand */}
           <div className="flex flex-col justify-between w-1/2">
             <label className="block text-sm font-medium text-gray-700">
               Brand
@@ -192,8 +237,77 @@ const NewProduct = () => {
           </div>
         </div>
 
-        {/* Price and Discount Price */}
-        <div className="mb-4 grid grid-cols-2 gap-5">
+        <fieldset className="border border-gray-300 rounded-md p-4 mb-4">
+          <legend className="text-sm font-medium text-gray-700">
+            Descriptions
+          </legend>
+          {tagDescriptionSets.map((set, index) => (
+            <div key={index} className="mb-4 flex justify-between gap-5">
+              <div className="w-1/2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Tags
+                </label>
+                <Select
+                  options={filteredOptions}
+                  value={set.tags}
+                  onChange={(selectedTags) =>
+                    handleTagChange(index, selectedTags)
+                  }
+                  inputValue={set.inputValue}
+                  onInputChange={(inputValue) => {
+                    const newSets = [...tagDescriptionSets];
+                    newSets[index].inputValue = inputValue;
+                    setTagDescriptionSets(newSets);
+                  }}
+                  className="mt-1"
+                  isClearable
+                  placeholder="Select or add tags..."
+                  components={{ NoOptionsMessage }}
+                  index={index} // Pass the index to the Select component
+                />
+              </div>
+
+              <div className="w-1/2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Description
+                </label>
+                <input
+                  type="text"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                  value={set.description}
+                  onChange={(e) =>
+                    handleDescriptionChange(index, e.target.value)
+                  }
+                  placeholder="Enter description..."
+                  required
+                />
+              </div>
+
+              {/* Delete button, visible if there are more than one item */}
+              {tagDescriptionSets.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => deleteTagDescriptionSet(index)}
+                  className="mt-7 bg-red-500 text-white px-2 py-1 rounded-md shadow"
+                >
+                  <FontAwesomeIcon icon={faTrashAlt} className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          ))}
+
+          <button
+            type="button"
+            className="bg-blue-500 text-white px-3 rounded-md shadow flex gap-1 py-2"
+            onClick={addTagDescriptionSet}
+          >
+            <PlusCircle className="text-white w-6 h-6" />
+            ADD
+          </button>
+        </fieldset>
+
+        {/* Price and Discount */}
+        <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Price (KSH)
@@ -206,6 +320,7 @@ const NewProduct = () => {
               required
             />
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Discount Price (KSH)
@@ -222,7 +337,7 @@ const NewProduct = () => {
         {/* Stock */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Number of Items in Stock
+            Stock
           </label>
           <input
             type="number"
@@ -233,163 +348,111 @@ const NewProduct = () => {
           />
         </div>
 
-        <div className="mb-4">
-          <fieldset className="border border-gray-300 rounded-md p-4">
-            <legend className="text-lg font-semibold text-gray-700">
-              Description
-            </legend>
-
-            {/* Description Tags */}
-            <div className="mb-4 flex justify-between gap-5">
-              <div className="w-1/2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Tags
-                </label>
-                <Select
-                  options={filteredOptions}
-                  value={selectedTags}
-                  onChange={handleChange}
-                  inputValue={inputValue}
-                  onInputChange={handleInputChange}
-                  className="mt-1"
-                  isClearable
-                  placeholder="Select or add tags..."
-                  // Customizing the dropdown for adding new tags
-                  components={{
-                    DropdownIndicator: null,
-                    Menu: (props) => (
-                      <div>
-                        <div
-                          {...props.innerProps}
-                          className="react-select__menu"
-                        >
-                          {props.children}
-                          {filteredOptions.length === 0 && inputValue && (
-                            <button
-                              type="button"
-                              onClick={handleCreate}
-                              className="w-full text-left px-2 py-1 text-blue-600 hover:bg-gray-200"
-                            >
-                              Add &quot;{inputValue}&quot;
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    ),
-                  }}
-                />
-              </div>
-              <div className="w-1/2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Description
+        <fieldset className="border border-gray-300 rounded-md mb-4 p-4">
+          <legend className="text-sm font-medium text-gray-700">
+            Specifications
+          </legend>
+          {specifications.map((spec, index) => (
+            <div key={index} className="mb-4 flex gap-4 items-center">
+              <div className="flex flex-col w-1/2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Specification
                 </label>
                 <input
                   type="text"
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-                  value={descriptionTags.join(", ")}
-                  onChange={(e) =>
-                    setDescriptionTags(e.target.value.split(","))
-                  }
+                  className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                  placeholder="Specification Tag"
+                  value={spec.tag}
+                  onChange={(e) => {
+                    const newSpecs = [...specifications];
+                    newSpecs[index].tag = e.target.value;
+                    setSpecifications(newSpecs);
+                  }}
+                  required
                 />
               </div>
-            </div>
 
-            {/* Additional Description Fields */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Additional Description
-              </label>
-              <textarea
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-                rows="3"
-              />
-            </div>
-            {/* Add more fields as needed */}
-          </fieldset>
-        </div>
+              <div className="flex flex-col w-1/2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Details
+                </label>
+                <input
+                  type="text"
+                  className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                  placeholder="Specification Detail"
+                  value={spec.detail}
+                  onChange={(e) => {
+                    const newSpecs = [...specifications];
+                    newSpecs[index].detail = e.target.value;
+                    setSpecifications(newSpecs);
+                  }}
+                  required
+                />
+              </div>
 
-        {/* Colors */}
+              {/* Delete button, visible if there are more than one item */}
+              {specifications.length > 1 && (
+                <button
+                  type="button"
+                  className="bg-red-500 text-white px-2 mt-6 py-1 rounded-md shadow"
+                  onClick={() => {
+                    const newSpecs = specifications.filter(
+                      (_, i) => i !== index
+                    );
+                    setSpecifications(newSpecs);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </button>
+              )}
+            </div>
+          ))}
+
+          {/* Add Specification Button */}
+          <button
+            type="button"
+            className="mb-4 bg-blue-500 text-white px-3 py-2 rounded-md shadow flex gap-2 "
+            onClick={addSpecification}
+          >
+            <PlusCircle className="text-white w-6 h-6" />
+            ADD
+          </button>
+        </fieldset>
+
+        {/* Images */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            Colors (Comma Separated)
-          </label>
-          <input
-            type="text"
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-            value={colors.join(", ")}
-            onChange={(e) => setColors(e.target.value.split(","))}
-          />
-        </div>
-
-        {/* Product Images */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Upload Thumbnails (Max 5 MB)
+            Upload Images
           </label>
           <input
             type="file"
+            accept="image/*"
             multiple
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
             onChange={handleFileUpload}
-            accept="image/*"
           />
         </div>
 
-        {/* Specifications */}
-        <div className="mb-4">
-          <h4 className="block text-sm font-medium text-gray-700">
-            Specifications
-          </h4>
-          {specifications.map((spec, index) => (
-            <div key={index} className="flex space-x-4 mb-2">
-              <input
-                type="text"
-                placeholder="Tag"
-                className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-                value={spec.tag}
-                onChange={(e) => {
-                  const updatedSpecs = [...specifications];
-                  updatedSpecs[index].tag = e.target.value;
-                  setSpecifications(updatedSpecs);
-                }}
-              />
-              <input
-                type="text"
-                placeholder="Detail"
-                className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-                value={spec.detail}
-                onChange={(e) => {
-                  const updatedSpecs = [...specifications];
-                  updatedSpecs[index].detail = e.target.value;
-                  setSpecifications(updatedSpecs);
-                }}
-              />
-            </div>
-          ))}
-          <button
-            type="button"
-            className="mt-2 bg-blue-500 text-white px-3 py-1 rounded-md shadow"
-            onClick={addSpecification}
-          >
-            Add Specification
-          </button>
-        </div>
-
         {/* Submit Button */}
-        <div>
+        <div className="mt-6">
           <button
             type="submit"
             className="bg-green-500 text-white px-4 py-2 rounded-md shadow"
           >
-            Add Product
+            Save Product
           </button>
         </div>
       </form>
 
-      {/* modal */}
-      <Modal isOpen={modalOpen} closeModal={toggleModal} title={modalTitle}>
-        {modalContent}
-      </Modal>
+      {/* Modal */}
+      {modalOpen && (
+        <Modal
+          isOpen={modalOpen}
+          toggleModal={toggleModal}
+          title={modalTitle}
+          content={modalContent}
+        />
+      )}
     </div>
   );
 };

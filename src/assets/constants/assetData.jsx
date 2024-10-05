@@ -275,4 +275,17 @@ const availableTags = [
   { value: "Accessories", label: "Accessories" },
 ];
 
-export { cartegory, products, availableTags };
+const categories = [
+  { value: "Smartphone", label: "Smartphone" },
+  { value: "Headphones", label: "Headphones" },
+  { value: "TV", label: "TV" },
+  { value: "Speaker", label: "Speaker" },
+  { value: "Home", label: "Home" },
+  { value: "Camera", label: "Camera" },
+  { value: "Computer", label: "Computer" },
+  { value: "Laptop", label: "Laptop" },
+  { value: "Tablet", label: "Tablet" },
+  { value: "Smartwatch", label: "Smartwatch" },
+];
+
+export { cartegory, products, availableTags, categories };
