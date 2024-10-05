@@ -3,8 +3,7 @@ import { useState } from "react";
 import { NewCategory, Modal, NewBrand } from "./../../components";
 import { PlusCircle } from "feather-icons-react";
 import { availableTags } from "./../../assets/constants/assetData";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+
 import Select from "react-select";
 
 const NewProduct = () => {
@@ -48,36 +47,6 @@ const NewProduct = () => {
 
   // ==================>   dropdown ends logic
 
-  //   add new Description tags logic starts here
-  const [fields, setFields] = useState([
-    { id: Date.now(), selectedTags: [], description: "" },
-  ]);
-
-  const handleAddField = () => {
-    setFields([
-      ...fields,
-      { id: Date.now(), selectedTags: [], description: "" },
-    ]);
-  };
-
-  const handleChangeTag = (selectedOption, index) => {
-    const newFields = [...fields];
-    newFields[index].selectedTag = selectedOption;
-    setFields(newFields);
-  };
-
-  const handleChangeDescription = (e, index) => {
-    const newFields = [...fields];
-    newFields[index].description = e.target.value;
-    setFields(newFields);
-  };
-
-  const handleDeleteField = (index) => {
-    const newFields = fields.filter((_, i) => i !== index);
-    setFields(newFields);
-  };
-
-  //  add new Description tags logic ends here
   //===============>   modal logic
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
@@ -270,52 +239,72 @@ const NewProduct = () => {
               Description
             </legend>
 
-            {fields.map((field, index) => (
-              <div key={field.id} className="mb-4 flex justify-between gap-5">
-                <div className="w-1/2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Tag
-                  </label>
-                  <Select
-                    options={availableTags}
-                    value={field.selectedTag}
-                    onChange={(selectedOption) =>
-                      handleChangeTag(selectedOption, index)
-                    }
-                    className="mt-1"
-                    placeholder="Select a tag..."
-                    isClearable
-                  />
-                </div>
-                <div className="w-1/2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Description
-                  </label>
-                  <input
-                    type="text"
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-                    value={field.description}
-                    onChange={(e) => handleChangeDescription(e, index)}
-                  />
-                </div>
-                {index > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteField(index)}
-                    className="mt-8 p-2 bg-red-600 text-white rounded-md"
-                  >
-                    <FontAwesomeIcon icon={faTrashAlt} />
-                  </button>
-                )}
+            {/* Description Tags */}
+            <div className="mb-4 flex justify-between gap-5">
+              <div className="w-1/2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Tags
+                </label>
+                <Select
+                  options={filteredOptions}
+                  value={selectedTags}
+                  onChange={handleChange}
+                  inputValue={inputValue}
+                  onInputChange={handleInputChange}
+                  className="mt-1"
+                  isClearable
+                  placeholder="Select or add tags..."
+                  // Customizing the dropdown for adding new tags
+                  components={{
+                    DropdownIndicator: null,
+                    Menu: (props) => (
+                      <div>
+                        <div
+                          {...props.innerProps}
+                          className="react-select__menu"
+                        >
+                          {props.children}
+                          {filteredOptions.length === 0 && inputValue && (
+                            <button
+                              type="button"
+                              onClick={handleCreate}
+                              className="w-full text-left px-2 py-1 text-blue-600 hover:bg-gray-200"
+                            >
+                              Add &quot;{inputValue}&quot;
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ),
+                  }}
+                />
               </div>
-            ))}
-            <button
-              type="button"
-              onClick={handleAddField}
-              className="mt-2 bg-green-500 text-white px-4 py-2 rounded-md"
-            >
-              Add Description
-            </button>
+              <div className="w-1/2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Description
+                </label>
+                <input
+                  type="text"
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                  value={descriptionTags.join(", ")}
+                  onChange={(e) =>
+                    setDescriptionTags(e.target.value.split(","))
+                  }
+                />
+              </div>
+            </div>
+
+            {/* Additional Description Fields */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Additional Description
+              </label>
+              <textarea
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                rows="3"
+              />
+            </div>
+            {/* Add more fields as needed */}
           </fieldset>
         </div>
 
