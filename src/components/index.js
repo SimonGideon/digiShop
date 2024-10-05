@@ -18,6 +18,8 @@ import ProductComparison from "./ProductComparison";
 import SidebarMenu from "./Admin/SideBarMenu";
 import StatCard from "./Admin/StatCard";
 import Sidebar from "./Admin/Sidebar";
+import InventoryTable from "./Admin/InventoryTable";
+import AdminLayout from "./Admin/AdminLayout";
 
 export {
   NavBar,
@@ -40,4 +42,6 @@ export {
   SidebarMenu,
   StatCard,
   Sidebar,
+  InventoryTable,
+  AdminLayout,
 };

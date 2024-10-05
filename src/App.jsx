@@ -1,5 +1,4 @@
 import React, { Suspense, lazy } from "react";
-import { NavBar, Loader } from "./components";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -8,8 +7,11 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { NavBar, Loader } from "./components";
+import { AdminLayout } from "./components";
 import "./App.css";
 
+// Lazy load your pages
 const Home = lazy(() => import("./pages/Home"));
 const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
 const ProductItem = lazy(() => import("./pages/ProductItem"));
@@ -104,12 +106,23 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/admin/dashboard",
+    path: "/admin",
     element: (
       <Suspense fallback={<Loader />}>
-        <Dashboard />
+        <AdminLayout />{" "}
       </Suspense>
     ),
+    children: [
+      {
+        path: "dashboard", // Nested route
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Dashboard />
+          </Suspense>
+        ),
+      },
+      // Add more admin routes here if needed
+    ],
   },
 ]);
 
