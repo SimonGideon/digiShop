@@ -8,6 +8,7 @@ import CheckoutPage from "./CheckoutPage";
 import Dashboard from "./Admin/Dashboard";
 import AccountsPage from "./Admin/AccountsPage";
 import StockList from "./Admin/StockList";
+import NewProduct from "./Admin/NewProduct";
 
 export {
   Home,
@@ -20,4 +21,5 @@ export {
   Dashboard,
   AccountsPage,
   StockList,
+  NewProduct,
 };

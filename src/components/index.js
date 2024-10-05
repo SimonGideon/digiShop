@@ -21,6 +21,8 @@ import Sidebar from "./Admin/Sidebar";
 import InventoryTable from "./Admin/InventoryTable";
 import AdminLayout from "./Admin/AdminLayout";
 import UserProfileDropdown from "./Admin/UserProfileDropdown ";
+import Modal from "./Admin/Modal";
+import NewCategory from "./Admin/NewCategory";
 
 export {
   NavBar,
@@ -46,4 +48,6 @@ export {
   InventoryTable,
   AdminLayout,
   UserProfileDropdown,
+  Modal,
+  NewCategory,
 };

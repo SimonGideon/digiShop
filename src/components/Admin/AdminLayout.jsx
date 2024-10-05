@@ -12,7 +12,7 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex">
       <div className="fixed top-0 left-0 z-50 p-2 bg-gray-100 md:hidden">
         <Menu onClick={toggleMobileMenu} />
       </div>
@@ -47,7 +47,7 @@ const AdminLayout = () => {
               />
               <span className="absolute bottom-0 right-0 bg-green-500 h-3 w-3 rounded-full border-2 border-white"></span>
             </div>
-            <span>John Quinn</span>
+            <span>Admin</span>
           </div>
         </div>
         <Outlet />

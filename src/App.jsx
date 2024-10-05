@@ -21,6 +21,7 @@ const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const Dashboard = lazy(() => import("./pages/Admin/Dashboard"));
 const AccountsPage = lazy(() => import("./pages/Admin/AccountsPage"));
 const StockList = lazy(() => import("./pages/Admin/StockList"));
+const NewProduct = lazy(() => import("./pages/Admin/NewProduct"));
 
 function Layout() {
   const location = useLocation();
@@ -135,6 +136,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loader />}>
             <StockList />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/products/new",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <NewProduct />
           </Suspense>
         ),
       },
