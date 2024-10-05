@@ -10,7 +10,6 @@ const UserProfileDropdown = ({ adminAvatar }) => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -33,12 +32,10 @@ const UserProfileDropdown = ({ adminAvatar }) => {
         <span className="absolute bottom-0 right-0 bg-green-500 h-3 w-3 rounded-full border-2 border-white"></span>
       </div>
 
-      {/* Dropdown Toggle Button */}
       <button onClick={toggleDropdown}>
         <ChevronDown className="w-5 h-5" />
       </button>
 
-      {/* Dropdown Menu */}
       {isDropdownOpen && (
         <div className="absolute top-4 right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
           <div className="px-4 py-2">

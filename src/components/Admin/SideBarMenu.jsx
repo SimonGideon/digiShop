@@ -5,7 +5,6 @@ import {
   ShoppingCart,
   Users,
   Settings,
-  MapPin,
 } from "feather-icons-react";
 const SidebarMenu = () => {
   return (
@@ -26,13 +25,7 @@ const SidebarMenu = () => {
         <Users className="mr-2" /> Customers
       </li>
       <li className="flex items-center">
-        <Users className="mr-2" /> Sales Promotion
-      </li>
-      <li className="flex items-center">
         <Settings className="mr-2" /> Accounts
-      </li>
-      <li className="flex items-center">
-        <MapPin className="mr-2" /> Store Locator
       </li>
     </ul>
   );
