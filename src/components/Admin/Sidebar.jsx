@@ -5,7 +5,7 @@ const Sidebar = ({ showMobileMenu, toggleMobileMenu }) => {
   return (
     <>
       <div
-        className={`fixed pt-5 inset-0 bg-navshade-500 z-50 transform ${
+        className={`fixed h-screen pt-5 inset-0 bg-navshade-500 z-50 transform ${
           showMobileMenu ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:hidden`}
       >

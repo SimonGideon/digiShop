@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NewCategory, Modal } from "./../../components";
+import { NewCategory, Modal, NewBrand } from "./../../components";
 import { PlusCircle } from "feather-icons-react";
 
 const NewProduct = () => {
@@ -17,12 +17,22 @@ const NewProduct = () => {
 
   const [images, setImages] = useState([]);
 
+  //===============>   modal logic
   const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const [modalTitle, setModalTitle] = useState("");
 
-  const toggleModal = (e) => {
-    e.preventDefault();
+  const toggleModal = () => {
     setModalOpen(!modalOpen);
   };
+
+  const openModalFor = (component, title, e) => {
+    e.preventDefault();
+    setModalContent(component);
+    setModalTitle(title);
+    toggleModal();
+  };
+  // ================>  modal logic ends here
 
   // Categories and Brands
   const categories = [
@@ -105,8 +115,10 @@ const NewProduct = () => {
               </select>
               <div className="flex items-center">
                 <button
-                  className="bg-green-500 text-white px-3 py-2 rounded-md shadow text-nowrap flex gap-1"
-                  onClick={toggleModal}
+                  className="bg-blue-500 text-white px-3 py-2 rounded-md shadow text-nowrap flex gap-1"
+                  onClick={(e) =>
+                    openModalFor(<NewCategory />, "Add New Category", e)
+                  }
                 >
                   <PlusCircle className="text-white w-6 h-6" />
                   ADD
@@ -114,35 +126,39 @@ const NewProduct = () => {
               </div>
             </div>
           </div>
-          {/* modal */}
-          <Modal
-            isOpen={modalOpen}
-            closeModal={toggleModal}
-            title="Add New Category"
-          >
-            <NewCategory />
-          </Modal>
 
-          {/* Brand */}
-          <div>
+          <div className="flex flex-col justify-between w-1/2">
             <label className="block text-sm font-medium text-gray-700">
               Brand
             </label>
-            <select
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-              value={brand}
-              onChange={(e) => setBrand(e.target.value)}
-              required
-            >
-              <option value="" disabled>
-                Select Brand
-              </option>
-              {brands.map((brandName) => (
-                <option key={brandName} value={brandName}>
-                  {brandName}
+            <div className="flex w-full gap-5">
+              <select
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+                required
+              >
+                <option value="" disabled>
+                  Select Brand
                 </option>
-              ))}
-            </select>
+                {brands.map((brandName) => (
+                  <option key={brandName} value={brandName}>
+                    {brandName}
+                  </option>
+                ))}
+              </select>
+              <div className="flex items-center">
+                <button
+                  className="bg-blue-500 text-white px-3 py-2 rounded-md shadow text-nowrap flex gap-1"
+                  onClick={(e) =>
+                    openModalFor(<NewBrand />, "Add New Brand", e)
+                  }
+                >
+                  <PlusCircle className="text-white w-6 h-6" />
+                  ADD
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -277,6 +293,11 @@ const NewProduct = () => {
           </button>
         </div>
       </form>
+
+      {/* modal */}
+      <Modal isOpen={modalOpen} closeModal={toggleModal} title={modalTitle}>
+        {modalContent}
+      </Modal>
     </div>
   );
 };

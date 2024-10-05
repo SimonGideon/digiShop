@@ -23,6 +23,7 @@ import AdminLayout from "./Admin/AdminLayout";
 import UserProfileDropdown from "./Admin/UserProfileDropdown ";
 import Modal from "./Admin/Modal";
 import NewCategory from "./Admin/NewCategory";
+import NewBrand from "./Admin/NewBrand";
 
 export {
   NavBar,
@@ -50,4 +51,5 @@ export {
   UserProfileDropdown,
   Modal,
   NewCategory,
+  NewBrand,
 };
