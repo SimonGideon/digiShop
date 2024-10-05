@@ -20,6 +20,7 @@ import StatCard from "./Admin/StatCard";
 import Sidebar from "./Admin/Sidebar";
 import InventoryTable from "./Admin/InventoryTable";
 import AdminLayout from "./Admin/AdminLayout";
+import UserProfileDropdown from "./Admin/UserProfileDropdown ";
 
 export {
   NavBar,
@@ -44,4 +45,5 @@ export {
   Sidebar,
   InventoryTable,
   AdminLayout,
+  UserProfileDropdown,
 };

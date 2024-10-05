@@ -5,14 +5,20 @@ const Sidebar = ({ showMobileMenu, toggleMobileMenu }) => {
   return (
     <>
       <div
-        className={`fixed inset-0 bg-navshade-500 z-50 transform ${
+        className={`fixed pt-5 inset-0 bg-navshade-500 z-50 transform ${
           showMobileMenu ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:hidden`}
       >
-        <button className="text-white mb-4" onClick={toggleMobileMenu}>
-          <i className="fas fa-times"></i>
+        <button
+          className="fixed right-9 top-2 z-50 text-white text-[1.5rem] mb-4"
+          onClick={toggleMobileMenu}
+        >
+          X
         </button>
-        <SidebarMenu />
+
+        <div className="p-6 text-white">
+          <SidebarMenu />
+        </div>
       </div>
 
       {/* Desktop Sidebar */}

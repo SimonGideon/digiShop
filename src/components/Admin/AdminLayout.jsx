@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Search, Bell } from "feather-icons-react";
+import { Search, Bell, Menu } from "feather-icons-react";
 import adminAvatar from "./../../assets/images/admin-avatar.jpg";
-import { Sidebar } from "./../../components";
+import { Sidebar, UserProfileDropdown } from "./../../components";
 import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
@@ -13,6 +13,10 @@ const AdminLayout = () => {
 
   return (
     <div className="flex h-screen">
+      <div className="fixed top-0 left-0 z-50 p-2 bg-gray-100 md:hidden">
+        <Menu onClick={toggleMobileMenu} />
+      </div>
+
       <Sidebar
         showMobileMenu={showMobileMenu}
         toggleMobileMenu={toggleMobileMenu}
@@ -29,8 +33,11 @@ const AdminLayout = () => {
               <Search />
             </button>
           </div>
+          <div className="flex md:hidden">
+            <UserProfileDropdown adminAvatar={adminAvatar} />
+          </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="md:flex items-center space-x-4 hidden ">
             <Bell />
             <div className="relative">
               <img
