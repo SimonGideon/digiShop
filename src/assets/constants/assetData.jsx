@@ -252,4 +252,27 @@ const products = [
   },
 ];
 
-export { cartegory, products };
+const availableTags = [
+  { value: "Display", label: "Display" },
+  { value: "Camera", label: "Camera" },
+  { value: "Front Camera", label: "Front Camera" },
+  { value: "Processor", label: "Processor" },
+  { value: "Battery", label: "Battery" },
+  { value: "Storage", label: "Storage" },
+  { value: "RAM", label: "RAM" },
+  { value: "Operating System", label: "Operating System" },
+  { value: "Connectivity", label: "Connectivity" },
+  { value: "Weight", label: "Weight" },
+  { value: "Dimensions", label: "Dimensions" },
+  { value: "Audio", label: "Audio" },
+  { value: "Sensors", label: "Sensors" },
+  { value: "Build Quality", label: "Build Quality" },
+  { value: "Warranty", label: "Warranty" },
+  { value: "Color Options", label: "Color Options" },
+  { value: "Price", label: "Price" },
+  { value: "Reviews", label: "Reviews" },
+  { value: "Brand", label: "Brand" },
+  { value: "Accessories", label: "Accessories" },
+];
+
+export { cartegory, products, availableTags };

@@ -1,6 +1,11 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { NewCategory, Modal, NewBrand } from "./../../components";
 import { PlusCircle } from "feather-icons-react";
+import { availableTags } from "./../../assets/constants/assetData";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import Select from "react-select";
 
 const NewProduct = () => {
   const [productName, setProductName] = useState("");
@@ -17,6 +22,62 @@ const NewProduct = () => {
 
   const [images, setImages] = useState([]);
 
+  //   ===============> Dorop down logic
+
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+
+  const handleChange = (selectedOptions) => {
+    setSelectedTags(selectedOptions || []);
+  };
+
+  const handleInputChange = (inputValue) => {
+    setInputValue(inputValue);
+  };
+
+  const handleCreate = () => {
+    const newTag = { value: inputValue, label: inputValue };
+    availableTags.push(newTag); // Add new tag to the available tags
+    setSelectedTags((prevTags) => [...prevTags, newTag]);
+    setInputValue("");
+  };
+
+  const filteredOptions = availableTags.filter((tag) =>
+    tag.label.toLowerCase().includes(inputValue.toLowerCase())
+  );
+
+  // ==================>   dropdown ends logic
+
+  //   add new Description tags logic starts here
+  const [fields, setFields] = useState([
+    { id: Date.now(), selectedTags: [], description: "" },
+  ]);
+
+  const handleAddField = () => {
+    setFields([
+      ...fields,
+      { id: Date.now(), selectedTags: [], description: "" },
+    ]);
+  };
+
+  const handleChangeTag = (selectedOption, index) => {
+    const newFields = [...fields];
+    newFields[index].selectedTag = selectedOption;
+    setFields(newFields);
+  };
+
+  const handleChangeDescription = (e, index) => {
+    const newFields = [...fields];
+    newFields[index].description = e.target.value;
+    setFields(newFields);
+  };
+
+  const handleDeleteField = (index) => {
+    const newFields = fields.filter((_, i) => i !== index);
+    setFields(newFields);
+  };
+
+  //  add new Description tags logic ends here
   //===============>   modal logic
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
@@ -163,7 +224,7 @@ const NewProduct = () => {
         </div>
 
         {/* Price and Discount Price */}
-        <div className="mb-4 grid grid-cols-2 gap-4">
+        <div className="mb-4 grid grid-cols-2 gap-5">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Price (KSH)
@@ -203,17 +264,59 @@ const NewProduct = () => {
           />
         </div>
 
-        {/* Description Tags */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Description Tags (Comma Separated)
-          </label>
-          <input
-            type="text"
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-            value={descriptionTags.join(", ")}
-            onChange={(e) => setDescriptionTags(e.target.value.split(","))}
-          />
+          <fieldset className="border border-gray-300 rounded-md p-4">
+            <legend className="text-lg font-semibold text-gray-700">
+              Description
+            </legend>
+
+            {fields.map((field, index) => (
+              <div key={field.id} className="mb-4 flex justify-between gap-5">
+                <div className="w-1/2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Tag
+                  </label>
+                  <Select
+                    options={availableTags}
+                    value={field.selectedTag}
+                    onChange={(selectedOption) =>
+                      handleChangeTag(selectedOption, index)
+                    }
+                    className="mt-1"
+                    placeholder="Select a tag..."
+                    isClearable
+                  />
+                </div>
+                <div className="w-1/2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Description
+                  </label>
+                  <input
+                    type="text"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                    value={field.description}
+                    onChange={(e) => handleChangeDescription(e, index)}
+                  />
+                </div>
+                {index > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteField(index)}
+                    className="mt-8 p-2 bg-red-600 text-white rounded-md"
+                  >
+                    <FontAwesomeIcon icon={faTrashAlt} />
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={handleAddField}
+              className="mt-2 bg-green-500 text-white px-4 py-2 rounded-md"
+            >
+              Add Description
+            </button>
+          </fieldset>
         </div>
 
         {/* Colors */}
