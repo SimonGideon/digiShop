@@ -447,8 +447,8 @@ const NewProduct = () => {
       {/* Modal */}
       {modalOpen && (
         <Modal
+          closeModal={toggleModal}
           isOpen={modalOpen}
-          toggleModal={toggleModal}
           title={modalTitle}
           content={modalContent}
         />

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-const Modal = ({ isOpen, closeModal, children, title }) => {
+const Modal = ({ isOpen, closeModal, content, title }) => {
   if (!isOpen) return null;
 
   return (
@@ -17,7 +17,7 @@ const Modal = ({ isOpen, closeModal, children, title }) => {
             <FontAwesomeIcon icon={faXmark} />
           </button>
         </div>
-        {children}
+        {content}
       </div>
     </div>
   );
@@ -26,7 +26,7 @@ const Modal = ({ isOpen, closeModal, children, title }) => {
 Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
-  children: PropTypes.node,
+  content: PropTypes.node,
   title: PropTypes.string,
 };
 
