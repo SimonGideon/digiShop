@@ -28,7 +28,7 @@ const Login = () => {
       <div className="w-80 rounded-lg shadow h-auto p-6 bg-white relative overflow-hidden">
         {/* Icon above the form */}
         <div className="flex flex-col justify-center items-center space-y-2">
-          <div className="text-center bg-green-500 text-white rounded-full w-14 h-14 flex justify-center items-center">
+          <div className="text-center bg-navbg text-white rounded-full w-14 h-14 flex justify-center items-center">
             <FontAwesomeIcon icon={faUserTie} className="w-7 h-7" />
           </div>
         </div>
