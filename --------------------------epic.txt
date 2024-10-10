@@ -1,0 +1,355 @@
+--------------------------
+1. HOME PAGE
+-------------------------
+Provide a single endpoint with these data
+
+{
+  "categories": [
+    {
+      "name": "Hot Deals",
+      "items": [
+        "Oneplus Smartphones",
+        "Xiaomi Smartphones",
+        "Samsung Smartphones",
+        "Tecno Smartphones",
+        "Infinix Smartphones",
+        "Nokia Smartphones",
+        "Realme Smartphones",
+        "Oppo Smartphones",
+        "Pixel Smartphones",
+        "Nothing Smartphones"
+      ]
+    },
+    {
+      "name": "Smartphones",
+      "items": [
+        "Under Ksh.20,000",
+        "Ksh.20,000–Ksh.30,000",
+        "Ksh.30,000–Ksh.40,000",
+        "Ksh.40,000–Ksh.50,000",
+        "Ksh.50,000–Ksh.60,000",
+        "Ksh.60,000–Ksh.70,000",
+        "Ksh.70,000–Ksh.100,000",
+        "Ksh.100,000–Ksh.200,000",
+        "Above Ksh.200,000"
+      ]
+    },
+    {
+      "name": "Speakers",
+      "items": [
+        "Ksh.2,000–Ksh.5,000",
+        "Ksh.5,000–Ksh.10,000",
+        "Ksh.10,000–Ksh.20,000",
+        "Ksh.20,000–Ksh.30,000",
+        "Ksh.30,000–Ksh.40,000",
+        "Ksh.40,000–Ksh.100,000",
+        "Above Ksh.100,000",
+        "Anker",
+        "Sony",
+        "JBL",
+        "LG"
+      ]
+    },
+    {
+      "name": "Home Appliances",
+      "items": [
+        "Ksh.5,000–Ksh.10,000",
+        "Ksh.10,000–Ksh.20,000",
+        "Ksh.20,000–Ksh.30,000",
+        "Ksh.30,000–Ksh.40,000",
+        "Ksh.40,000–Ksh.100,000",
+        "Above Ksh.100,000",
+        "Microwaves",
+        "Blenders",
+        "Juicers",
+        "Kettles",
+        "Cookers",
+        "Fridges"
+      ]
+    },
+    {
+      "name": "Cookers",
+      "items": [
+        "Ksh.5,000–Ksh.10,000",
+        "Ksh.10,000–Ksh.20,000",
+        "Ksh.20,000–Ksh.30,000",
+        "Ksh.30,000–Ksh.40,000",
+        "Above Ksh.40,000",
+        "4 Burners",
+        "3 Burners",
+        "2 Burners",
+        "1 Burner"
+      ]
+    },
+    {
+      "name": "Fridges",
+      "items": [
+        "Ksh.5,000–Ksh.10,000",
+        "Ksh.10,000–Ksh.20,000",
+        "Ksh.20,000–Ksh.30,000",
+        "Ksh.30,000–Ksh.40,000",
+        "Ksh.40,000–Ksh.100,000",
+        "Above Ksh.100,000",
+        "Ramtons",
+        "Mika",
+        "Sony",
+        "LG"
+      ]
+    },
+    {
+      "name": "Phone Accessories",
+      "items": [
+        "Earphones",
+        "Headphones",
+        "Smart watches",
+        "Memory cards",
+        "Back covers",
+        "Flip covers",
+        "Glass protectors",
+        "Chargers and cables",
+        "Phone Batteries",
+        "Power banks"
+      ]
+    },
+    {
+      "name": "TVs",
+      "items": [
+        "Ksh.5,000–Ksh.10,000",
+        "Ksh.10,000–Ksh.20,000",
+        "Ksh.20,000–Ksh.30,000",
+        "Ksh.30,000–Ksh.40,000",
+        "Ksh.40,000–Ksh.100,000",
+        "Above Ksh.100,000",
+        "32 Inches–43 Inches",
+        "44 Inches–50 Inches",
+        "51 Inches–60 Inches",
+        "61 Inches–100 Inches"
+      ]
+    },
+    {
+      "name": "Cameras",
+      "items": [
+        "Ksh.5,000–Ksh.10,000",
+        "Ksh.10,000–Ksh.20,000",
+        "Ksh.20,000–Ksh.30,000",
+        "Ksh.30,000–Ksh.40,000",
+        "Ksh.40,000–Ksh.100,000",
+        "Above Ksh.100,000",
+        "Canon",
+        "Nikon",
+        "Sony",
+        "Camera Lenses",
+        "Camera Batteries",
+        "Camera Memory Cards",
+        "Camera Tripods"
+      ]
+    },
+    {
+      "name": "Computers",
+      "items": [
+        "Ksh.5,000–Ksh.10,000",
+        "Ksh.10,000–Ksh.20,000",
+        "Ksh.20,000–Ksh.30,000",
+        "Ksh.30,000–Ksh.40,000",
+        "Ksh.40,000–Ksh.100,000",
+        "Above Ksh.100,000",
+        "Desktops",
+        "Laptops",
+        "Monitors",
+        "Printers",
+        "Scanners",
+        "Projectors",
+        "UPS"
+      ]
+    },
+    {
+      "name": "TV Accessories",
+      "items": [
+        "Ksh.5,000–Ksh.10,000",
+        "Ksh.10,000–Ksh.20,000",
+        "Ksh.20,000–Ksh.30,000",
+        "Ksh.30,000–Ksh.40,000",
+        "Ksh.40,000–Ksh.100,000",
+        "Above Ksh.100,000",
+        "TV Wall Mounts",
+        "TV Stands",
+        "TV Remote Controls",
+        "TV Screen Protectors",
+        "TV Cables",
+        "TV Speakers",
+        "TV Brackets"
+      ]
+    },
+    {
+      "name": "Laptop & Tablet",
+      "items": [
+        "Ksh.5,000–Ksh.10,000",
+        "Ksh.10,000–Ksh.20,000",
+        "Ksh.20,000–Ksh.30,000",
+        "Ksh.30,000–Ksh.40,000",
+        "Ksh.40,000–Ksh.100,000",
+        "Above Ksh.100,000",
+        "Laptop Bags",
+        "Laptop Chargers",
+        "Laptop Batteries",
+        "Phone Chargers"
+      ]
+    }
+  ]
+}
+
+-----------------------------
+2. PRODUCT LIST PAGE
+----------------------------
+I display list of products based on the option the user has selected on the above home page.
+Provide an endpoint that I can get the list of products based on the selection. i.e Selected items on home page is TV Accessories and Ksh.5,000–Ksh.10,000.
+The end point should return a json of TV Accessories with price range from Ksh.5,000–Ksh.10,000.
+
+Serialized structure:
+
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "WD 2TB Elements Portable External Hard Drive - USB 3.0",
+      "price": "Ksh 64",
+      "brand": "WD",
+      "rating": 3,
+      "discount": "24%",
+      "image": "image_url"
+    },
+    {
+      "id": 2,
+      "name": "Samsung Galaxy A52",
+      "price": "Ksh 40,000",
+      "rating": 4,
+      "discount": "15%",
+      "image": "image_url"
+    },
+    {
+      "id": 3,
+      "name": "SanDisk SSD PLUS 1TB Internal SSD - SATA III",
+      "price": "Ksh 109",
+      "rating": 3,
+      "discount": "24%",
+      "image": "image_url"
+    },
+    {
+      "id": 4,
+      "name": "Silicon Power 256GB SSD 3D NAND A55",
+      "price": "Ksh 109",
+      "rating": 3,
+      "discount": "24%",
+      "image": "image_url"
+    },
+    {
+      "id": 5,
+      "name": "WD 4TB Gaming Drive - PlayStation 4 External",
+      "price": "Ksh 114",
+      "rating": 4,
+      "discount": "24%",
+      "image": "path_to_wd_gaming_image"
+    }
+  ]
+}
+
+-----------------------------
+2.1 HOT Deals PRODUCT LIST
+----------------------------
+Provide endpoint for latest products marked as hot deals added to the store
+
+JSON Fomart mimics the section 2 above.
+
+-----------------------------
+3. Individual Product Details
+-----------------------------
+Provide an endpoint to access individual product details that returns data in the following structure
+{
+  "product": {
+    "id": "QLED_Gaming_Monitor",
+    "name": "Samsung QLED 49' Curved Gaming Monitor",
+    "brand": "Samsung",
+    "price": "Ksh 123,500.00",
+    "images": [
+      "path_to_main_image",
+      "path_to_thumbnail_image_1",
+      "path_to_thumbnail_image_2"
+    ],
+    "description": "The Samsung QLED 49' Curved Gaming Monitor offers a stunning 32:9 aspect ratio, 
+featuring Quantum Dot technology for ultra-realistic colors. Ideal for immersive gaming and multimedia.",
+    "reviews": [],
+    "specifications": {
+      "screen_size": "49 inches",
+      "resolution": "5120 x 1440",
+      "panel_type": "QLED",
+      "refresh_rate": "120Hz",
+      "aspect_ratio": "32:9",
+      "curvature": "1800R",
+      "ports": [
+        "HDMI",
+        "DisplayPort",
+        "USB 3.0"
+      ],
+      "brightness": "600 cd/m²",
+      "response_time": "4ms",
+      "warranty": "1 year"
+    },
+    "related_products": [
+      {
+        "id": "OnePlus_Ace_3",
+        "name": "OnePlus Ace 3 12GB 256GB",
+        "price": "Ksh 78,499.00",
+        "image": "path_to_oneplus_image",
+        "category": "Smartphones"
+      },
+      {
+        "id": "WD_4TB_Gaming_Drive",
+        "name": "WD 4TB Gaming Drive - PlayStation 4 External",
+        "price": "Ksh 114",
+        "image": "path_to_wd_gaming_drive_image",
+        "category": "Storage"
+      }
+    ]
+  }
+}
+
+-------------------------------
+4. Place Order
+------------------------------
+This is post endpoint taking in the following details
+{
+  "order": {
+    "customer": {
+      "fname": "Test ",
+      "lname": "User",
+      "company_name": "",
+      "email": "testuser@gmail.com",
+      "phone": "+254712345678",
+      "shipping_address": {
+        "street": "123 Aghakan Walk",
+        "town": "Nairobi",
+        "postal_code": "00100",
+        "country": "Kenya"
+      }
+    },
+    "items": [
+      {
+        "product_id": 1,
+        "quantity": 1
+      },
+      {
+        "product_id": 2,
+        "quantity": 1
+      },
+      {
+        "product_id": 3,
+        "quantity": 1
+      }
+    ],
+    "notes": "Please deliver between 9 AM and 5 PM."
+  }
+}
+
+
+
+
