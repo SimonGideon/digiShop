@@ -1,8 +1,8 @@
 import { MobileCategoryCard, Category } from ".";
+import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
-import { categoriesItems } from "../assets/constants";
 
-const MobileDisplay = () => {
+const MobileDisplay = ({ categories }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const sidebarRef = useRef(null);
 
@@ -31,7 +31,7 @@ const MobileDisplay = () => {
     <div className="relative">
       <div className="p-4">
         <MobileCategoryCard
-          categories={categoriesItems}
+          categories={categories}
           onCategoryClick={handleCategoryClick}
         />
       </div>
@@ -57,6 +57,15 @@ const MobileDisplay = () => {
       </div>
     </div>
   );
+};
+MobileDisplay.propTypes = {
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({
+      icon: PropTypes.string,
+      name: PropTypes.string,
+      items: PropTypes.arrayOf(PropTypes.object),
+    })
+  ).isRequired,
 };
 
 export default MobileDisplay;
