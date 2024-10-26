@@ -32,7 +32,7 @@ const ProductItem = () => {
               <img
                 src={product.image}
                 alt="OnePlus Ace 3"
-                className="rounded-lg w-full h-96 object-cover"
+                className="rounded-lg w-full   max-h-96 object-cover"
               />
               <div className="flex mt-4 space-x-2">
                 <img

@@ -4,6 +4,9 @@ import {
   faAngleLeft,
   faChartColumn,
 } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchHotDeals } from "../redux/hotdealSlice";
 
 import { Shuffle } from "feather-icons-react";
 
@@ -62,10 +65,41 @@ for (let i = 0; i < products.length; i += 2) {
   productPairs.push([products[i], products[i + 1]]);
 }
 const LatestDeals = () => {
+  const dispatch = useDispatch();
+  const {
+    items: hotDealsItems,
+    loading: loadingHotDeals,
+    error: errorHotDeals,
+  } = useSelector((state) => state.hotdeals);
+
+  const [latestDeals, setLatestDeals] = useState([]);
+
+  useEffect(() => {
+    dispatch(fetchHotDeals());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (hotDealsItems.length > 0) {
+      const dealsToDisplay = hotDealsItems.slice(0, 2).map((deal) => ({
+        id: deal.id,
+        name: deal.name,
+        image: deal.image,
+        price: deal.price,
+        discount: deal.discount,
+        brand: deal.brand,
+      }));
+      setLatestDeals(dealsToDisplay);
+    }
+  }, [hotDealsItems]);
+
+  if (loadingHotDeals) return <div>Loading Hot Deals...</div>;
+  if (errorHotDeals)
+    return <div>Error fetching hot deals: {errorHotDeals}</div>;
+
   return (
     <div className="w-full lg:w-1/4 space-y-6 mt-6 lg:mt-0">
       <div className="border border-orange-500 p-4">
-        <div className="d flex justify-between">
+        <div className="flex justify-between">
           <h4 className="text-lg text-orange-500 font-semibold">
             Latest Deals
           </h4>
@@ -82,39 +116,29 @@ const LatestDeals = () => {
         </div>
 
         <hr className="my-2" />
-        <div className="mt-4 relative">
-          <span className="absolute top-2 right-2 bg-navbg text-white text-xs font-bold px-2 py-1 rounded">
-            -29%
-          </span>
-          <img
-            src="https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg"
-            alt="Dell Monitor"
-            className="w-full rounded-lg"
-          />
-          <p className="mt-2 font-bold">
-            Dell G2721HS 27&quot; FHD Gaming Monitor
-          </p>
-          <span className="flex-col md:flex">
-            <p className="text-gray-400 line-through">KSH 54,999.00</p>
-            <p className="text-green-600 font-bold">KSH 38,899.00</p>
-          </span>
-        </div>
+
+        {latestDeals.map((deal) => (
+          <div key={deal.id} className="mt-4 relative">
+            <span className="absolute top-2 right-2 bg-navbg text-white text-xs font-bold px-2 py-1 rounded">
+              -{deal.discount}%
+            </span>
+            <img
+              src={deal.image}
+              alt={deal.name}
+              className="w-full rounded-lg"
+            />
+            <p className="mt-2 font-bold">{deal.name}</p>
+            <span className="flex-col md:flex">
+              <p className="text-gray-400 line-through">{`KSH ${deal.price}`}</p>
+              <p className="text-green-600 font-bold">{`KSH ${
+                deal.price * (1 - deal.discount / 100)
+              }`}</p>
+            </span>
+          </div>
+        ))}
       </div>
 
-      <div className="border border-orange-500  p-4">
-        <img
-          src="https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg"
-          alt="Treadmill"
-          className="w-full rounded-lg"
-        />
-        <p className="mt-2 font-bold">
-          Dell G2721HS 27&quot; FHD Gaming Monitor
-        </p>
-        <span className="flex-col md:flex">
-          <p className="text-gray-400 line-through">KSh 74,999.00</p>
-          <p className="text-green-600 font-bold mt-2">KSh 68,999.00</p>
-        </span>
-      </div>
+      {/* Additional comparison logic or product display goes here */}
       <div className="bg-white p-4 shadow">
         <div className="relative bg-black text-white">
           <div className="text-center py-2 relative">
@@ -126,17 +150,13 @@ const LatestDeals = () => {
           </div>
         </div>
         <div className="mt-4">
-          {productPairs.map((pair, index) => (
+          {latestDeals.map((deal, index) => (
             <div key={index} className="flex justify-between items-center mb-4">
-              <ProductCard product={pair[0]} />
+              <ProductCard product={deal} />
               <div className="px-2 font-bold text-lg">
                 <span className="bg-gray-200 rounded-full p-2">VS</span>
               </div>
-              {pair[1] ? (
-                <ProductCard product={pair[1]} />
-              ) : (
-                <div className="w-48"></div>
-              )}
+              <ProductCard product={deal} />
             </div>
           ))}
         </div>
@@ -144,4 +164,5 @@ const LatestDeals = () => {
     </div>
   );
 };
+
 export default LatestDeals;
