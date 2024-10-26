@@ -24,6 +24,7 @@ export const fetchCategories = createAsyncThunk(
     // Transform categories to include price ranges and limit items to 10
     const transformedCategories = data.slice(0, 10).map((category) => ({
       id: category.id,
+      icon: category.icon,
       name: category.name,
       items: [
         ...PRICE_RANGES.map((price) => ({

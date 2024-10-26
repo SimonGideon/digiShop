@@ -1,4 +1,7 @@
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faIcons } from "@fortawesome/free-solid-svg-icons";
+import { faFire } from "@fortawesome/free-solid-svg-icons";
 
 const MobileCategoryCard = ({ categories, onCategoryClick }) => {
   return (
@@ -10,7 +13,16 @@ const MobileCategoryCard = ({ categories, onCategoryClick }) => {
           onClick={() => onCategoryClick(category)}
         >
           <div className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-displaybg text-white rounded-full">
-            <div className="text-xl md:text-3xl">{category.icon}</div>
+            <div className="text-xl md:text-3xl">
+              {category.name === "Hot Deals" ? (
+                <FontAwesomeIcon icon={faFire} className="h-6 w-6" />
+              ) : (
+                <FontAwesomeIcon
+                  icon={category.icon || faIcons}
+                  className="h-6 w-6"
+                />
+              )}
+            </div>
           </div>
           <div className="mt-2 text-xs sm:text-sm md:text-base text-center">
             {category.name}
@@ -25,7 +37,7 @@ MobileCategoryCard.propTypes = {
   categories: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      icon: PropTypes.element.isRequired,
+      icon: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
       items: PropTypes.array.isRequired,
     })
   ).isRequired,
