@@ -5,8 +5,8 @@ import {
   Footer,
   Loader,
 } from "../components";
+
 import { useEffect, useState } from "react";
-import { faFire } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHotDeals } from "../redux/hotdealsSlice";
 import { fetchCategories } from "../redux/categorySlice";
@@ -38,7 +38,7 @@ const Home = () => {
       // Add a new category with hot deals as subcategories
       const categoriesWithHotDeals = [
         {
-          id: "hot-deals", // Assign a unique id for this category
+          id: "hot-deals",
           name: "Hot Deals",
           items: hotDealsItems.slice(0, 12).map((deal) => ({
             icon: "faFire",

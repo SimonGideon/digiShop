@@ -1,54 +1,22 @@
 import PropTypes from "prop-types";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faIcons, faFire } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import GlobalIcon from "./../assets/constants/GlobalIcons"; // Ensure this is your global icon component
 
 const MobileCategoryCard = ({ categories, onCategoryClick }) => {
-  const [icons, setIcons] = useState({});
-
-  useEffect(() => {
-    const loadIcons = async () => {
-      const loadedIcons = {};
-      for (const category of categories) {
-        if (category.name !== "Hot Deals") {
-          // Check if the icon is defined
-          if (category.icon) {
-            try {
-              const icon = await import(
-                `@fortawesome/free-solid-svg-icons/${category.icon}`
-              );
-              loadedIcons[category.name] = icon.default;
-            } catch (error) {
-              console.error(`Icon not found: ${category.icon}`, error);
-              loadedIcons[category.name] = faIcons; // Fallback icon
-            }
-          } else {
-            // If icon is undefined, use a fallback icon
-            loadedIcons[category.name] = faIcons;
-          }
-        }
-      }
-      setIcons(loadedIcons);
-    };
-
-    loadIcons();
-  }, [categories]);
-
   return (
     <div className="grid grid-cols-4 sm:grid-cols-4 gap-5 p-3">
       {categories.map((category) => (
         <div
-          key={category.id} // Use a unique identifier if available
+          key={category.name}
           className="flex flex-col items-center cursor-pointer"
           onClick={() => onCategoryClick(category)}
         >
           <div className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-displaybg text-white rounded-full">
             <div className="text-xl md:text-3xl">
               {category.name === "Hot Deals" ? (
-                <FontAwesomeIcon icon={faFire} className="h-6 w-6" />
+                <GlobalIcon icon="hotDeal" className="h-6 w-6" />
               ) : (
-                <FontAwesomeIcon
-                  icon={icons[category.name] || faIcons} // Use loaded icon or fallback
+                <GlobalIcon
+                  icon={category.icon || "defalutIcon"} // Adjusted to use string names for icons
                   className="h-6 w-6"
                 />
               )}
@@ -66,9 +34,8 @@ const MobileCategoryCard = ({ categories, onCategoryClick }) => {
 MobileCategoryCard.propTypes = {
   categories: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired, // Ensure there's a unique identifier
       name: PropTypes.string.isRequired,
-      icon: PropTypes.string, // Assuming this can be null or undefined
+      icon: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
       items: PropTypes.array.isRequired,
     })
   ).isRequired,
