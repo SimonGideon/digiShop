@@ -2,8 +2,9 @@ import { configureStore } from "@reduxjs/toolkit";
 import wishlistReducer from "./wishlistSlice";
 import compareReducer from "./compareSlice";
 import cartReducer from "./cartSlice";
-import hotdealsReducer from "./hotdealsSlice";
+import hotdealsReducer from "./hotdealSlice";
 import categoryReducer from "./categorySlice";
+import productsReducer from "./productsSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     cart: cartReducer,
     hotdeals: hotdealsReducer,
     categorisedItems: categoryReducer,
+    products: productsReducer,
   },
 });
 

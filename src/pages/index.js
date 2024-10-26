@@ -11,9 +11,11 @@ import StockList from "./Admin/StockList";
 import NewProduct from "./Admin/NewProduct";
 import NotFound from "./NotFound";
 import Login from "./Admin/Login";
+import Epic from "./Epic";
 
 export {
   Home,
+  Epic,
   ProductDetailsPage,
   ProductItem,
   FavoritePage,

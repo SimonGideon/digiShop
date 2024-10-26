@@ -64,10 +64,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/products/:id",
+        path: "/products/:productName/:subCategory",
         element: (
           <Suspense fallback={<Loader />}>
-            <ProductItem />
+            <ProductDetailsPage />
           </Suspense>
         ),
       },

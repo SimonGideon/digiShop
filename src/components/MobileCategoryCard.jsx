@@ -16,7 +16,7 @@ const MobileCategoryCard = ({ categories, onCategoryClick }) => {
                 <GlobalIcon icon="hotDeal" className="h-6 w-6" />
               ) : (
                 <GlobalIcon
-                  icon={category.icon || "defalutIcon"} // Adjusted to use string names for icons
+                  icon={category.icon || "defalutIcon"}
                   className="h-6 w-6"
                 />
               )}

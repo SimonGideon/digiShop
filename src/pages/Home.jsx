@@ -8,7 +8,7 @@ import {
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchHotDeals } from "../redux/hotdealsSlice";
+import { fetchHotDeals } from "../redux/hotdealSlice";
 import { fetchCategories } from "../redux/categorySlice";
 
 const Home = () => {
@@ -26,22 +26,19 @@ const Home = () => {
 
   const [updatedCategories, setUpdatedCategories] = useState([]);
 
-  // Fetch hot deals and categories data
   useEffect(() => {
     dispatch(fetchHotDeals());
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  // Combine hot deals into categories once both are loaded
   useEffect(() => {
     if (categoriesItems.length) {
-      // Add a new category with hot deals as subcategories
       const categoriesWithHotDeals = [
         {
           id: "hot-deals",
           name: "Hot Deals",
+          icon: "hotDeal",
           items: hotDealsItems.slice(0, 12).map((deal) => ({
-            icon: "faFire",
             id: deal.id,
             name: deal.name,
           })),
@@ -52,7 +49,6 @@ const Home = () => {
     }
   }, [categoriesItems, hotDealsItems]);
 
-  // Loading and error handling for both requests
   if (loadingHotDeals || loadingCategories) return <Loader />;
   if (errorHotDeals) return <p>Error loading hot deals: {errorHotDeals}</p>;
   if (errorCategories)
