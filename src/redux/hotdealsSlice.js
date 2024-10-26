@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { API_ENDPOINTS } from "./../config";
+import { API_ENDPOINTS } from "../config";
+import { faFire } from "@fortawesome/free-solid-svg-icons";
 
 export const fetchHotDeals = createAsyncThunk(
   "hotdeals/fetchHotDeals",
@@ -13,6 +14,7 @@ export const fetchHotDeals = createAsyncThunk(
 const hotdealsSlice = createSlice({
   name: "hotdeals",
   initialState: {
+    icon: faFire,
     items: [],
     loading: false,
     error: null,
@@ -25,8 +27,11 @@ const hotdealsSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchHotDeals.fulfilled, (state, action) => {
-        const productNames = action.payload.map((product) => product.name);
-        state.items = productNames; // Store only product names
+        state.items = action.payload.map((product) => ({
+          id: product.id,
+          brand: product.brand,
+          name: product.name,
+        }));
         state.loading = false;
       })
       .addCase(fetchHotDeals.rejected, (state, action) => {
