@@ -26,11 +26,30 @@ export const fetchProductsByCategoryAndSubcategory = createAsyncThunk(
   }
 );
 
+// Thunk to fetch individual product by id
+export const fetchProductById = createAsyncThunk(
+  "products/fetchProductById",
+  async (productId) => {
+    const response = await fetch(API_ENDPOINTS.INDIVIDUAL_PRODUCT(productId));
+    if (!response.ok) {
+      throw new Error("Failed to fetch product");
+    }
+    const data = await response.json();
+    return data[0];
+  }
+);
+
 const productsSlice = createSlice({
   name: "products",
   initialState: {
     categoryProducts: {
       items: [],
+      loading: false,
+      error: null,
+    },
+
+    individualProduct: {
+      item: {},
       loading: false,
       error: null,
     },
@@ -56,6 +75,23 @@ const productsSlice = createSlice({
           state.categoryProducts.error = action.error.message;
         }
       );
+
+    builder
+      .addCase(fetchProductById.pending, (state) => {
+        state.individualProduct = {
+          item: null,
+          loading: true,
+          error: null,
+        };
+      })
+      .addCase(fetchProductById.fulfilled, (state, action) => {
+        state.individualProduct.item = action.payload;
+        state.individualProduct.loading = false;
+      })
+      .addCase(fetchProductById.rejected, (state, action) => {
+        state.individualProduct.loading = false;
+        state.individualProduct.error = action.error.message;
+      });
   },
 });
 

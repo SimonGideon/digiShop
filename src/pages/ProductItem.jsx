@@ -1,6 +1,27 @@
 import { Breadcrumb, LatestDeals, ProductTabs } from "../components";
+import { useEffect } from "react";
+import { fetchProductById } from "./../redux/productsSlice";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProductItem = () => {
+  const params = useParams();
+  const dispatch = useDispatch();
+
+  const { productId } = params;
+
+  const {
+    item: product,
+    loading,
+    error,
+  } = useSelector((state) => state.products.individualProduct);
+  useEffect(() => {
+    dispatch(fetchProductById(productId));
+  }, [dispatch, productId]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error fetching product: {error}</div>;
+
   return (
     <div className="p-6 lg:px-14">
       <div className="flex flex-col lg:flex-row ">
@@ -9,18 +30,18 @@ const ProductItem = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <img
-                src="https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg"
+                src={product.image}
                 alt="OnePlus Ace 3"
-                className="rounded-lg w-full"
+                className="rounded-lg w-full h-96 object-cover"
               />
               <div className="flex mt-4 space-x-2">
                 <img
-                  src="https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg"
+                  src={product.image}
                   alt="thumb1"
                   className="w-16 h-16 border-2 p-2 border-gray-200"
                 />
                 <img
-                  src="https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg"
+                  src={product.image}
                   alt="thumb2"
                   className="w-16 h-16 border-2 p-2 border-gray-200"
                 />
@@ -28,7 +49,7 @@ const ProductItem = () => {
             </div>
 
             <div>
-              <h2 className="text-2xl font-bold">OnePlus Ace 3 12GB 256GB</h2>
+              <h2 className="text-2xl font-bold">{product.name}</h2>
               <div className="bg-green-200 text-green-800 rounded-lg p-2 mt-2 w-max">
                 Expert Score: 10
               </div>
@@ -55,7 +76,7 @@ const ProductItem = () => {
               </ul>
 
               <p className="mt-4 text-2xl font-bold text-green-600">
-                KSH 78,499.00
+                KSH {product.price}
               </p>
 
               <button className="bg-green-500 text-white px-6 py-2 mt-4 rounded-lg">

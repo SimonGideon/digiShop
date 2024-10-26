@@ -5,6 +5,7 @@ export const API_ENDPOINTS = {
   CATEGORIES: `${API_BASE_URL}/categories`,
   ORDERS: `${API_BASE_URL}/orders`,
   PRODUCTS: `${API_BASE_URL}/products`,
+  INDIVIDUAL_PRODUCT: (productId) => `${API_BASE_URL}/products/${productId}`,
   PRODUCTS_BY_CATEGORY: (categoryName) =>
     `${API_BASE_URL}/products/${categoryName}`,
   PRODUCTS_BY_SUBCATEGORY: (subcategoryId) =>
