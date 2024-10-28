@@ -1,12 +1,15 @@
 import { X, Shuffle } from "feather-icons-react";
-import { useState } from "react";
-import { products } from "../assets/constants/assetData";
+import { useSelector, useDispatch } from "react-redux";
+import { removeFromWishlist } from "../redux/wishlistSlice";
 
 const FavoritePage = () => {
-  const [favorites, setFavorites] = useState(products);
+  const dispatch = useDispatch();
+  // Get wishlist items from Redux store
+  const favorites = useSelector((state) => state.wishlist);
 
   const removeFavorite = (id) => {
-    setFavorites(favorites.filter((product) => product.id !== id));
+    // Dispatch action to remove item from wishlist
+    dispatch(removeFromWishlist({ id }));
   };
 
   return (
@@ -25,7 +28,7 @@ const FavoritePage = () => {
             >
               <X />
             </button>
-            <div className="w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0">
+            <div className="aspect-w-1 aspect-h-1 w-full sm:w-24 flex-shrink-0 overflow-hidden ">
               <img
                 src={product.image}
                 alt={product.name}
