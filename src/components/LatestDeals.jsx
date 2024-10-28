@@ -7,22 +7,20 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchHotDeals } from "../redux/hotdealSlice";
-
 import { Shuffle } from "feather-icons-react";
-
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 function ProductCard({ product }) {
-  // component code here
   return (
-    <div className="flex flex-col items-center ">
+    <div className="flex flex-col items-center">
       <img
         src={product.image}
         alt={product.name}
         className="w-15 h-10 object-cover mb-2"
       />
-      <div className="text-sm text-orange-500 ">{product.name}</div>
-      <div className="text-xs text-orange-500 ">{product.model}</div>
+      <div className="text-sm text-orange-500">{product.name}</div>
+      <div className="text-xs text-orange-500">{product.brand}</div>
       <button className="mt-2 px-3 py-2 text-sm flex items-center gap-1 bg-gray-100 justify-center shadow-md rounded-[3px]">
         <Shuffle className="w-3 h-3" /> Compare
       </button>
@@ -33,37 +31,7 @@ function ProductCard({ product }) {
 ProductCard.propTypes = {
   product: PropTypes.object.isRequired,
 };
-const products = [
-  {
-    id: 1,
-    name: "TCL 32 Inch",
-    model: "32565A",
-    image: "https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg",
-  },
-  {
-    id: 2,
-    name: "TCL 43 Inch",
-    model: "43D300 HD",
-    image: "https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg",
-  },
-  {
-    id: 3,
-    name: "TCL 32 Inch",
-    model: "325400 FHD",
-    image: "https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg",
-  },
-  {
-    id: 4,
-    name: "TCL 32 Inch",
-    model: "32565A",
-    image: "https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg",
-  },
-];
 
-const productPairs = [];
-for (let i = 0; i < products.length; i += 2) {
-  productPairs.push([products[i], products[i + 1]]);
-}
 const LatestDeals = () => {
   const dispatch = useDispatch();
   const {
@@ -80,14 +48,8 @@ const LatestDeals = () => {
 
   useEffect(() => {
     if (hotDealsItems.length > 0) {
-      const dealsToDisplay = hotDealsItems.slice(0, 2).map((deal) => ({
-        id: deal.id,
-        name: deal.name,
-        image: deal.image,
-        price: deal.price,
-        discount: deal.discount,
-        brand: deal.brand,
-      }));
+      const shuffledDeals = [...hotDealsItems].sort(() => 0.5 - Math.random());
+      const dealsToDisplay = shuffledDeals.slice(0, 2);
       setLatestDeals(dealsToDisplay);
     }
   }, [hotDealsItems]);
@@ -116,29 +78,33 @@ const LatestDeals = () => {
         </div>
 
         <hr className="my-2" />
-
-        {latestDeals.map((deal) => (
-          <div key={deal.id} className="mt-4 relative">
-            <span className="absolute top-2 right-2 bg-navbg text-white text-xs font-bold px-2 py-1 rounded">
-              -{deal.discount}%
-            </span>
-            <img
-              src={deal.image}
-              alt={deal.name}
-              className="w-full rounded-lg"
-            />
-            <p className="mt-2 font-bold">{deal.name}</p>
-            <span className="flex-col md:flex">
-              <p className="text-gray-400 line-through">{`KSH ${deal.price}`}</p>
-              <p className="text-green-600 font-bold">{`KSH ${
-                deal.price * (1 - deal.discount / 100)
-              }`}</p>
-            </span>
-          </div>
-        ))}
+        {latestDeals.map((deal) => {
+          console.log(deal);
+          return (
+            <div key={deal.id} className="mt-4 relative">
+              <Link to={`/products/${deal.id}`}>
+                <span className="absolute top-2 right-2 bg-navbg text-white text-xs font-bold px-2 py-1 rounded">
+                  -{deal.discount}%
+                </span>
+                <img
+                  src={deal.image}
+                  alt={deal.name}
+                  className="w-full h-48 md:h-64 object-cover rounded-lg"
+                />
+                <p className="mt-2 font-bold">{deal.name}</p>
+                <span className="flex-col md:flex">
+                  <p className="text-gray-400 line-through">{`KSH ${(
+                    deal.price /
+                    (1 - parseInt(deal.discount, 10) / 100)
+                  ).toFixed(2)}`}</p>
+                  <p className="text-green-600 font-bold">{`KSH ${deal.price}`}</p>
+                </span>
+              </Link>
+            </div>
+          );
+        })}
       </div>
 
-      {/* Additional comparison logic or product display goes here */}
       <div className="bg-white p-4 shadow">
         <div className="relative bg-black text-white">
           <div className="text-center py-2 relative">
@@ -156,7 +122,7 @@ const LatestDeals = () => {
               <div className="px-2 font-bold text-lg">
                 <span className="bg-gray-200 rounded-full p-2">VS</span>
               </div>
-              <ProductCard product={deal} />
+              <ProductCard key={`${deal.id}-comparison`} product={deal} />
             </div>
           ))}
         </div>

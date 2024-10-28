@@ -31,6 +31,9 @@ const hotdealsSlice = createSlice({
           id: product.id,
           brand: product.brand,
           name: product.name,
+          discount: product.discount,
+          image: product.image,
+          price: product.price,
         }));
         state.loading = false;
       })
