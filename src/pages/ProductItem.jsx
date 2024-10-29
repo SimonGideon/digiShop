@@ -5,6 +5,7 @@ import { addToCart, removeFromCart } from "./../redux/cartSlice";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsInCart } from "./../redux/selectors";
+import { toast } from "react-toastify";
 
 const ProductItem = () => {
   const params = useParams();
@@ -26,10 +27,12 @@ const ProductItem = () => {
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
+    toast.success("Product added to cart!");
   };
 
   const handleRemoveFromCart = () => {
     dispatch(removeFromCart(productId));
+    toast.success("Product removed from cart!");
   };
 
   if (loading) return <div>Loading...</div>;

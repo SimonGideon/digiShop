@@ -26,7 +26,7 @@ const ComparePage = () => {
               />
             ))}
           </div>
-          <ProductComparison />
+          <ProductComparison compareList={compareList} />
         </div>
       )}
     </div>
