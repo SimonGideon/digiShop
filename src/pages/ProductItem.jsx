@@ -1,6 +1,6 @@
 import { Breadcrumb, LatestDeals, ProductTabs } from "../components";
 import { useEffect } from "react";
-import { fetchProductById } from "./../redux/productsSlice";
+import { fetchProductById } from "../redux/productsSlice";
 import { addToCart, removeFromCart } from "./../redux/cartSlice";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +19,8 @@ const ProductItem = () => {
   } = useSelector((state) => state.products.individualProduct);
 
   // Check if the product is in the cart
-  const isInCart = useSelector(selectIsInCart(productId));
+  const isInCart = useSelector((state) => selectIsInCart(productId)(state));
+  console.log("Is product in cart:", isInCart);
 
   useEffect(() => {
     dispatch(fetchProductById(productId));

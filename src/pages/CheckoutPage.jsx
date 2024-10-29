@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const CheckoutPage = () => {
+  const cartItems = useSelector((state) => state.cart);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -21,6 +23,8 @@ const CheckoutPage = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  const calculateSubtotal = (price, quantity) => price * quantity;
 
   return (
     <div className="p-8 bg-gray-100 md:px-20">
@@ -126,11 +130,11 @@ const CheckoutPage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div>
                 <label className="block mb-1 font-medium text-sm lg:text-base">
-                  State / County *
+                  County *
                 </label>
                 <select
                   name="state"
-                  value={formData.state}
+                  value={formData.County}
                   onChange={handleInputChange}
                   className="w-full border rounded p-2 text-sm lg:text-base"
                   required
@@ -154,32 +158,34 @@ const CheckoutPage = () => {
               </div>
             </div>
 
-            <div>
-              <label className="block mb-1 font-medium text-sm lg:text-base">
-                Phone *
-              </label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                className="w-full border rounded p-2 text-sm lg:text-base"
-                required
-              />
-            </div>
+            <div className="flex flex-col md:flex-row md:space-x-4">
+              <div className="flex-1">
+                <label className="block mb-1 font-medium text-sm lg:text-base">
+                  Phone *
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="w-full border rounded p-2 text-sm lg:text-base"
+                  required
+                />
+              </div>
 
-            <div>
-              <label className="block mb-1 font-medium text-sm lg:text-base">
-                Email address *
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="w-full border rounded p-2 text-sm lg:text-base"
-                required
-              />
+              <div className="flex-1">
+                <label className="block mb-1 font-medium text-sm lg:text-base">
+                  Email address *
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="w-full border rounded p-2 text-sm lg:text-base"
+                  required
+                />
+              </div>
             </div>
 
             <div>
@@ -205,25 +211,56 @@ const CheckoutPage = () => {
               <span>PRODUCT</span>
               <span>SUBTOTAL</span>
             </div>
-            <div className="flex justify-between mt-2 text-sm lg:text-base">
-              <span>OnePlus Nord CE 4 8gb 256gb × 1</span>
-              <span>KSh38,499.00</span>
-            </div>
+            {cartItems.map((item) => (
+              <div
+                key={item.id}
+                className="flex justify-between mt-2 text-sm lg:text-base"
+              >
+                <span>{`${item.name} × ${item.quantity}`}</span>
+                <span>
+                  KSh
+                  {calculateSubtotal(
+                    item.price,
+                    item.quantity
+                  ).toLocaleString()}
+                  .00
+                </span>
+              </div>
+            ))}
           </div>
 
-          <div className="flex justify-between mb-4 text-sm lg:text-base">
+          <div className="flex justify-between mb-4 text-sm lg:text-base font-bold">
             <span>Subtotal</span>
-            <span>KSh38,499.00</span>
+            <span>
+              KSh
+              {cartItems
+                .reduce(
+                  (acc, item) =>
+                    acc + calculateSubtotal(item.price, item.quantity),
+                  0
+                )
+                .toLocaleString()}
+              .00
+            </span>
           </div>
           <div className="flex justify-between mb-4 text-sm lg:text-base">
             <span>Shipping</span>
-            <span>Enter your address to view shipping options.</span>
+            <span>Shipping costs are calculated during checkout.</span>
           </div>
-          <div className="flex justify-between font-bold mb-4 text-sm lg:text-base">
+          <div className="flex justify-between mb-4 text-sm lg:text-base font-bold">
             <span>Total</span>
-            <span>KSh38,499.00</span>
+            <span>
+              KSh
+              {cartItems
+                .reduce(
+                  (acc, item) =>
+                    acc + calculateSubtotal(item.price, item.quantity),
+                  0
+                )
+                .toLocaleString()}
+              .00
+            </span>
           </div>
-
           <div className="bg-yellow-100 p-4 mb-4 rounded-md">
             <p className="text-yellow-700 text-sm lg:text-base">
               Please fill in your details above to see available payment

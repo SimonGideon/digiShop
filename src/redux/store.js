@@ -5,6 +5,7 @@ import cartReducer from "./cartSlice";
 import hotdealsReducer from "./hotdealSlice";
 import categoryReducer from "./categorySlice";
 import productsReducer from "./productsSlice";
+import checkoutReducer from "./checkoutSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     hotdeals: hotdealsReducer,
     categorisedItems: categoryReducer,
     products: productsReducer,
+    checkout: checkoutReducer,
   },
 });
 

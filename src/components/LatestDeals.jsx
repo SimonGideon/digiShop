@@ -83,7 +83,7 @@ const LatestDeals = () => {
             <div key={deal.id} className="mt-4 relative">
               <Link to={`/products/${deal.id}`}>
                 <span className="absolute top-2 right-2 bg-navbg text-white text-xs font-bold px-2 py-1 rounded">
-                  -{deal.discount}%
+                  -{deal.discount}
                 </span>
                 <img
                   src={deal.image}
