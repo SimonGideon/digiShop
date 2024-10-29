@@ -17,9 +17,8 @@ const ProductItem = () => {
     error,
   } = useSelector((state) => state.products.individualProduct);
 
-  // Call the selector with the specific productId
+  // Check if the product is in the cart
   const isInCart = useSelector(selectIsInCart(productId));
-  console.log("This item is in the cart" + isInCart + productId);
 
   useEffect(() => {
     dispatch(fetchProductById(productId));
@@ -68,25 +67,14 @@ const ProductItem = () => {
                 Expert Score: 10
               </div>
 
+              {/* Specifications */}
               <ul className="mt-4 space-y-2 text-gray-700">
-                <li>
-                  <strong>Display:</strong> 6.7&quot; AMOLED
-                </li>
-                <li>
-                  <strong>Rear Camera:</strong> 50MP + 8MP + 2MP
-                </li>
-                <li>
-                  <strong>Front Camera:</strong> 16MP
-                </li>
-                <li>
-                  <strong>Processor:</strong> Snapdragon 8+ Gen 1
-                </li>
-                <li>
-                  <strong>Battery:</strong> 5000mAh
-                </li>
-                <li>
-                  <strong>Color(s):</strong> Black, Blue, Rose Gold
-                </li>
+                {product.specifications &&
+                  product.specifications.slice(0, 6).map((spec, index) => (
+                    <li key={index}>
+                      <strong>{spec.name}:</strong> {spec.value}
+                    </li>
+                  ))}
               </ul>
 
               <p className="mt-4 text-2xl font-bold text-green-600">
@@ -110,7 +98,7 @@ const ProductItem = () => {
               )}
             </div>
           </div>
-          <ProductTabs />
+          <ProductTabs product={product} />
         </div>
         <LatestDeals />
       </div>

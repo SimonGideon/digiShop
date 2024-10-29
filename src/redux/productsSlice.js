@@ -22,6 +22,10 @@ export const fetchProductsByCategoryAndSubcategory = createAsyncThunk(
       price: product.price,
       rating: product.rating,
       discount: product.discount,
+      specifications: product.specifications.reduce((acc, spec) => {
+        acc[spec.name] = spec.value; // Convert array to object for easier access
+        return acc;
+      }, {}),
     }));
   }
 );

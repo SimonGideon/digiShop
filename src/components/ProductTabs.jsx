@@ -1,7 +1,8 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import { ProductReview, ProductDescription } from "./index";
 
-const ProductTabs = () => {
+const ProductTabs = ({ product }) => {
   const [activeTab, setActiveTab] = useState("description");
 
   return (
@@ -31,12 +32,17 @@ const ProductTabs = () => {
 
       {/* Tab Content */}
       <div className="mt-4">
-        {activeTab === "description" && <ProductDescription />}
+        {activeTab === "description" && (
+          <ProductDescription product={product} />
+        )}
 
         {activeTab === "reviews" && <ProductReview />}
       </div>
     </div>
   );
+};
+ProductTabs.propTypes = {
+  product: PropTypes.object.isRequired,
 };
 
 export default ProductTabs;
