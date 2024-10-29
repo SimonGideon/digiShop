@@ -1,13 +1,14 @@
 import { Breadcrumb, LatestDeals, ProductTabs } from "../components";
 import { useEffect } from "react";
 import { fetchProductById } from "./../redux/productsSlice";
+import { addToCart, removeFromCart } from "./../redux/cartSlice";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { selectIsInCart } from "./../redux/selectors";
 
 const ProductItem = () => {
   const params = useParams();
   const dispatch = useDispatch();
-
   const { productId } = params;
 
   const {
@@ -15,9 +16,22 @@ const ProductItem = () => {
     loading,
     error,
   } = useSelector((state) => state.products.individualProduct);
+
+  // Call the selector with the specific productId
+  const isInCart = useSelector(selectIsInCart(productId));
+  console.log("This item is in the cart" + isInCart + productId);
+
   useEffect(() => {
     dispatch(fetchProductById(productId));
   }, [dispatch, productId]);
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(product));
+  };
+
+  const handleRemoveFromCart = () => {
+    dispatch(removeFromCart(productId));
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error fetching product: {error}</div>;
@@ -31,8 +45,8 @@ const ProductItem = () => {
             <div>
               <img
                 src={product.image}
-                alt="OnePlus Ace 3"
-                className="rounded-lg w-full   max-h-96 object-cover"
+                alt={product.name}
+                className="rounded-lg w-full max-h-96 object-cover"
               />
               <div className="flex mt-4 space-x-2">
                 <img
@@ -79,9 +93,21 @@ const ProductItem = () => {
                 KSH {product.price}
               </p>
 
-              <button className="bg-green-500 text-white px-6 py-2 mt-4 rounded-lg">
-                Add to Cart
-              </button>
+              {isInCart ? (
+                <button
+                  onClick={handleRemoveFromCart}
+                  className="bg-red-500 text-white px-6 py-2 mt-4 rounded-lg"
+                >
+                  Remove from Cart
+                </button>
+              ) : (
+                <button
+                  onClick={handleAddToCart}
+                  className="bg-green-500 text-white px-6 py-2 mt-4 rounded-lg"
+                >
+                  Add to Cart
+                </button>
+              )}
             </div>
           </div>
           <ProductTabs />

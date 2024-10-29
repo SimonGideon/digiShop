@@ -8,7 +8,6 @@ const FavoritePage = () => {
   const favorites = useSelector((state) => state.wishlist);
 
   const removeFavorite = (id) => {
-    // Dispatch action to remove item from wishlist
     dispatch(removeFromWishlist({ id }));
   };
 

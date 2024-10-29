@@ -1,19 +1,34 @@
-import { useState } from "react";
 import { Product } from "../components";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  incrementQuantity,
+  decrementQuantity,
+  removeFromCart,
+} from "../redux/cartSlice";
 import { products } from "../assets/constants/assetData";
 
 const CartPage = () => {
-  const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart);
 
-  const subtotal = 38499 * quantity;
-
-  const incrementQuantity = () => {
-    setQuantity(quantity + 1);
+  const handleIncrement = (productId) => {
+    dispatch(incrementQuantity(productId));
   };
 
-  const decrementQuantity = () => {
-    setQuantity(Math.max(1, quantity - 1));
+  const handleDecrement = (productId) => {
+    dispatch(decrementQuantity(productId));
   };
+
+  const handleRemove = (productId) => {
+    dispatch(removeFromCart(productId));
+  };
+
+  const calculateSubtotal = (price, quantity) => price * quantity;
+
+  const total = cartItems.reduce(
+    (acc, item) => acc + calculateSubtotal(item.price, item.quantity),
+    0
+  );
 
   return (
     <div className="p-8">
@@ -22,8 +37,6 @@ const CartPage = () => {
           <div className="overflow-x-auto">
             <table className="min-w-full border table-auto border-collapse">
               <thead className="border-b hidden md:table-header-group">
-                {" "}
-                {/* Hide headers on small screens */}
                 <tr>
                   <th className="border-b p-4 text-left border-r">Product</th>
                   <th className="border-b p-4 text-left border-r">Price</th>
@@ -33,52 +46,57 @@ const CartPage = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="flex flex-col md:table-row">
-                  {" "}
-                  {/* Make rows flexible on mobile */}
-                  <td className="p-4 border-r">
-                    <div className="flex items-center">
-                      <img
-                        src="https://via.placeholder.com/50"
-                        alt="Product"
-                        className="w-12 h-12 mr-4"
-                      />
-                      <span className="text-sm md:text-base">
-                        OnePlus Nord CE 4 8gb 256gb
-                      </span>
-                    </div>
-                  </td>
-                  <td className="p-4 border-r text-sm md:text-base">
-                    KSh38,499.00
-                  </td>
-                  <td className="p-4 flex items-center space-x-2 border-r">
-                    <button
-                      onClick={decrementQuantity}
-                      className="border rounded px-2 py-1 bg-gray-200 hover:bg-gray-300"
-                      disabled={quantity === 1}
-                    >
-                      -
-                    </button>
-                    <span>{quantity}</span>
-                    <button
-                      onClick={incrementQuantity}
-                      className="border rounded px-2 py-1 bg-gray-200 hover:bg-gray-300"
-                    >
-                      +
-                    </button>
-                  </td>
-                  <td className="p-4 text-sm md:text-base">
-                    KSh{subtotal.toLocaleString()}.00
-                  </td>
-                  <td className="p-4">
-                    <button className="bg-red-600 text-white px-2 py-1 rounded md:hidden hover:bg-red-700">
-                      Removed
-                    </button>
-                    <button className="text-red-600 hover:text-red-800 hidden md:block">
-                      X
-                    </button>
-                  </td>
-                </tr>
+                {cartItems.map((item) => (
+                  <tr key={item.id} className="flex flex-col md:table-row">
+                    <td className="p-4 border-r">
+                      <div className="flex items-center">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-12 h-12 mr-4"
+                        />
+                        <span className="text-sm md:text-base">
+                          {item.name}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="p-4 border-r text-sm md:text-base">
+                      KSh{item.price.toLocaleString()}.00
+                    </td>
+                    <td className="p-4 flex items-center space-x-2 border-r">
+                      <button
+                        onClick={() => handleDecrement(item.id)}
+                        className="border rounded px-2 py-1 bg-gray-200 hover:bg-gray-300"
+                        disabled={item.quantity === 1}
+                      >
+                        -
+                      </button>
+                      <span>{item.quantity}</span>
+                      <button
+                        onClick={() => handleIncrement(item.id)}
+                        className="border rounded px-2 py-1 bg-gray-200 hover:bg-gray-300"
+                      >
+                        +
+                      </button>
+                    </td>
+                    <td className="p-4 text-sm md:text-base">
+                      KSh
+                      {calculateSubtotal(
+                        item.price,
+                        item.quantity
+                      ).toLocaleString()}
+                      .00
+                    </td>
+                    <td className="p-4">
+                      <button
+                        onClick={() => handleRemove(item.id)}
+                        className="text-red-600 hover:text-red-800 hidden md:block"
+                      >
+                        X
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
             <div className="flex justify-end mt-4">
@@ -97,7 +115,7 @@ const CartPage = () => {
                 <tr className="border">
                   <td className="p-4 border-r">Subtotal</td>
                   <td className="p-4 text-left">
-                    KSh{subtotal.toLocaleString()}.00
+                    KSh{total.toLocaleString()}.00
                   </td>
                 </tr>
                 <tr className="border">
@@ -109,7 +127,7 @@ const CartPage = () => {
                 <tr className="border font-bold">
                   <td className="p-4 border-r">Total</td>
                   <td className="p-4 text-left">
-                    KSh{subtotal.toLocaleString()}.00
+                    KSh{total.toLocaleString()}.00
                   </td>
                 </tr>
               </tbody>
@@ -127,7 +145,6 @@ const CartPage = () => {
       <div className="mt-8">
         <h2 className="text-lg font-bold">You may be interested in...</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-          {" "}
           {products.map((product) => (
             <Product key={product.id} product={product} />
           ))}

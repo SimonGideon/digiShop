@@ -79,7 +79,6 @@ const LatestDeals = () => {
 
         <hr className="my-2" />
         {latestDeals.map((deal) => {
-          console.log(deal);
           return (
             <div key={deal.id} className="mt-4 relative">
               <Link to={`/products/${deal.id}`}>
