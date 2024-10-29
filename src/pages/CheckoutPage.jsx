@@ -245,7 +245,7 @@ const CheckoutPage = () => {
           </div>
           <div className="flex justify-between mb-4 text-sm lg:text-base">
             <span>Shipping</span>
-            <span>Shipping costs are calculated during checkout.</span>
+            <span>Ksh 00</span>
           </div>
           <div className="flex justify-between mb-4 text-sm lg:text-base font-bold">
             <span>Total</span>
