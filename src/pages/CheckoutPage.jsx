@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { submitOrder } from "./../redux/checkoutSlice";
 
 const CheckoutPage = () => {
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -15,13 +18,64 @@ const CheckoutPage = () => {
     postcode: "",
     phone: "",
     email: "",
-    differentAddress: false,
     orderNotes: "",
   });
+  const [touched, setTouched] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    setTouched({ ...touched, [name]: true });
+  };
+
+  const handleSubmitOrder = (e) => {
+    e.preventDefault();
+
+    const requiredFields = [
+      "firstName",
+      "lastName",
+      "country",
+      "streetAddress",
+      "city",
+      "state",
+      "postcode",
+      "phone",
+      "email",
+    ];
+
+    const isValid = requiredFields.every((field) => formData[field]);
+    if (!isValid) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    const orderDetails = {
+      customer: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        companyName: formData.companyName,
+        email: formData.email,
+        phone: formData.phone,
+      },
+      shipping_address: {
+        street: formData.streetAddress,
+        town: formData.city,
+        postal_code: formData.postcode,
+        country: formData.country,
+      },
+      items: cartItems.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+      })),
+      orderNotes: formData.orderNotes,
+    };
+
+    dispatch(submitOrder(orderDetails));
+    toast.success("Order submitted successfully!");
   };
 
   const calculateSubtotal = (price, quantity) => price * quantity;
@@ -31,7 +85,7 @@ const CheckoutPage = () => {
       <div className="grid lg:grid-cols-2 gap-8">
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-lg lg:text-xl font-bold mb-4">Billing details</h2>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmitOrder}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div>
                 <label className="block mb-1 font-medium text-sm lg:text-base">
@@ -42,7 +96,12 @@ const CheckoutPage = () => {
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleInputChange}
-                  className="w-full border rounded p-2 text-sm lg:text-base"
+                  onBlur={handleBlur}
+                  className={`w-full border rounded p-2 text-sm lg:text-base ${
+                    touched.firstName && !formData.firstName
+                      ? "border-red-500"
+                      : ""
+                  }`}
                   required
                 />
               </div>
@@ -55,7 +114,12 @@ const CheckoutPage = () => {
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleInputChange}
-                  className="w-full border rounded p-2 text-sm lg:text-base"
+                  onBlur={handleBlur}
+                  className={`w-full border rounded p-2 text-sm lg:text-base ${
+                    touched.lastName && !formData.lastName
+                      ? "border-red-500"
+                      : ""
+                  }`}
                   required
                 />
               </div>
@@ -82,10 +146,13 @@ const CheckoutPage = () => {
                 name="country"
                 value={formData.country}
                 onChange={handleInputChange}
-                className="w-full border rounded p-2 text-sm lg:text-base"
+                onBlur={handleBlur}
+                className={`w-full border rounded p-2 text-sm lg:text-base ${
+                  touched.country && !formData.country ? "border-red-500" : ""
+                }`}
                 required
               >
-                <option>Select a country / region</option>
+                <option value="">Select a country / region</option>
                 <option>Kenya</option>
               </select>
             </div>
@@ -99,17 +166,14 @@ const CheckoutPage = () => {
                 name="streetAddress"
                 value={formData.streetAddress}
                 onChange={handleInputChange}
-                className="w-full border rounded p-2 text-sm lg:text-base"
+                onBlur={handleBlur}
+                className={`w-full border rounded p-2 text-sm lg:text-base ${
+                  touched.streetAddress && !formData.streetAddress
+                    ? "border-red-500"
+                    : ""
+                }`}
                 placeholder="House number and street name"
                 required
-              />
-              <input
-                type="text"
-                name="apartment"
-                value={formData.apartment}
-                onChange={handleInputChange}
-                className="w-full border rounded p-2 mt-2 text-sm lg:text-base"
-                placeholder="Apartment, suite, unit, etc. (optional)"
               />
             </div>
 
@@ -122,7 +186,10 @@ const CheckoutPage = () => {
                 name="city"
                 value={formData.city}
                 onChange={handleInputChange}
-                className="w-full border rounded p-2 text-sm lg:text-base"
+                onBlur={handleBlur}
+                className={`w-full border rounded p-2 text-sm lg:text-base ${
+                  touched.city && !formData.city ? "border-red-500" : ""
+                }`}
                 required
               />
             </div>
@@ -134,12 +201,15 @@ const CheckoutPage = () => {
                 </label>
                 <select
                   name="state"
-                  value={formData.County}
+                  value={formData.state}
                   onChange={handleInputChange}
-                  className="w-full border rounded p-2 text-sm lg:text-base"
+                  onBlur={handleBlur}
+                  className={`w-full border rounded p-2 text-sm lg:text-base ${
+                    touched.state && !formData.state ? "border-red-500" : ""
+                  }`}
                   required
                 >
-                  <option>Select an option</option>
+                  <option value="">Select an option</option>
                   <option>Nairobi</option>
                 </select>
               </div>
@@ -152,7 +222,12 @@ const CheckoutPage = () => {
                   name="postcode"
                   value={formData.postcode}
                   onChange={handleInputChange}
-                  className="w-full border rounded p-2 text-sm lg:text-base"
+                  onBlur={handleBlur}
+                  className={`w-full border rounded p-2 text-sm lg:text-base ${
+                    touched.postcode && !formData.postcode
+                      ? "border-red-500"
+                      : ""
+                  }`}
                   required
                 />
               </div>
@@ -168,7 +243,10 @@ const CheckoutPage = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full border rounded p-2 text-sm lg:text-base"
+                  onBlur={handleBlur}
+                  className={`w-full border rounded p-2 text-sm lg:text-base ${
+                    touched.phone && !formData.phone ? "border-red-500" : ""
+                  }`}
                   required
                 />
               </div>
@@ -182,7 +260,10 @@ const CheckoutPage = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full border rounded p-2 text-sm lg:text-base"
+                  onBlur={handleBlur}
+                  className={`w-full border rounded p-2 text-sm lg:text-base ${
+                    touched.email && !formData.email ? "border-red-500" : ""
+                  }`}
                   required
                 />
               </div>
@@ -197,17 +278,16 @@ const CheckoutPage = () => {
                 value={formData.orderNotes}
                 onChange={handleInputChange}
                 className="w-full border rounded p-2 text-sm lg:text-base"
-                placeholder="Notes about your order, e.g. special notes for delivery."
-              />
+                placeholder="Notes about your order, e.g., special notes for delivery."
+              ></textarea>
             </div>
           </form>
         </div>
-
         {/* Order Summary */}
         <div className="bg-white p-6 rounded-lg shadow-lg h-fit">
           <h2 className="text-lg lg:text-xl font-bold mb-4">Your Order</h2>
           <div className="border-b border-gray-200 pb-4 mb-4">
-            <div className="flex justify-between text-sm lg:text-base">
+            <div className="flex justify-between text-sm lg:text-base border-b border-gray-200 pb-4 mb-4">
               <span>PRODUCT</span>
               <span>SUBTOTAL</span>
             </div>
@@ -216,7 +296,9 @@ const CheckoutPage = () => {
                 key={item.id}
                 className="flex justify-between mt-2 text-sm lg:text-base"
               >
-                <span>{`${item.name} × ${item.quantity}`}</span>
+                <span>
+                  {item.name} × {item.quantity}
+                </span>
                 <span>
                   KSh
                   {calculateSubtotal(
@@ -245,7 +327,7 @@ const CheckoutPage = () => {
           </div>
           <div className="flex justify-between mb-4 text-sm lg:text-base">
             <span>Shipping</span>
-            <span>Ksh 00</span>
+            <span>KSh 0.00</span>
           </div>
           <div className="flex justify-between mb-4 text-sm lg:text-base font-bold">
             <span>Total</span>
@@ -268,19 +350,13 @@ const CheckoutPage = () => {
             </p>
           </div>
 
-          <button className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 text-sm lg:text-base">
+          <button
+            onClick={handleSubmitOrder}
+            type="submit"
+            className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 text-sm lg:text-base"
+          >
             Place Order
           </button>
-
-          <p className="mt-4 text-xs lg:text-sm text-gray-600">
-            Your personal data will be used to process your order, support your
-            experience throughout this website, and for other purposes described
-            in our{" "}
-            <a href="#" className="text-blue-500 underline">
-              privacy policy
-            </a>
-            .
-          </p>
         </div>
       </div>
     </div>

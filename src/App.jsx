@@ -24,6 +24,9 @@ const AccountsPage = lazy(() => import("./pages/Admin/AccountsPage"));
 const StockList = lazy(() => import("./pages/Admin/StockList"));
 const NewProduct = lazy(() => import("./pages/Admin/NewProduct"));
 const Login = lazy(() => import("./pages/Admin/Login"));
+const Orders = lazy(() => import("./pages/Admin/Orders"));
+const Customers = lazy(() => import("./pages/Admin/Customers"));
+const Categories = lazy(() => import("./pages/Admin/Categories"));
 
 function Layout() {
   const location = useLocation();
@@ -166,6 +169,30 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loader />}>
             <NewProduct />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/orders",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Orders />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/customers",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Customers />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/categories",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <Categories />
           </Suspense>
         ),
       },

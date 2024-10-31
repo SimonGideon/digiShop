@@ -31,7 +31,7 @@ export const submitOrder = createAsyncThunk(
 const checkoutSlice = createSlice({
   name: "checkout",
   initialState: {
-    orderStatus: "idle", // Can be 'idle', 'loading', 'succeeded', or 'failed'
+    orderStatus: "idle",
     error: null,
   },
   reducers: {},
