@@ -1,19 +1,31 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { postBrand, fetchBrands } from "../../redux/adminSlice";
+import { useDispatch } from "react-redux";
 
-const NewBrand = ({ categories, setCategories }) => {
+const NewBrand = ({ showToast, closeModal }) => {
   const [newBrand, setNewBrand] = useState("");
   const [error, setError] = useState("");
 
-  const handleAddBrand = () => {
+  const dispatch = useDispatch();
+
+  const handleAddBrand = async () => {
     if (!newBrand.trim()) {
       setError("Brand name cannot be empty.");
       return;
     }
 
-    setCategories([...categories, newBrand.trim()]);
-    setNewBrand("");
-    setError("");
+    try {
+      await dispatch(postBrand({ name: newBrand.trim() })).unwrap();
+      setNewBrand("");
+      setError("");
+      dispatch(fetchBrands());
+      showToast("Brand added successfully!", "success");
+      closeModal(false);
+    } catch (error) {
+      console.error("Error adding brand:", error);
+      showToast(`Error: ${error}`, "error");
+    }
   };
 
   return (
@@ -45,8 +57,8 @@ const NewBrand = ({ categories, setCategories }) => {
 };
 
 NewBrand.propTypes = {
-  categories: PropTypes.array.isRequired,
-  setCategories: PropTypes.func.isRequired,
+  showToast: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 export default NewBrand;

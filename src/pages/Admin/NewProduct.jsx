@@ -14,6 +14,7 @@ const NewProduct = () => {
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [colors, setColors] = useState([]);
   const [price, setPrice] = useState("");
   const [discountPrice, setDiscountPrice] = useState("");
@@ -266,7 +267,14 @@ const NewProduct = () => {
                 <button
                   className="bg-blue-500 text-white px-3 py-2 rounded-md shadow text-nowrap flex gap-1"
                   onClick={(e) =>
-                    openModalFor(<NewBrand />, "Add New Brand", e)
+                    openModalFor(
+                      <NewBrand
+                        showToast={showToast}
+                        closeModal={(start) => switchModal(start)}
+                      />,
+                      "Add New Brand",
+                      e
+                    )
                   }
                 >
                   <PlusCircle className="text-white w-6 h-6" />

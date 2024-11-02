@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { API_ENDPOINTS } from "../config";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 // Initial state for different data types
 const initialState = {
@@ -61,7 +62,6 @@ export const fetchCategories = () => async (dispatch) => {
 };
 
 // Async thunk for posting a new category
-import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const postCategory = createAsyncThunk(
   "admin/postCategory",
@@ -77,12 +77,37 @@ export const postCategory = createAsyncThunk(
 
       if (!response.ok) {
         const errorData = await response.json();
-        // Make sure errorData.message is defined
         return rejectWithValue(errorData.message || "Failed to add category");
       }
 
       const result = await response.json();
-      return result.category; // Return the successful result
+      return result.category;
+    } catch (error) {
+      return rejectWithValue(error.message || "An unexpected error occurred.");
+    }
+  }
+);
+
+// post new brand
+export const postBrand = createAsyncThunk(
+  "admin/postBrand",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.BRANDS, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return rejectWithValue(errorData.message || "Failed to add brand");
+      }
+
+      const result = await response.json();
+      return result.brand;
     } catch (error) {
       return rejectWithValue(error.message || "An unexpected error occurred.");
     }
@@ -183,6 +208,19 @@ const adminSlice = createSlice({
       state.brands.status = "failed";
       state.brands.error = action.payload;
     },
+
+    // post brands
+    postBrandStart(state) {
+      state.brands.status = "loading";
+    },
+    postBrandSuccess(state, action) {
+      state.brands.status = "succeeded";
+      state.brands.data.push(action.payload);
+    },
+    postBrandFailure(state, action) {
+      state.brands.status = "failed";
+      state.brands.error = action.payload;
+    },
   },
 });
 
@@ -205,6 +243,9 @@ export const {
   postCategoryStart,
   postCategorySuccess,
   postCategoryFailure,
+  postBrandStart,
+  postBrandSuccess,
+  postBrandFailure,
 } = adminSlice.actions;
 
 export default adminSlice.reducer;
