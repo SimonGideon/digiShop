@@ -1,33 +1,11 @@
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProducts } from "../../redux/adminSlice";
 import { InventoryTable } from "../../components";
 import { PlusCircle } from "feather-icons-react";
 import { Link } from "react-router-dom";
 
-const stockData = [
-  {
-    id: "#SKUN111",
-    product: "Oculus VR",
-    category: "Game accessories",
-    dateAdded: "June 13, 2021",
-    stock: 1455,
-    inStock: 451,
-    color: "Yellow",
-    status: "offer process",
-    image: "https://via.placeholder.com/50",
-  },
-  {
-    id: "#SKUN112",
-    product: "Wall Clock",
-    category: "Clock",
-    dateAdded: "June 22, 2021",
-    stock: 5555,
-    inStock: 1451,
-    color: "Gold",
-    status: "sell",
-    image: "https://via.placeholder.com/50",
-  },
-  // Add more data if necessary
-];
-
+// Columns configuration to match the data from the API
 const stockColumns = [
   {
     name: "ID",
@@ -36,7 +14,7 @@ const stockColumns = [
     maxWidth: "150px",
   },
   {
-    name: "PRODUCTS",
+    name: "PRODUCT",
     cell: (row) => (
       <div className="flex items-center">
         <img
@@ -51,13 +29,33 @@ const stockColumns = [
     grow: 2,
   },
   {
+    name: "BRAND",
+    selector: (row) => row.brand,
+    sortable: true,
+  },
+  {
     name: "CATEGORY",
     selector: (row) => row.category,
     sortable: true,
   },
   {
-    name: "DATE ADDED",
-    selector: (row) => row.dateAdded,
+    name: "SUBCATEGORY",
+    selector: (row) => row.subcategory_name,
+    sortable: true,
+  },
+  {
+    name: "PRICE",
+    selector: (row) => `$${row.price.toFixed(2)}`,
+    sortable: true,
+  },
+  {
+    name: "DISCOUNT",
+    selector: (row) => row.discount,
+    sortable: true,
+  },
+  {
+    name: "RATING",
+    selector: (row) => row.rating,
     sortable: true,
   },
   {
@@ -66,27 +64,26 @@ const stockColumns = [
     sortable: true,
   },
   {
-    name: "IN STOCK",
-    selector: (row) => row.inStock,
+    name: "HOT DEAL",
+    cell: (row) =>
+      row.is_hot_deal ? (
+        <span className="text-green-500 font-semibold">Yes</span>
+      ) : (
+        <span className="text-gray-500">No</span>
+      ),
     sortable: true,
-  },
-  {
-    name: "COLOR",
-    selector: (row) => row.color,
   },
   {
     name: "STATUS",
     cell: (row) => (
       <span
-        className={`px-2 py-1 rounded-full text-sm ${
-          row.status === "sell"
+        className={`px-2 py-1 rounded-full text-sm whitespace-nowrap ${
+          row.stock > 1
             ? "bg-green-100 text-green-800"
-            : row.status === "offer process"
-            ? "bg-yellow-100 text-yellow-800"
             : "bg-red-100 text-red-800"
         }`}
       >
-        {row.status}
+        {row.stock > 1 ? "in stock" : "out of stock"}
       </span>
     ),
     sortable: true,
@@ -94,6 +91,17 @@ const stockColumns = [
 ];
 
 const StockList = () => {
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.adminData.products.data);
+  const productStatus = useSelector((state) => state.adminData.products.status);
+
+  // Fetch products when component mounts
+  useEffect(() => {
+    if (productStatus === "idle") {
+      dispatch(fetchProducts());
+    }
+  }, [productStatus, dispatch]);
+
   return (
     <div className="py-4">
       <div className="flex justify-end mb-4">
@@ -106,7 +114,7 @@ const StockList = () => {
       <InventoryTable
         title="Product Inventory"
         columns={stockColumns}
-        data={stockData}
+        data={products}
         customStyles={{
           rows: {
             style: {

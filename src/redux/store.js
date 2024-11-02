@@ -6,6 +6,7 @@ import hotdealsReducer from "./hotdealSlice";
 import categoryReducer from "./categorySlice";
 import productsReducer from "./productsSlice";
 import checkoutReducer from "./checkoutSlice";
+import adminReducer from "./adminSlice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     categorisedItems: categoryReducer,
     products: productsReducer,
     checkout: checkoutReducer,
+    adminData: adminReducer,
   },
 });
 
