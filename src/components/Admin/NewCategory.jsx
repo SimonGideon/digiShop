@@ -17,6 +17,14 @@ const NewCategory = () => {
           onChange={(e) => setNewCategory(e.target.value)}
           placeholder="Enter category name"
         />
+        <input
+          type="text"
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 mb-4"
+          value={newCategory}
+          onChange={(e) => setNewCategory(e.target.value)}
+          placeholder="Enter category name"
+        />
+
         <div className="flex justify-end space-x-2">
           <button
             type="button"

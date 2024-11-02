@@ -9,6 +9,7 @@ const initialState = {
   tags: { data: [], status: "idle", error: null },
   categories: { data: [], status: "idle", error: null },
   subcategories: { data: [], status: "idle", error: null },
+  brands: { data: [], status: "idle", error: null },
 };
 
 // Async thunk for fetching products
@@ -47,6 +48,7 @@ export const fetchOrders = () => async (dispatch) => {
   }
 };
 
+// Async thunk for fetching categories
 export const fetchCategories = () => async (dispatch) => {
   dispatch(fetchCategoriesStart());
   try {
@@ -58,7 +60,19 @@ export const fetchCategories = () => async (dispatch) => {
   }
 };
 
-// Similar thunks for tags, categories, and subcategories...
+// post new category
+
+// Async thunk for fetching brands
+export const fetchBrands = () => async (dispatch) => {
+  dispatch(fetchBrandsStart());
+  try {
+    const response = await fetch(API_ENDPOINTS.BRANDS);
+    const data = await response.json();
+    dispatch(fetchBrandsSuccess(data));
+  } catch (error) {
+    dispatch(fetchBrandsFailure(error.toString()));
+  }
+};
 
 const adminSlice = createSlice({
   name: "adminData",
@@ -115,6 +129,20 @@ const adminSlice = createSlice({
       state.categories.status = "failed";
       state.categories.error = action.payload;
     },
+    // brands reducers
+
+    fetchBrandsStart(state) {
+      state.brands.status = "loading";
+    },
+
+    fetchBrandsSuccess(state, action) {
+      state.brands.status = "succeeded";
+      state.brands.data = action.payload;
+    },
+    fetchBrandsFailure(state, action) {
+      state.brands.status = "failed";
+      state.brands.error = action.payload;
+    },
   },
 });
 
@@ -131,7 +159,9 @@ export const {
   fetchCategoriesStart,
   fetchCategoriesSuccess,
   fetchCategoriesFailure,
-  // Additional exports for tags, categories, and subcategories actions...
+  fetchBrandsStart,
+  fetchBrandsSuccess,
+  fetchBrandsFailure,
 } = adminSlice.actions;
 
 export default adminSlice.reducer;

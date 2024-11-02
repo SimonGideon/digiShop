@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { availableTags } from "./../../assets/constants/assetData";
 import Select, { components } from "react-select";
-import { fetchCategories } from "../../redux/adminSlice";
+import { fetchCategories, fetchBrands } from "../../redux/adminSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const NewProduct = () => {
@@ -39,7 +39,7 @@ const NewProduct = () => {
   };
   // ===============>  Modal Logic Ends
 
-  // Categories and Brands
+  // Categories
   const dispatch = useDispatch();
 
   const availableCategories = useSelector(
@@ -52,7 +52,14 @@ const NewProduct = () => {
     }
   }, [dispatch, availableCategories]);
 
-  const brands = ["Samsung", "Techno", "Von", "Hisense", "Infinix", "Toyota"];
+  // Brands
+  const brands = useSelector((state) => state.adminData.brands.data);
+
+  useEffect(() => {
+    if (brands.length === 0) {
+      dispatch(fetchBrands());
+    }
+  }, [dispatch, brands]);
 
   const addSpecification = () => {
     setSpecifications([...specifications, { tag: "", detail: "" }]);
@@ -154,6 +161,12 @@ const NewProduct = () => {
     label: cat.name,
   }));
 
+  // Transform brands to the format required by react-select
+  const brandOptions = brands.map((brand) => ({
+    value: brand.id,
+    label: brand.name,
+  }));
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-4">Add New Product</h1>
@@ -213,21 +226,19 @@ const NewProduct = () => {
               Brand
             </label>
             <div className="flex w-full gap-5">
-              <select
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
+              <Select
+                className="mt-1 w-full"
+                options={brandOptions}
+                value={
+                  brandOptions.find((option) => option.value === brand) || null
+                }
+                onChange={(selectedOption) =>
+                  setBrand(selectedOption ? selectedOption.value : "")
+                }
+                isClearable
+                placeholder="Select Brand"
                 required
-              >
-                <option value="" disabled>
-                  Select Brand
-                </option>
-                {brands.map((brandName) => (
-                  <option key={brandName} value={brandName}>
-                    {brandName}
-                  </option>
-                ))}
-              </select>
+              />
               <div className="flex items-center">
                 <button
                   className="bg-blue-500 text-white px-3 py-2 rounded-md shadow text-nowrap flex gap-1"

@@ -4,6 +4,7 @@ export const API_ENDPOINTS = {
   HOT_DEALS: `${API_BASE_URL}/hot-deals`,
   CATEGORIES: `${API_BASE_URL}/categories`,
   ORDERS: `${API_BASE_URL}/orders`,
+  BRANDS: `${API_BASE_URL}/brands`,
   PRODUCTS: `${API_BASE_URL}/products/all`,
   INDIVIDUAL_PRODUCT: (productId) => `${API_BASE_URL}/products/${productId}`,
   PRODUCTS_BY_CATEGORY: (categoryName) =>
