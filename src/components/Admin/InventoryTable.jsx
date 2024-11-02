@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import DataTable from "react-data-table-component";
 
@@ -6,18 +6,25 @@ const InventoryTable = ({ columns, data, customStyles, title }) => {
   const [filterText, setFilterText] = useState("");
   const [filteredData, setFilteredData] = useState(data);
 
+  useEffect(() => {
+    setFilteredData(data);
+  }, [data]);
+
   const handleSearch = (event) => {
     const searchText = event.target.value.toLowerCase();
     setFilterText(searchText);
+
     const filteredItems = data.filter(
       (item) =>
         item.product.toLowerCase().includes(searchText) ||
-        item.id.toLowerCase().includes(searchText) ||
+        item.id.toString().toLowerCase().includes(searchText) ||
         item.category.toLowerCase().includes(searchText) ||
         item.status.toLowerCase().includes(searchText)
     );
     setFilteredData(filteredItems);
   };
+
+  console.log("filteredData", filteredData);
 
   return (
     <div className="container mx-auto p-4 bg-gray-200 rounded-md">
@@ -34,7 +41,6 @@ const InventoryTable = ({ columns, data, customStyles, title }) => {
         </div>
       </div>
 
-      {/* Data Table */}
       <DataTable
         columns={columns}
         data={filteredData}
@@ -46,6 +52,7 @@ const InventoryTable = ({ columns, data, customStyles, title }) => {
     </div>
   );
 };
+
 InventoryTable.propTypes = {
   columns: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,

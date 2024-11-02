@@ -8,8 +8,10 @@ import { Modal } from "../../components";
 
 const StockList = () => {
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
   const products = useSelector((state) => state.adminData.products.data);
-  const productStatus = useSelector((state) => state.adminData.products.status);
   // ===============>  Modal Logic
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
@@ -54,12 +56,6 @@ const StockList = () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
-
-  useEffect(() => {
-    if (productStatus === "idle") {
-      dispatch(fetchProducts());
-    }
-  }, [productStatus, dispatch]);
 
   const stockColumns = [
     {
@@ -224,6 +220,7 @@ const StockList = () => {
           },
         }}
       />
+
       {modalOpen && (
         <Modal
           closeModal={toggleModal}
