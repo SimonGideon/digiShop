@@ -11,14 +11,14 @@ const NewCategory = () => {
   const [selectedIcon, setSelectedIcon] = useState(null);
 
   const iconOptions = icons.map((icon) => ({
-    value: icon.icon,
+    value: icon,
     label: icon.name,
   }));
 
   const handleCategorySubmission = async () => {
     const categoryData = {
       name: newCategory,
-      ico: selectedIcon ? selectedIcon.value.iconName : "falcons",
+      ico: selectedIcon ? selectedIcon.value.var : "faPlug",
     };
 
     console.log(categoryData);

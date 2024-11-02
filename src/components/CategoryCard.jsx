@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import GlobalIcon from "./../assets/constants/GlobalIcons"; // Assuming this is the file with global icon mappings
+import GlobalIcon from "./../assets/constants/GlobalIcons";
 
 const Category = ({ icon, title, items }) => {
   return (
@@ -8,6 +8,7 @@ const Category = ({ icon, title, items }) => {
         <div className="flex items-center space-x-2">
           <GlobalIcon icon={icon || "defaultIcon"} className="h-6 w-6" />
           <h3 className="text-lg font-semibold">{title}</h3>
+          {console.log(icon, title)}
         </div>
       </div>
       <ul className="bg-displaybg text-white">
