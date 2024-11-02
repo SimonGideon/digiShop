@@ -60,7 +60,28 @@ export const fetchCategories = () => async (dispatch) => {
   }
 };
 
-// post new category
+// Async thunk for posting a new category
+export const postCategory = (data) => async (dispatch) => {
+  dispatch(postCategoryStart());
+  try {
+    const response = await fetch(API_ENDPOINTS.CATEGORIES, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to add category");
+    }
+
+    const result = await response.json();
+    dispatch(postCategorySuccess(result.category));
+  } catch (error) {
+    dispatch(postCategoryFailure(error.toString()));
+  }
+};
 
 // Async thunk for fetching brands
 export const fetchBrands = () => async (dispatch) => {
@@ -129,6 +150,19 @@ const adminSlice = createSlice({
       state.categories.status = "failed";
       state.categories.error = action.payload;
     },
+
+    // post category
+    postCategoryStart(state) {
+      state.categories.status = "loading";
+    },
+    postCategorySuccess(state, action) {
+      state.categories.status = "succeeded";
+      state.categories.data.push(action.payload);
+    },
+    postCategoryFailure(state, action) {
+      state.categories.status = "failed";
+      state.categories.error = action.payload;
+    },
     // brands reducers
 
     fetchBrandsStart(state) {
@@ -162,6 +196,9 @@ export const {
   fetchBrandsStart,
   fetchBrandsSuccess,
   fetchBrandsFailure,
+  postCategoryStart,
+  postCategorySuccess,
+  postCategoryFailure,
 } = adminSlice.actions;
 
 export default adminSlice.reducer;
