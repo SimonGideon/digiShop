@@ -1,23 +1,13 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NewCategory, Modal, NewBrand } from "./../../components";
 import { PlusCircle } from "feather-icons-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { availableTags } from "./../../assets/constants/assetData";
 import Select, { components } from "react-select";
-
-const categories = [
-  "Smartphone",
-  "Phone Accessories",
-  "TVs",
-  "Audio",
-  "Kitchen Appliances",
-  "Home Appliances",
-  "Camera and Accessories",
-  "Computers Laptops",
-  "TV accessories",
-];
+import { fetchCategories } from "../../redux/adminSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const NewProduct = () => {
   const [productName, setProductName] = useState("");
@@ -50,6 +40,17 @@ const NewProduct = () => {
   // ===============>  Modal Logic Ends
 
   // Categories and Brands
+  const dispatch = useDispatch();
+
+  const availableCategories = useSelector(
+    (state) => state.adminData.categories.data
+  );
+
+  useEffect(() => {
+    if (availableCategories.length === 0) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, availableCategories]);
 
   const brands = ["Samsung", "Techno", "Von", "Hisense", "Infinix", "Toyota"];
 
@@ -140,15 +141,21 @@ const NewProduct = () => {
             onClick={() => handleCreateTag(props.selectProps.inputValue, index)}
             className="text-blue-500 hover:underline"
           >
-            Add "{props.selectProps.inputValue}" as a new tag
+            Add &quot;{props.selectProps.inputValue}&quot; as a new tag
           </button>
         </span>
       </components.NoOptionsMessage>
     );
   };
 
+  // Transform availableCategories to the format required by react-select
+  const categoryOptions = availableCategories.map((cat) => ({
+    value: cat.id,
+    label: cat.name,
+  }));
+
   return (
-    <div className=" bg-white p-6 rounded-lg shadow-md">
+    <div className="bg-white p-6 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-4">Add New Product</h1>
       <form onSubmit={handleSubmit}>
         {/* Product Name */}
@@ -172,21 +179,20 @@ const NewProduct = () => {
               Category
             </label>
             <div className="flex w-full gap-5">
-              <select
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+              <Select
+                className="mt-1 w-full"
+                options={categoryOptions}
+                value={
+                  categoryOptions.find((option) => option.value === category) ||
+                  null
+                }
+                onChange={(selectedOption) =>
+                  setCategory(selectedOption ? selectedOption.value : "")
+                }
+                isClearable
+                placeholder="Select Category"
                 required
-              >
-                <option value="" disabled>
-                  Select Category
-                </option>
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
+              />
               <div className="flex items-center">
                 <button
                   className="bg-blue-500 text-white px-3 py-2 rounded-md shadow text-nowrap flex gap-1"
@@ -411,7 +417,7 @@ const NewProduct = () => {
           {/* Add Specification Button */}
           <button
             type="button"
-            className="mb-4 bg-blue-500 text-white px-3 py-2 rounded-md shadow flex gap-2 "
+            className="mb-4 bg-blue-500 text-white px-3 py-2 rounded-md shadow flex gap-2"
             onClick={addSpecification}
           >
             <PlusCircle className="text-white w-6 h-6" />

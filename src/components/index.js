@@ -24,9 +24,11 @@ import UserProfileDropdown from "./Admin/UserProfileDropdown ";
 import Modal from "./Admin/Modal";
 import NewCategory from "./Admin/NewCategory";
 import NewBrand from "./Admin/NewBrand";
+import IndividualItem from "./Admin/IndividualItem";
 
 export {
   NavBar,
+  IndividualItem,
   Category,
   CategoriesGrid,
   MobileCategoryCard,

@@ -1,14 +1,32 @@
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../../redux/adminSlice";
-import { InventoryTable } from "../../components";
+import { InventoryTable, IndividualItem } from "../../components";
 import { PlusCircle } from "feather-icons-react";
 import { Link } from "react-router-dom";
+import { Modal } from "../../components";
 
 const StockList = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.adminData.products.data);
   const productStatus = useSelector((state) => state.adminData.products.status);
+  // ===============>  Modal Logic
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const [modalTitle, setModalTitle] = useState("");
+
+  const toggleModal = () => {
+    setModalOpen(!modalOpen);
+  };
+
+  const openModalFor = (component, title, e) => {
+    setDropdownVisible(null);
+    e.preventDefault();
+    setModalContent(component);
+    setModalTitle(title);
+    toggleModal();
+  };
+  // ===============>  Modal Logic Ends
 
   // State to manage dropdown visibility for each row
   const [dropdownVisible, setDropdownVisible] = useState(null);
@@ -60,7 +78,14 @@ const StockList = () => {
           {dropdownVisible === row.id && (
             <div className="absolute z-10 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow-lg">
               <Link
-                to={`/products/view/${row.id}`}
+                to="#"
+                onClick={(e) =>
+                  openModalFor(
+                    <IndividualItem productId={row.id} />,
+                    `${row.name} Details`,
+                    e
+                  )
+                }
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 View
@@ -199,6 +224,14 @@ const StockList = () => {
           },
         }}
       />
+      {modalOpen && (
+        <Modal
+          closeModal={toggleModal}
+          isOpen={modalOpen}
+          title={modalTitle}
+          content={modalContent}
+        />
+      )}
     </div>
   );
 };

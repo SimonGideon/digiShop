@@ -5,7 +5,7 @@ const NewCategory = () => {
   const [newCategory, setNewCategory] = useState("");
 
   return (
-    <div>
+    <div className="max-w-lg">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Category Name

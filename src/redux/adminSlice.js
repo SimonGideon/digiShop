@@ -47,6 +47,17 @@ export const fetchOrders = () => async (dispatch) => {
   }
 };
 
+export const fetchCategories = () => async (dispatch) => {
+  dispatch(fetchCategoriesStart());
+  try {
+    const response = await fetch(API_ENDPOINTS.CATEGORIES);
+    const data = await response.json();
+    dispatch(fetchCategoriesSuccess(data));
+  } catch (error) {
+    dispatch(fetchCategoriesFailure(error.toString()));
+  }
+};
+
 // Similar thunks for tags, categories, and subcategories...
 
 const adminSlice = createSlice({
@@ -92,7 +103,18 @@ const adminSlice = createSlice({
       state.orders.error = action.payload;
     },
 
-    // Additional reducers for tags, categories, and subcategories...
+    // categories reducers
+    fetchCategoriesStart(state) {
+      state.categories.status = "loading";
+    },
+    fetchCategoriesSuccess(state, action) {
+      state.categories.status = "succeeded";
+      state.categories.data = action.payload;
+    },
+    fetchCategoriesFailure(state, action) {
+      state.categories.status = "failed";
+      state.categories.error = action.payload;
+    },
   },
 });
 
@@ -106,6 +128,9 @@ export const {
   fetchOrdersStart,
   fetchOrdersSuccess,
   fetchOrdersFailure,
+  fetchCategoriesStart,
+  fetchCategoriesSuccess,
+  fetchCategoriesFailure,
   // Additional exports for tags, categories, and subcategories actions...
 } = adminSlice.actions;
 
