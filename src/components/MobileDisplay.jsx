@@ -1,6 +1,8 @@
 import { MobileCategoryCard, Category } from ".";
 import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 const MobileDisplay = ({ categories }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -43,10 +45,13 @@ const MobileDisplay = ({ categories }) => {
       >
         <button
           onClick={handleCloseSidebar}
-          className="absolute top-2 right-2 text-gray-600"
+          className="absolute top-2 right-2 flex items-center justify-center w-8 h-8 text-gray-600 bg-transparent rounded-full hover:bg-gray-200"
         >
-          <span className="material-symbols-outlined">close</span>
+          <span className="material-symbols-outlined">
+            <FontAwesomeIcon icon={faClose} />
+          </span>
         </button>
+
         {selectedCategory && (
           <Category
             icon={selectedCategory.icon}

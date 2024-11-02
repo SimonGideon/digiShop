@@ -61,27 +61,33 @@ export const fetchCategories = () => async (dispatch) => {
 };
 
 // Async thunk for posting a new category
-export const postCategory = (data) => async (dispatch) => {
-  dispatch(postCategoryStart());
-  try {
-    const response = await fetch(API_ENDPOINTS.CATEGORIES, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-    if (!response.ok) {
-      throw new Error("Failed to add category");
+export const postCategory = createAsyncThunk(
+  "admin/postCategory",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.CATEGORIES, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        // Make sure errorData.message is defined
+        return rejectWithValue(errorData.message || "Failed to add category");
+      }
+
+      const result = await response.json();
+      return result.category; // Return the successful result
+    } catch (error) {
+      return rejectWithValue(error.message || "An unexpected error occurred.");
     }
-
-    const result = await response.json();
-    dispatch(postCategorySuccess(result.category));
-  } catch (error) {
-    dispatch(postCategoryFailure(error.toString()));
   }
-};
+);
 
 // Async thunk for fetching brands
 export const fetchBrands = () => async (dispatch) => {

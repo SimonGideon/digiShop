@@ -8,6 +8,7 @@ import { availableTags } from "./../../assets/constants/assetData";
 import Select, { components } from "react-select";
 import { fetchCategories, fetchBrands } from "../../redux/adminSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
 
 const NewProduct = () => {
   const [productName, setProductName] = useState("");
@@ -22,6 +23,15 @@ const NewProduct = () => {
   ]);
   const [images, setImages] = useState([]);
 
+  const showToast = (message, type) => {
+    console.log("Toast Triggered:", message, type);
+    if (type === "success") {
+      toast.success(message);
+    } else if (type === "error") {
+      toast.error(message);
+    }
+  };
+
   // ===============>  Modal Logic
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
@@ -29,6 +39,10 @@ const NewProduct = () => {
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
+  };
+
+  const switchModal = (status) => {
+    setModalOpen(status);
   };
 
   const openModalFor = (component, title, e) => {
@@ -206,11 +220,20 @@ const NewProduct = () => {
                 placeholder="Select Category"
                 required
               />
+              <ToastContainer />
               <div className="flex items-center">
                 <button
                   className="bg-blue-500 text-white px-3 py-2 rounded-md shadow text-nowrap flex gap-1"
                   onClick={(e) =>
-                    openModalFor(<NewCategory />, "Add New Category", e)
+                    openModalFor(
+                      <NewCategory
+                        showToast={showToast}
+                        closeModal={(start) => switchModal(start)}
+                      />,
+
+                      "Add New Category",
+                      e
+                    )
                   }
                 >
                   <PlusCircle className="text-white w-6 h-6" />
