@@ -4,9 +4,13 @@ import { NewCategory, Modal, NewBrand } from "./../../components";
 import { PlusCircle } from "feather-icons-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { availableTags } from "./../../assets/constants/assetData";
-import Select, { components } from "react-select";
-import { fetchCategories, fetchBrands } from "../../redux/adminSlice";
+import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
+import {
+  fetchCategories,
+  fetchBrands,
+  fetchTags,
+} from "../../redux/adminSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -76,6 +80,12 @@ const NewProduct = () => {
     }
   }, [dispatch, brands]);
 
+  ////////////fecth tags
+  useEffect(() => {
+    dispatch(fetchTags());
+  }, [dispatch]);
+  const tagsItems = useSelector((state) => state.adminData.tags.data);
+
   const addSpecification = () => {
     setSpecifications([...specifications, { tag: "", detail: "" }]);
   };
@@ -106,7 +116,23 @@ const NewProduct = () => {
     { tags: [], inputValue: "", description: "" },
   ]);
 
-  const filteredOptions = availableTags;
+  const [filteredOptions, setFilteredOptions] = useState(
+    tagsItems.map((tag) => ({
+      value: tag.id,
+      label: tag.name,
+      description: tag.description,
+    }))
+  );
+
+  useEffect(() => {
+    setFilteredOptions(
+      tagsItems.map((tag) => ({
+        value: tag.id,
+        label: tag.name,
+        description: tag.description,
+      }))
+    );
+  }, [tagsItems]);
 
   // Handle change for individual tag sets
   const handleTagChange = (index, selectedTags) => {
@@ -136,38 +162,6 @@ const NewProduct = () => {
       const newSets = tagDescriptionSets.filter((_, i) => i !== index);
       setTagDescriptionSets(newSets);
     }
-  };
-
-  // Logic to add a new tag if it's not in the list
-  const createOption = (label) => ({
-    label,
-    value: label.toLowerCase().replace(/\W/g, ""),
-  });
-
-  const handleCreateTag = (inputValue, index) => {
-    const newOption = createOption(inputValue);
-    const newSets = [...tagDescriptionSets];
-    newSets[index].tags = [...newSets[index].tags, newOption];
-    setTagDescriptionSets(newSets);
-  };
-
-  const NoOptionsMessage = (props) => {
-    const index = props.selectProps.index; // Use the current select box index
-
-    return (
-      <components.NoOptionsMessage {...props}>
-        <span>
-          No tags found.{" "}
-          <button
-            type="button"
-            onClick={() => handleCreateTag(props.selectProps.inputValue, index)}
-            className="text-blue-500 hover:underline"
-          >
-            Add &quot;{props.selectProps.inputValue}&quot; as a new tag
-          </button>
-        </span>
-      </components.NoOptionsMessage>
-    );
   };
 
   // Transform availableCategories to the format required by react-select
@@ -295,7 +289,7 @@ const NewProduct = () => {
                 <label className="block text-sm font-medium text-gray-700">
                   Tags
                 </label>
-                <Select
+                <CreatableSelect
                   options={filteredOptions}
                   value={set.tags}
                   onChange={(selectedTags) =>
@@ -309,9 +303,18 @@ const NewProduct = () => {
                   }}
                   className="mt-1"
                   isClearable
+                  isMulti // Ensures multiple tags can be selected
                   placeholder="Select or add tags..."
-                  components={{ NoOptionsMessage }}
-                  index={index} // Pass the index to the Select component
+                  onCreateOption={(inputValue) => {
+                    if (!inputValue.trim()) return;
+
+                    const newTag = { label: inputValue, value: inputValue };
+                    setFilteredOptions((prevOptions) => [
+                      ...prevOptions,
+                      newTag,
+                    ]); // Append new tag to options
+                    handleTagChange(index, [...set.tags, newTag]); // Add new tag to selected tags
+                  }}
                 />
               </div>
 
@@ -480,9 +483,7 @@ const NewProduct = () => {
             onChange={handleFileUpload}
           />
         </div>
-
-        {/* Submit Button */}
-        <div className="mt-6">
+        <div className="mt-6 text-center">
           <button
             type="submit"
             className="bg-green-500 text-white px-4 py-2 rounded-md shadow"

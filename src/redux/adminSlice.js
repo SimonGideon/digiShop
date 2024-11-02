@@ -13,6 +13,18 @@ const initialState = {
   brands: { data: [], status: "idle", error: null },
 };
 
+// fetch tags
+export const fetchTags = () => async (dispatch) => {
+  dispatch(fetchTagsStart());
+  try {
+    const response = await fetch(API_ENDPOINTS.TAGS);
+    const data = await response.json();
+    dispatch(fetchTagsSuccess(data));
+  } catch (error) {
+    dispatch(fetchTagsFailure(error.toString()));
+  }
+};
+
 // Async thunk for fetching products
 export const fetchProducts = () => async (dispatch) => {
   dispatch(fetchProductsStart());
@@ -221,6 +233,19 @@ const adminSlice = createSlice({
       state.brands.status = "failed";
       state.brands.error = action.payload;
     },
+
+    // tags reducers
+    fetchTagsStart(state) {
+      state.tags.status = "loading";
+    },
+    fetchTagsSuccess(state, action) {
+      state.tags.status = "succeeded";
+      state.tags.data = action.payload;
+    },
+    fetchTagsFailure(state, action) {
+      state.tags.status = "failed";
+      state.tags.error = action.payload;
+    },
   },
 });
 
@@ -246,6 +271,9 @@ export const {
   postBrandStart,
   postBrandSuccess,
   postBrandFailure,
+  fetchTagsStart,
+  fetchTagsSuccess,
+  fetchTagsFailure,
 } = adminSlice.actions;
 
 export default adminSlice.reducer;
