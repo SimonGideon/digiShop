@@ -153,7 +153,7 @@ const StockList = () => {
     },
     {
       name: "PRICE",
-      selector: (row) => `$${row.price.toFixed(2)}`,
+      selector: (row) => `Ksh. ${row.price.toFixed(2)}`,
       sortable: true,
     },
     {

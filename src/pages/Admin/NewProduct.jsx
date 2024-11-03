@@ -147,21 +147,18 @@ const NewProduct = () => {
     );
   }, [tagsItems]);
 
-  // Handle change for individual tag sets
   const handleTagChange = (index, selectedTags) => {
     const newSets = [...tagDescriptionSets];
     newSets[index].tags = selectedTags || [];
     setTagDescriptionSets(newSets);
   };
 
-  // Handle change for individual description inputs
   const handleDescriptionChange = (index, value) => {
     const newSets = [...tagDescriptionSets];
     newSets[index].description = value;
     setTagDescriptionSets(newSets);
   };
 
-  // Add new tag-description set
   const addTagDescriptionSet = () => {
     setTagDescriptionSets([
       ...tagDescriptionSets,
@@ -169,7 +166,6 @@ const NewProduct = () => {
     ]);
   };
 
-  // Delete tag-description set
   const deleteTagDescriptionSet = (index) => {
     if (tagDescriptionSets.length > 1) {
       const newSets = tagDescriptionSets.filter((_, i) => i !== index);
@@ -177,7 +173,6 @@ const NewProduct = () => {
     }
   };
 
-  // Transform availableCategories to the format required by react-select
   const categoryOptions = availableCategories.map((cat) => ({
     value: cat.id,
     label: cat.name,
@@ -188,7 +183,6 @@ const NewProduct = () => {
     label: sub.name,
   }));
 
-  // Transform brands to the format required by react-select
   const brandOptions = brands.map((brand) => ({
     value: brand.id,
     label: brand.name,

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../../redux/adminSlice";
 import { InventoryTable, Loader } from "../../components";
+import { PlusCircle } from "feather-icons-react";
 
 const columns = [
   {
@@ -42,13 +43,23 @@ const Categories = () => {
 
   return (
     <div>
+      <div className="flex justify-end">
+        <button className="bg-green-500 text-white px-4 py-2 rounded-lg text-nowrap flex gap-2">
+          <PlusCircle className="text-white" /> New
+        </button>
+      </div>
+
       {loading ? (
         <Loader />
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : (
         <div className="p-6">
-          <InventoryTable data={formattedCategories} columns={columns} />
+          <InventoryTable
+            data={formattedCategories}
+            columns={columns}
+            title="Categories List"
+          />
         </div>
       )}
     </div>

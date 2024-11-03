@@ -32,11 +32,6 @@ const NewSubCategory = ({ showToast, closeModal }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle submission logic here, e.g., dispatch an action to add the subcategory
-    console.log("Selected Category:", category);
-    console.log("Subcategory Name:", subCategoryName);
-
-    // Reset fields after submission
     setCategory(null);
     setSubCategoryName("");
   };
@@ -57,13 +52,13 @@ const NewSubCategory = ({ showToast, closeModal }) => {
               isClearable
               placeholder="Select Category"
               required
-              menuPortalTarget={document.body} // Render the menu in the body
+              menuPortalTarget={document.body}
               styles={{
-                menuPortal: (base) => ({ ...base, zIndex: 9999 }), // Ensure zIndex is high
+                menuPortal: (base) => ({ ...base, zIndex: 9999 }),
               }}
             />
           </div>
-          <div>
+          <div className="mt-3">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Sub Category
             </label>
