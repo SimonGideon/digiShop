@@ -6,7 +6,6 @@ const Dashboard = () => {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
       <StatCard icon={BarChart2} title="Revenue" value="Ksh. 0" color="green" />
       <StatCard icon={ShoppingCart} title="Stock" value="825" color="red" />
-      <StatCard icon={Users} title="Clients" value="925" color="yellow" />
       <StatCard icon={Users} title="Customers" value="14,208" color="orange" />
       <StatCard
         icon={ShoppingCart}
