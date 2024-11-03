@@ -1,18 +1,29 @@
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../../redux/adminSlice";
-import { InventoryTable, IndividualItem } from "../../components";
+import {
+  InventoryTable,
+  IndividualItem,
+  Loader,
+  Modal,
+} from "../../components";
 import { PlusCircle } from "feather-icons-react";
 import { Link } from "react-router-dom";
-import { Modal } from "../../components";
 
 const StockList = () => {
   const dispatch = useDispatch();
+
+  const { products, loading, error } = useSelector((state) => ({
+    products: state.adminData.products.data || [],
+    loading: state.adminData.products.status === "loading",
+    error: state.adminData.products.error,
+  }));
+
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
-  const products = useSelector((state) => state.adminData.products.data);
-  // ===============>  Modal Logic
+
+  // ===============> Modal Logic
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalTitle, setModalTitle] = useState("");
@@ -28,7 +39,7 @@ const StockList = () => {
     setModalTitle(title);
     toggleModal();
   };
-  // ===============>  Modal Logic Ends
+  // ===============> Modal Logic Ends
 
   // State to manage dropdown visibility for each row
   const [dropdownVisible, setDropdownVisible] = useState(null);
@@ -189,38 +200,47 @@ const StockList = () => {
 
   return (
     <div className="py-4">
-      <div className="flex justify-end mb-4">
-        <Link to="/admin/products/new" className="flex items-center">
-          <button className="bg-green-500 text-white px-4 py-2 rounded-lg text-nowrap flex gap-2">
-            <PlusCircle className="text-white" /> New
-          </button>
-        </Link>
-      </div>
-      <InventoryTable
-        title="Product Inventory"
-        columns={stockColumns}
-        data={products}
-        customStyles={{
-          rows: {
-            style: {
-              minHeight: "72px",
-            },
-          },
-          headCells: {
-            style: {
-              paddingLeft: "8px",
-              paddingRight: "8px",
-            },
-          },
-          cells: {
-            style: {
-              paddingLeft: "8px",
-              paddingRight: "8px",
-            },
-          },
-        }}
-      />
-
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <p className="text-red-500">{error}</p>
+      ) : products.length > 0 ? (
+        <>
+          <div className="flex justify-end mb-4">
+            <Link to="/admin/products/new" className="flex items-center">
+              <button className="bg-green-500 text-white px-4 py-2 rounded-lg text-nowrap flex gap-2">
+                <PlusCircle className="text-white" /> New
+              </button>
+            </Link>
+          </div>
+          <InventoryTable
+            title="Product Inventory"
+            columns={stockColumns}
+            data={products}
+            customStyles={{
+              rows: {
+                style: {
+                  minHeight: "72px",
+                },
+              },
+              headCells: {
+                style: {
+                  paddingLeft: "8px",
+                  paddingRight: "8px",
+                },
+              },
+              cells: {
+                style: {
+                  paddingLeft: "8px",
+                  paddingRight: "8px",
+                },
+              },
+            }}
+          />
+        </>
+      ) : (
+        <p className="text-gray-500">No products available</p>
+      )}
       {modalOpen && (
         <Modal
           closeModal={toggleModal}

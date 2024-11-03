@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchOrders } from "../../redux/adminSlice";
-import { InventoryTable } from "../../components";
+import { InventoryTable, Loader } from "../../components";
 import { Link } from "react-router-dom";
 
 const Customers = () => {
@@ -38,7 +38,11 @@ const Customers = () => {
     };
   }, []);
 
-  const orders = useSelector((state) => state.adminData.orders.data) || [];
+  const { orders, loading, error } = useSelector((state) => ({
+    orders: state.adminData.orders.data || [],
+    loading: state.adminData.orders.status === "loading",
+    error: state.adminData.orders.error,
+  }));
 
   // Extract customer details from orders
   const customerDetails = orders.map((order) => ({
@@ -119,30 +123,38 @@ const Customers = () => {
 
   return (
     <div>
-      <InventoryTable
-        title="Customers List"
-        columns={customersColumns}
-        data={customerDetails}
-        customStyles={{
-          rows: {
-            style: {
-              minHeight: "72px",
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <p className="text-red-500">{error}</p>
+      ) : orders.length > 0 ? (
+        <InventoryTable
+          title="Customers List"
+          columns={customersColumns}
+          data={customerDetails}
+          customStyles={{
+            rows: {
+              style: {
+                minHeight: "72px",
+              },
             },
-          },
-          headCells: {
-            style: {
-              paddingLeft: "8px",
-              paddingRight: "8px",
+            headCells: {
+              style: {
+                paddingLeft: "8px",
+                paddingRight: "8px",
+              },
             },
-          },
-          cells: {
-            style: {
-              paddingLeft: "8px",
-              paddingRight: "8px",
+            cells: {
+              style: {
+                paddingLeft: "8px",
+                paddingRight: "8px",
+              },
             },
-          },
-        }}
-      />
+          }}
+        />
+      ) : (
+        <p>No customers found</p>
+      )}
     </div>
   );
 };
