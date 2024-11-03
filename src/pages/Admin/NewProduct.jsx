@@ -26,7 +26,6 @@ const NewProduct = () => {
   const [specifications, setSpecifications] = useState([
     { tag: "", detail: "" },
   ]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
   const [subcategories, setSubcategories] = useState([]);
   const [subcategory, setSubcategory] = useState("");
 
