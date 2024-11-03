@@ -25,6 +25,7 @@ import Modal from "./Admin/Modal";
 import NewCategory from "./Admin/NewCategory";
 import NewBrand from "./Admin/NewBrand";
 import IndividualItem from "./Admin/IndividualItem";
+import NewSubCategory from "./Admin/NewSubCategory";
 
 export {
   NavBar,
@@ -54,4 +55,5 @@ export {
   Modal,
   NewCategory,
   NewBrand,
+  NewSubCategory,
 };

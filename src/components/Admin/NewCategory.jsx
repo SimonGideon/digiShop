@@ -24,14 +24,9 @@ const NewCategory = ({ showToast, closeModal }) => {
     try {
       await dispatch(postCategory(categoryData)).unwrap();
       showToast("Category added successfully!", "success");
-      // setNewCategory(""); // Clear the input field
-      // setSelectedIcon(null); // Reset the selected icon
-      // fetch updated categories
       dispatch(fetchCategories());
       closeModal(false);
     } catch (error) {
-      console.error("Submission Error:", error); // Log the error for debugging
-      // Here, we check if the error message contains the specific error
       const errorMessage =
         error || "Failed to add category due to an unknown error.";
       showToast(`${errorMessage}`, "error");

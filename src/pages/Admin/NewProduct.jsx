@@ -1,6 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import { NewCategory, Modal, NewBrand } from "./../../components";
+import {
+  NewCategory,
+  Modal,
+  NewBrand,
+  NewSubCategory,
+} from "./../../components";
 import { PlusCircle } from "feather-icons-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
@@ -274,12 +279,12 @@ const NewProduct = () => {
                   className="bg-blue-500 text-white px-3 py-2 rounded-md shadow text-nowrap flex gap-1"
                   onClick={(e) =>
                     openModalFor(
-                      <NewCategory
+                      <NewSubCategory
                         showToast={showToast}
                         closeModal={(start) => switchModal(start)}
                       />,
 
-                      "Add New Category",
+                      "Add New Sub Category",
                       e
                     )
                   }
