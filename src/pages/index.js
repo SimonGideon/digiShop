@@ -12,6 +12,7 @@ import NewProduct from "./Admin/NewProduct";
 import NotFound from "./NotFound";
 import Login from "./Admin/Login";
 import Epic from "./Epic";
+import CustomerDetails from "./Admin/CustomerDetails";
 
 export {
   Home,
@@ -28,4 +29,5 @@ export {
   NewProduct,
   NotFound,
   Login,
+  CustomerDetails,
 };

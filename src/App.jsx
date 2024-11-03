@@ -27,6 +27,7 @@ const Login = lazy(() => import("./pages/Admin/Login"));
 const Orders = lazy(() => import("./pages/Admin/Orders"));
 const Customers = lazy(() => import("./pages/Admin/Customers"));
 const Categories = lazy(() => import("./pages/Admin/Categories"));
+const CustomerDetails = lazy(() => import("./pages/Admin/CustomerDetails"));
 
 function Layout() {
   const location = useLocation();
@@ -193,6 +194,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loader />}>
             <Categories />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/customers/:customerId",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <CustomerDetails />
           </Suspense>
         ),
       },

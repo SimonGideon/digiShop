@@ -24,8 +24,6 @@ const InventoryTable = ({ columns, data, customStyles, title }) => {
     setFilteredData(filteredItems);
   };
 
-  console.log("filteredData", filteredData);
-
   return (
     <div className="container mx-auto p-4 bg-gray-200 rounded-md">
       <div className="flex flex-col md:flex-row md:justify-between md:items-center">
