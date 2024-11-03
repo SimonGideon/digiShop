@@ -26,6 +26,9 @@ const NewProduct = () => {
   const [specifications, setSpecifications] = useState([
     { tag: "", detail: "" },
   ]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [subcategories, setSubcategories] = useState([]);
+  const [subcategory, setSubcategory] = useState("");
 
   const showToast = (message, type) => {
     console.log("Toast Triggered:", message, type);
@@ -70,6 +73,20 @@ const NewProduct = () => {
     }
   }, [dispatch, availableCategories]);
 
+  const handleCategoryChange = (selectedOption) => {
+    const selectedCategoryId = selectedOption.value;
+    setCategory(selectedCategoryId);
+
+    const selectedCategory = availableCategories.find(
+      (cat) => cat.id === selectedCategoryId
+    );
+    if (selectedCategory) {
+      setSubcategories(selectedCategory.subcategories);
+    } else {
+      setSubcategories([]);
+    }
+  };
+
   // Brands
   const brands = useSelector((state) => state.adminData.brands.data);
 
@@ -102,10 +119,8 @@ const NewProduct = () => {
       specifications,
     };
     console.log(productData);
-    // handle form submission here (e.g., via an API call)
   };
 
-  // Initialize a state for tag-description sets
   const [tagDescriptionSets, setTagDescriptionSets] = useState([
     { tags: [], inputValue: "", description: "" },
   ]);
@@ -164,6 +179,11 @@ const NewProduct = () => {
     label: cat.name,
   }));
 
+  const subcategoryOptions = subcategories.map((sub) => ({
+    value: sub.id,
+    label: sub.name,
+  }));
+
   // Transform brands to the format required by react-select
   const brandOptions = brands.map((brand) => ({
     value: brand.id,
@@ -202,9 +222,7 @@ const NewProduct = () => {
                   categoryOptions.find((option) => option.value === category) ||
                   null
                 }
-                onChange={(selectedOption) =>
-                  setCategory(selectedOption ? selectedOption.value : "")
-                }
+                onChange={handleCategoryChange}
                 isClearable
                 placeholder="Select Category"
                 required
@@ -231,7 +249,48 @@ const NewProduct = () => {
               </div>
             </div>
           </div>
+          {/* Subcategory */}
+          <div className="flex flex-col justify-between w-1/2">
+            <label className="block text-sm font-medium text-gray-700">
+              Sub Category
+            </label>
+            <div className="flex w-full gap-5">
+              <Select
+                className="mt-1 w-full"
+                options={subcategoryOptions}
+                value={
+                  subcategoryOptions.find(
+                    (option) => option.value === subcategory
+                  ) || null
+                }
+                onChange={(selectedOption) =>
+                  setSubcategory(selectedOption ? selectedOption.value : "")
+                }
+                isClearable
+                placeholder="Select Sub Category"
+                required
+              />
+              <div className="flex items-center">
+                <button
+                  className="bg-blue-500 text-white px-3 py-2 rounded-md shadow text-nowrap flex gap-1"
+                  onClick={(e) =>
+                    openModalFor(
+                      <NewCategory
+                        showToast={showToast}
+                        closeModal={(start) => switchModal(start)}
+                      />,
 
+                      "Add New Category",
+                      e
+                    )
+                  }
+                >
+                  <PlusCircle className="text-white w-6 h-6" />
+                  ADD
+                </button>
+              </div>
+            </div>
+          </div>
           {/* Brand */}
           <div className="flex flex-col justify-between w-1/2">
             <label className="block text-sm font-medium text-gray-700">
