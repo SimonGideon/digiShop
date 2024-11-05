@@ -32,6 +32,11 @@ const NewProduct = () => {
   const [price, setPrice] = useState("");
   const [discountPrice, setDiscountPrice] = useState("");
   const [stock, setStock] = useState(0);
+  const [tagDescriptionSets, setTagDescriptionSets] = useState([
+    { tags: [], inputValue: "", description: "" },
+  ]);
+
+  const [tagNameDescriptionArray, setTagNameDescriptionArray] = useState([]);
 
   const [subcategories, setSubcategories] = useState([]);
   const [subcategory, setSubcategory] = useState("");
@@ -44,8 +49,6 @@ const NewProduct = () => {
       toast.error(message);
     }
   };
-
-  console.log("Specs:", specifications);
 
   // ===============>  Modal Logic
   const [modalOpen, setModalOpen] = useState(false);
@@ -116,19 +119,23 @@ const NewProduct = () => {
       productName,
       category,
       brand,
-      colors,
       price,
       discountPrice,
       stock,
       specifications: specifications,
       images: ImageArrayObj,
+      tags: tagNameDescriptionArray,
     };
     console.log(productData);
   };
 
-  const [tagDescriptionSets, setTagDescriptionSets] = useState([
-    { tags: [], inputValue: "", description: "" },
-  ]);
+  useEffect(() => {
+    const formattedTags = tagDescriptionSets.map((set) => ({
+      tagNames: set.tags.map((tag) => tag.label).join(", "),
+      description: set.description,
+    }));
+    setTagNameDescriptionArray(formattedTags);
+  }, [tagDescriptionSets]);
 
   const [filteredOptions, setFilteredOptions] = useState(
     tagsItems.map((tag) => ({
