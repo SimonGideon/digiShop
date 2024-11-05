@@ -1,15 +1,28 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
-const ImageUpload = () => {
+const ImageUpload = ({ setImageArrayObj }) => {
   const [mainImage, setMainImage] = useState(null);
   const [thumbnail1, setThumbnail1] = useState(null);
   const [thumbnail2, setThumbnail2] = useState(null);
 
-  const handleImageUpload = (e, setImage) => {
+  const handleImageUpload = (e, setImage, imageType) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
       setImage(reader.result);
+      setImageArrayObj((prevImages) => {
+        const newImages = [...prevImages];
+        const existingIndex = newImages.findIndex(
+          (img) => img.key === imageType
+        );
+        if (existingIndex !== -1) {
+          newImages[existingIndex] = { key: imageType, url: reader.result };
+        } else {
+          newImages.push({ key: imageType, url: reader.result });
+        }
+        return newImages;
+      });
     };
     if (file) {
       reader.readAsDataURL(file);
@@ -35,7 +48,7 @@ const ImageUpload = () => {
             type="file"
             accept="image/*"
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring focus:ring-blue-300"
-            onChange={(e) => handleImageUpload(e, setMainImage)}
+            onChange={(e) => handleImageUpload(e, setMainImage, "mainImage")}
           />
           {mainImage && (
             <div className="mt-2">
@@ -61,7 +74,9 @@ const ImageUpload = () => {
               type="file"
               accept="image/*"
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring focus:ring-blue-300"
-              onChange={(e) => handleImageUpload(e, setThumbnail1)}
+              onChange={(e) =>
+                handleImageUpload(e, setThumbnail1, "thumbnail1")
+              }
             />
             {thumbnail1 && (
               <div className="mt-2">
@@ -73,6 +88,7 @@ const ImageUpload = () => {
               </div>
             )}
           </div>
+
           <div className="mb-4 flex-1">
             <label
               className="block text-sm font-medium text-gray-700"
@@ -85,7 +101,9 @@ const ImageUpload = () => {
               type="file"
               accept="image/*"
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring focus:ring-blue-300"
-              onChange={(e) => handleImageUpload(e, setThumbnail2)}
+              onChange={(e) =>
+                handleImageUpload(e, setThumbnail2, "thumbnail2")
+              }
             />
             {thumbnail2 && (
               <div className="mt-2">
@@ -101,6 +119,10 @@ const ImageUpload = () => {
       </fieldset>
     </div>
   );
+};
+
+ImageUpload.propTypes = {
+  setImageArrayObj: PropTypes.func.isRequired,
 };
 
 export default ImageUpload;

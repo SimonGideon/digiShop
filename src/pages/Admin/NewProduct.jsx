@@ -21,6 +21,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 
 const NewProduct = () => {
+  const [ImageArrayObj, setImageArrayObj] = useState([]);
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
@@ -52,6 +53,8 @@ const NewProduct = () => {
   const toggleModal = () => {
     setModalOpen(!modalOpen);
   };
+
+  console.log(ImageArrayObj);
 
   const switchModal = (status) => {
     setModalOpen(status);
@@ -521,7 +524,21 @@ const NewProduct = () => {
             ADD
           </button>
         </fieldset>
-        <ImageUpload />
+        <ImageUpload setImageArrayObj={setImageArrayObj} />
+        {/* <div>
+          <h3>Uploaded Images</h3>
+          <ul>
+            {ImageArrayObj.map((image, index) => (
+              <li key={index}>
+                <img
+                  src={image}
+                  alt={`Uploaded ${index + 1}`}
+                  className="w-24 h-24 object-cover"
+                />
+              </li>
+            ))}
+          </ul>
+        </div> */}
         <div className="mt-6 text-center">
           <button
             type="submit"
