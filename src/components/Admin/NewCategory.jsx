@@ -87,10 +87,9 @@ const NewCategory = ({ showToast, closeModal }) => {
   );
 };
 
-// Define prop types for the component
 NewCategory.propTypes = {
-  showToast: PropTypes.func.isRequired, // Function to show toast notifications
-  closeModal: PropTypes.func.isRequired, // Function to close the modal
+  showToast: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 export default NewCategory;

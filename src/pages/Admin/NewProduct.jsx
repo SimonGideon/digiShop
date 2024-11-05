@@ -54,8 +54,6 @@ const NewProduct = () => {
     setModalOpen(!modalOpen);
   };
 
-  console.log(ImageArrayObj);
-
   const switchModal = (status) => {
     setModalOpen(status);
   };

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCategories } from "../../redux/adminSlice";
+import { fetchCategories, postSubcategory } from "../../redux/adminSlice";
 import Select from "react-select";
+import PropTypes from "prop-types";
 
 const NewSubCategory = ({ showToast, closeModal }) => {
   const [category, setCategory] = useState(null);
@@ -30,10 +31,34 @@ const NewSubCategory = ({ showToast, closeModal }) => {
     setSubCategoryName(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setCategory(null);
-    setSubCategoryName("");
+
+    if (!category || !subCategoryName.trim()) {
+      showToast(
+        "Please select a category and enter a subcategory name",
+        "error"
+      );
+      return;
+    }
+    const data = { name: subCategoryName };
+
+    try {
+      const resultAction = await dispatch(
+        postSubcategory({ id: category.value, data })
+      );
+
+      if (postSubcategory.fulfilled.match(resultAction)) {
+        showToast("Subcategory added successfully!", "success");
+        setCategory(null);
+        setSubCategoryName("");
+        closeModal(false);
+      } else {
+        showToast("Failed to add subcategory. Please try again.", "error");
+      }
+    } catch (error) {
+      showToast(`An error occurred. ${error}.`, "error");
+    }
   };
 
   return (
@@ -84,6 +109,10 @@ const NewSubCategory = ({ showToast, closeModal }) => {
       </div>
     </form>
   );
+};
+NewSubCategory.propTypes = {
+  showToast: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 export default NewSubCategory;

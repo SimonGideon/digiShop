@@ -128,6 +128,31 @@ export const postCategory = createAsyncThunk(
   }
 );
 
+export const postSubcategory = createAsyncThunk(
+  "admin/postSubcategory",
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${API_ENDPOINTS.CATEGORIES}/${id}/subcategories`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to add subcategory");
+      }
+
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message || "An unexpected error occurred");
+    }
+  }
+);
+
 export const postBrand = createAsyncThunk(
   "admin/postBrand",
   async (data, { rejectWithValue }) => {
@@ -269,6 +294,20 @@ const adminSlice = createSlice({
       .addCase(postBrand.rejected, (state, action) => {
         state.brands.status = "failed";
         state.brands.error = action.payload;
+      });
+
+    // Post Subcategory
+    builder
+      .addCase(postSubcategory.pending, (state) => {
+        state.subcategories.status = "loading";
+      })
+      .addCase(postSubcategory.fulfilled, (state, action) => {
+        state.subcategories.status = "succeeded";
+        state.subcategories.data.push(action.payload);
+      })
+      .addCase(postSubcategory.rejected, (state, action) => {
+        state.subcategories.status = "failed";
+        state.subcategories.error = action.payload;
       });
   },
 });
