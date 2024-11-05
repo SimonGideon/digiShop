@@ -5,38 +5,13 @@ const ProductDescription = ({ product }) => {
     <div className="container mx-auto md:p-4 lg:flex lg:space-x-6">
       <div className="w-full">
         <div className="bg-white p-4 shadow rounded-lg mb-6">
-          <h1 className="text-2xl font-bold">
-            OnePlus Ace 3 12GB 256GB Price in Kenya
-          </h1>
-          <p className="mt-2 text-gray-700">
-            The OnePlus Ace 3 12GB 256GB is priced at KSh 78,499. Available in
-            multiple colors including Black, Blue, and Rose Gold. Comes with a
-            1-year warranty.
-          </p>
-
-          <h2 className="text-xl font-bold mt-4">Body and Display</h2>
-          <p className="text-gray-700 mt-2">
-            The OnePlus Ace 3 features a 6.7&quot; AMOLED display and 120Hz
-            refresh rate. Sleek aluminum frame with Gorilla Glass protection on
-            both sides.
-          </p>
-
-          <h2 className="text-xl font-bold mt-4">Processing and Memory</h2>
-          <p className="text-gray-700 mt-2">
-            Powered by Qualcomm Snapdragon 8+ Gen 1, the phone has 12GB RAM and
-            256GB internal storage.
-          </p>
-
-          <h2 className="text-xl font-bold mt-4">Camera</h2>
-          <p className="text-gray-700 mt-2">
-            Equipped with a triple camera system (50MP + 8MP + 2MP) and a 16MP
-            front camera for selfies.
-          </p>
-
-          <h2 className="text-xl font-bold mt-4">Battery</h2>
-          <p className="text-gray-700 mt-2">
-            The phone has a 5000mAh battery that supports fast charging.
-          </p>
+          {product.tags &&
+            product.tags.map((tag, index) => (
+              <div key={index}>
+                <h1 className="text-2xl font-bold">{tag.name}</h1>
+                <p className="mt-2 text-gray-700">{tag.description}</p>
+              </div>
+            ))}
 
           {/* Specifications */}
           <h2 className="text-xl font-bold mt-4">Specifications</h2>
@@ -70,6 +45,12 @@ ProductDescription.propTypes = {
     name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+    tags: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+      })
+    ), // Optional tags
     specifications: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,

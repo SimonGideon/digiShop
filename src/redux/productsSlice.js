@@ -35,7 +35,7 @@ export const fetchProductById = createAsyncThunk(
       throw new Error("Failed to fetch product");
     }
     const data = await response.json();
-    return data[0];
+    return data;
   }
 );
 
