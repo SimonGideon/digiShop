@@ -26,6 +26,7 @@ import NewCategory from "./Admin/NewCategory";
 import NewBrand from "./Admin/NewBrand";
 import IndividualItem from "./Admin/IndividualItem";
 import NewSubCategory from "./Admin/NewSubCategory";
+import ImageUpload from "./Admin/HandleImageUpload";
 
 export {
   NavBar,
@@ -56,4 +57,5 @@ export {
   NewCategory,
   NewBrand,
   NewSubCategory,
+  ImageUpload,
 };

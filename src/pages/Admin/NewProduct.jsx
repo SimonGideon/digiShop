@@ -5,6 +5,7 @@ import {
   Modal,
   NewBrand,
   NewSubCategory,
+  ImageUpload,
 } from "./../../components";
 import { PlusCircle } from "feather-icons-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -520,66 +521,7 @@ const NewProduct = () => {
             ADD
           </button>
         </fieldset>
-
-        <div className="mb-4">
-          <fieldset className="border border-gray-300 rounded-md p-4">
-            <legend className="text-sm font-medium text-gray-700">
-              Upload Images
-            </legend>
-
-            {/* Main Image Upload */}
-            <div className="mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="main-image"
-              >
-                Main Image
-              </label>
-              <input
-                id="main-image"
-                type="file"
-                accept="image/*"
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring focus:ring-blue-300"
-              />
-            </div>
-
-            {/* Thumbnails Container */}
-            <div className="flex flex-col md:flex-row md:space-x-4">
-              {/* Thumbnail 1 Upload */}
-              <div className="mb-4 flex-1">
-                <label
-                  className="block text-sm font-medium text-gray-700"
-                  htmlFor="thumbnail-1"
-                >
-                  Thumbnail 1
-                </label>
-                <input
-                  id="thumbnail-1"
-                  type="file"
-                  accept="image/*"
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring focus:ring-blue-300"
-                />
-              </div>
-
-              {/* Thumbnail 2 Upload */}
-              <div className="mb-4 flex-1">
-                <label
-                  className="block text-sm font-medium text-gray-700"
-                  htmlFor="thumbnail-2"
-                >
-                  Thumbnail 2
-                </label>
-                <input
-                  id="thumbnail-2"
-                  type="file"
-                  accept="image/*"
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring focus:ring-blue-300"
-                />
-              </div>
-            </div>
-          </fieldset>
-        </div>
-
+        <ImageUpload />
         <div className="mt-6 text-center">
           <button
             type="submit"
