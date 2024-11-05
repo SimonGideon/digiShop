@@ -118,6 +118,7 @@ const NewProduct = () => {
     const productData = {
       productName,
       category,
+      subcategory,
       brand,
       price,
       discountPrice,

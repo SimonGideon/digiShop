@@ -14,13 +14,15 @@ const InventoryTable = ({ columns, data, customStyles, title }) => {
     const searchText = event.target.value.toLowerCase();
     setFilterText(searchText);
 
-    const filteredItems = data.filter(
-      (item) =>
-        item.product.toLowerCase().includes(searchText) ||
-        item.id.toString().toLowerCase().includes(searchText) ||
-        item.category.toLowerCase().includes(searchText) ||
-        item.status.toLowerCase().includes(searchText)
-    );
+    const filteredItems = data.filter((item) => {
+      return (
+        (item.name?.toLowerCase() ?? "").includes(searchText) ||
+        (item.id?.toString().toLowerCase() ?? "").includes(searchText) ||
+        (item.category?.toLowerCase() ?? "").includes(searchText) ||
+        (item.status?.toLowerCase() ?? "").includes(searchText)
+      );
+    });
+
     setFilteredData(filteredItems);
   };
 
