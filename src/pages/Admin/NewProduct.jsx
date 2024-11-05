@@ -6,6 +6,7 @@ import {
   NewBrand,
   NewSubCategory,
   ImageUpload,
+  Specifications,
 } from "./../../components";
 import { PlusCircle } from "feather-icons-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,6 +23,7 @@ import { toast, ToastContainer } from "react-toastify";
 
 const NewProduct = () => {
   const [ImageArrayObj, setImageArrayObj] = useState([]);
+  const [specifications, setSpecifications] = useState([]);
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
@@ -30,9 +32,7 @@ const NewProduct = () => {
   const [price, setPrice] = useState("");
   const [discountPrice, setDiscountPrice] = useState("");
   const [stock, setStock] = useState(0);
-  const [specifications, setSpecifications] = useState([
-    { tag: "", detail: "" },
-  ]);
+
   const [subcategories, setSubcategories] = useState([]);
   const [subcategory, setSubcategory] = useState("");
 
@@ -44,6 +44,8 @@ const NewProduct = () => {
       toast.error(message);
     }
   };
+
+  console.log("Specs:", specifications);
 
   // ===============>  Modal Logic
   const [modalOpen, setModalOpen] = useState(false);
@@ -108,10 +110,6 @@ const NewProduct = () => {
   }, [dispatch]);
   const tagsItems = useSelector((state) => state.adminData.tags.data);
 
-  const addSpecification = () => {
-    setSpecifications([...specifications, { tag: "", detail: "" }]);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const productData = {
@@ -122,7 +120,8 @@ const NewProduct = () => {
       price,
       discountPrice,
       stock,
-      specifications,
+      specifications: specifications,
+      images: ImageArrayObj,
     };
     console.log(productData);
   };
@@ -410,8 +409,7 @@ const NewProduct = () => {
           </button>
         </fieldset>
 
-        {/* Price and Discount */}
-        <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Price (KSH)
@@ -436,107 +434,21 @@ const NewProduct = () => {
               onChange={(e) => setDiscountPrice(e.target.value)}
             />
           </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Stock
+            </label>
+            <input
+              type="number"
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+              value={stock}
+              onChange={(e) => setStock(e.target.value)}
+              required
+            />
+          </div>
         </div>
-
-        {/* Stock */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Stock
-          </label>
-          <input
-            type="number"
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-            value={stock}
-            onChange={(e) => setStock(e.target.value)}
-            required
-          />
-        </div>
-
-        <fieldset className="border border-gray-300 rounded-md mb-4 p-4">
-          <legend className="text-sm font-medium text-gray-700">
-            Specifications
-          </legend>
-          {specifications.map((spec, index) => (
-            <div key={index} className="mb-4 flex gap-4 items-center">
-              <div className="flex flex-col w-1/2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Specification
-                </label>
-                <input
-                  type="text"
-                  className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-                  placeholder="Specification Tag"
-                  value={spec.tag}
-                  onChange={(e) => {
-                    const newSpecs = [...specifications];
-                    newSpecs[index].tag = e.target.value;
-                    setSpecifications(newSpecs);
-                  }}
-                  required
-                />
-              </div>
-
-              <div className="flex flex-col w-1/2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Details
-                </label>
-                <input
-                  type="text"
-                  className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-                  placeholder="Specification Detail"
-                  value={spec.detail}
-                  onChange={(e) => {
-                    const newSpecs = [...specifications];
-                    newSpecs[index].detail = e.target.value;
-                    setSpecifications(newSpecs);
-                  }}
-                  required
-                />
-              </div>
-
-              {/* Delete button, visible if there are more than one item */}
-              {specifications.length > 1 && (
-                <button
-                  type="button"
-                  className="bg-red-500 text-white px-2 mt-6 py-1 rounded-md shadow"
-                  onClick={() => {
-                    const newSpecs = specifications.filter(
-                      (_, i) => i !== index
-                    );
-                    setSpecifications(newSpecs);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faTrashAlt} />
-                </button>
-              )}
-            </div>
-          ))}
-
-          {/* Add Specification Button */}
-          <button
-            type="button"
-            className="mb-4 bg-blue-500 text-white px-3 py-2 rounded-md shadow flex gap-2"
-            onClick={addSpecification}
-          >
-            <PlusCircle className="text-white w-6 h-6" />
-            ADD
-          </button>
-        </fieldset>
+        <Specifications setSpecifications={setSpecifications} />
         <ImageUpload setImageArrayObj={setImageArrayObj} />
-        {/* <div>
-          <h3>Uploaded Images</h3>
-          <ul>
-            {ImageArrayObj.map((image, index) => (
-              <li key={index}>
-                <img
-                  src={image}
-                  alt={`Uploaded ${index + 1}`}
-                  className="w-24 h-24 object-cover"
-                />
-              </li>
-            ))}
-          </ul>
-        </div> */}
         <div className="mt-6 text-center">
           <button
             type="submit"
