@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { NavBar, Loader } from "./components";
+import { NavBar, Loader, ProtectedRoute } from "./components";
 import { AdminLayout } from "./components";
 import "./App.css";
 import { NotFound } from "./pages";
@@ -143,73 +143,91 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: (
-      <Suspense fallback={<Loader />}>
-        <AdminLayout />{" "}
-      </Suspense>
+      <ProtectedRoute>
+        <Suspense fallback={<Loader />}>
+          <AdminLayout />{" "}
+        </Suspense>
+      </ProtectedRoute>
     ),
     children: [
       {
         path: "dashboard",
         element: (
-          <Suspense fallback={<Loader />}>
-            <Dashboard />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<Loader />}>
+              <Dashboard />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
       {
         path: "/admin/accounts",
         element: (
-          <Suspense fallback={<Loader />}>
-            <AccountsPage />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<Loader />}>
+              <AccountsPage />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
       {
         path: "/admin/products",
         element: (
-          <Suspense fallback={<Loader />}>
-            <StockList />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<Loader />}>
+              <StockList />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
       {
         path: "/admin/products/new",
         element: (
-          <Suspense fallback={<Loader />}>
-            <NewProduct />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<Loader />}>
+              <NewProduct />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
       {
         path: "/admin/orders",
         element: (
-          <Suspense fallback={<Loader />}>
-            <Orders />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<Loader />}>
+              <Orders />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
       {
         path: "/admin/customers",
         element: (
-          <Suspense fallback={<Loader />}>
-            <Customers />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<Loader />}>
+              <Customers />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
       {
         path: "/admin/categories",
         element: (
-          <Suspense fallback={<Loader />}>
-            <Categories />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<Loader />}>
+              <Categories />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
       {
         path: "/admin/customers/:customerId",
         element: (
-          <Suspense fallback={<Loader />}>
-            <CustomerDetails />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<Loader />}>
+              <CustomerDetails />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
     ],

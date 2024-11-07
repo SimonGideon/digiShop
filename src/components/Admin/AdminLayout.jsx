@@ -44,7 +44,7 @@ const AdminLayout = () => {
   const handleLogout = () => {
     Cookies.remove("token");
     Cookies.remove("user");
-    navigate("admin/login");
+    navigate("/admin");
   };
 
   const toggleDropdown = () => {

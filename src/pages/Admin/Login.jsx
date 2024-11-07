@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../redux/authSlice";
-import { faUserTie, faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUserTie,
+  faUser,
+  faLock,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { toast, ToastContainer } from "react-toastify"; // Importing toast from react-toastify
 import "react-toastify/dist/ReactToastify.css"; // Import the CSS for toast notifications
@@ -12,6 +17,7 @@ const Login = () => {
     username: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,7 +30,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Dispatch the loginUser action
+    setIsLoading(true); // Start loading when the login is triggered
+
     try {
       const action = await dispatch(loginUser(formData));
       if (loginUser.fulfilled.match(action)) {
@@ -38,6 +45,8 @@ const Login = () => {
       }
     } catch (error) {
       toast.error(`An error occurred during login: ${error.message}`); // Show error toast
+    } finally {
+      setIsLoading(false); // Stop loading after the attempt
     }
   };
 
@@ -94,8 +103,14 @@ const Login = () => {
           <button
             type="submit"
             className="w-full py-1 bg-green-500 border-none hover:bg-green-400 rounded-md text-white font-semibold mt-5"
+            disabled={isLoading} // Disable the button when loading
           >
-            Login
+            {isLoading ? (
+              <FontAwesomeIcon icon={faSpinner} spin className="mr-2" />
+            ) : (
+              "Login"
+            )}
+            {isLoading && " Logging in..."}
           </button>
         </form>
       </div>

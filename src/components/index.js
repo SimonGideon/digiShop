@@ -30,6 +30,7 @@ import ImageUpload from "./Admin/HandleImageUpload";
 import Specifications from "./Admin/specifications";
 import ConfirmationModal from "./Admin/ConfirmationModal";
 import FulfilledOrders from "./Admin/FulfilledOrders";
+import ProtectedRoute from "./Admin/ProtectedRoute";
 
 export {
   NavBar,
@@ -51,6 +52,7 @@ export {
   ProductDescription,
   ProductReview,
   ProductTabs,
+  ProtectedRoute,
   FavoriteCard,
   SidebarMenu,
   StatCard,
