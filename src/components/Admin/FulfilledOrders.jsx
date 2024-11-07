@@ -1,20 +1,22 @@
+import { fetchFulfilledOrders } from "../../redux/adminSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchOrders } from "../../redux/adminSlice";
 import { InventoryTable, Loader } from "../../components";
 
-const Orders = () => {
-  const dispatch = useDispatch();
-  const { orders, loading, error } = useSelector((state) => ({
-    orders: state.adminData.orders.data || [],
+const FulfilledOrders = () => {
+  const { fulfilledOrders, loading, error } = useSelector((state) => ({
+    fulfilledOrders: state.adminData.fulfilledOrders?.data || [],
     loading: state.adminData.orders.status === "loading",
     error: state.adminData.orders.error,
   }));
 
+  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchOrders());
+    dispatch(fetchFulfilledOrders());
   }, [dispatch]);
 
+  if (loading) return <Loader />;
+  if (error) return <p className="text-red-500">{error}</p>;
   const orderColumns = [
     {
       name: "ID",
@@ -56,43 +58,34 @@ const Orders = () => {
       sortable: true,
     },
   ];
-
   return (
-    <div className="p-6">
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <p className="text-red-500">{error}</p>
-      ) : orders.length > 0 ? (
-        <InventoryTable
-          columns={orderColumns}
-          title="Order List"
-          data={orders}
-          customStyles={{
-            rows: {
-              style: {
-                minHeight: "72px",
-              },
+    <div className="my-20">
+      <InventoryTable
+        columns={orderColumns}
+        title="Fulfilled Orders"
+        data={fulfilledOrders}
+        customStyles={{
+          rows: {
+            style: {
+              minHeight: "72px",
             },
-            headCells: {
-              style: {
-                paddingLeft: "8px !important",
-                paddingRight: "8px",
-              },
+          },
+          headCells: {
+            style: {
+              paddingLeft: "8px !important",
+              paddingRight: "8px",
             },
-            cells: {
-              style: {
-                paddingLeft: "8px",
-                paddingRight: "8px",
-              },
+          },
+          cells: {
+            style: {
+              paddingLeft: "8px",
+              paddingRight: "8px",
             },
-          }}
-        />
-      ) : (
-        <p className="text-gray-500">No orders found.</p>
-      )}
+          },
+        }}
+      />
     </div>
   );
 };
 
-export default Orders;
+export default FulfilledOrders;

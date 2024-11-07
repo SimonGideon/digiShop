@@ -28,10 +28,14 @@ import IndividualItem from "./Admin/IndividualItem";
 import NewSubCategory from "./Admin/NewSubCategory";
 import ImageUpload from "./Admin/HandleImageUpload";
 import Specifications from "./Admin/specifications";
+import ConfirmationModal from "./Admin/ConfirmationModal";
+import FulfilledOrders from "./Admin/FulfilledOrders";
 
 export {
   NavBar,
+  ConfirmationModal,
   IndividualItem,
+  FulfilledOrders,
   Category,
   CategoriesGrid,
   MobileCategoryCard,

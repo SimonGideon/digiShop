@@ -11,7 +11,76 @@ const initialState = {
   subcategories: { data: [], status: "idle", error: null },
   brands: { data: [], status: "idle", error: null },
   customerOrders: { data: [], status: "idle", error: null },
+  customersCount: { data: 0, status: "idle", error: null },
+  productsCount: { data: 0, status: "idle", error: null },
+  ordersCount: {
+    data: 0,
+    status: "idle",
+    error: null,
+  },
+  categoriesCount: {
+    data: 0,
+    status: "idle",
+    error: null,
+  },
+  revenue: {
+    data: 0,
+    status: "idle",
+    error: null,
+  },
 };
+
+export const fetchCustomerCount = createAsyncThunk(
+  "admin/fetchCustomerCount",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.CUSTOMERS_COUNT);
+      if (!response.ok) throw new Error("Failed to fetch customer count");
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchStockCount = createAsyncThunk(
+  "admin/fetchStockCount",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.PRODUCTS_COUNT);
+      if (!response.ok) throw new Error("Failed to fetch stock count");
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchRevenue = createAsyncThunk(
+  "admin/fetchRevenue",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.REVENUE);
+      if (!response.ok) throw new Error("Failed to fetch revenue");
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchCategoryCount = createAsyncThunk(
+  "admin/fetchCategoryCount",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.CATEGORIES_COUNT);
+      if (!response.ok) throw new Error("Failed to fetch category count");
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 // Async thunks for fetching data
 export const fetchProducts = createAsyncThunk(
@@ -107,6 +176,19 @@ export const fetchCustomerOrders = createAsyncThunk(
   }
 );
 
+export const fetchFulfilledOrders = createAsyncThunk(
+  "admin/fetchFulfilledOrders",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.FULLFILLED_ORDERS);
+      if (!response.ok) throw new Error("Failed to fetch fulfilled orders");
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 // Async thunks for posting data
 export const postCategory = createAsyncThunk(
   "admin/postCategory",
@@ -167,6 +249,30 @@ export const postBrand = createAsyncThunk(
         throw new Error(errorData.message || "Failed to add brand");
       }
       return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// deleteProduct
+export const deleteProduct = createAsyncThunk(
+  "admin/deleteProduct",
+  async (productId, { rejectWithValue }) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.DELETE_PRODUCT(productId), {
+        method: "DELETE",
+      });
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(responseData.message || "Failed to delete product");
+      }
+
+      return {
+        productId,
+        message: responseData.message || "Product deleted successfully",
+      };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -308,6 +414,56 @@ const adminSlice = createSlice({
       .addCase(postSubcategory.rejected, (state, action) => {
         state.subcategories.status = "failed";
         state.subcategories.error = action.payload;
+      });
+
+    // Delete Product
+    builder
+      .addCase(deleteProduct.pending, (state) => {
+        state.products.status = "loading";
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.products.status = "succeeded";
+        // Remove the deleted product from the products array
+        state.products.data = state.products.data.filter(
+          (product) => product.id !== action.payload.productId
+        );
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.products.status = "failed";
+        state.products.error = action.payload;
+      });
+
+    // Count Fetches
+    builder
+      .addCase(fetchCustomerCount.fulfilled, (state, action) => {
+        state.customersCount.data = action.payload;
+        state.customersCount.status = "succeeded";
+      })
+      .addCase(fetchStockCount.fulfilled, (state, action) => {
+        state.productsCount.data = action.payload;
+        state.productsCount.status = "succeeded";
+      })
+      .addCase(fetchRevenue.fulfilled, (state, action) => {
+        state.revenue.data = action.payload;
+        state.revenue.status = "succeeded";
+      })
+      .addCase(fetchCategoryCount.fulfilled, (state, action) => {
+        state.categoriesCount.data = action.payload;
+        state.categoriesCount.status = "succeeded";
+      });
+
+    // Fulfilled Orders
+    builder
+      .addCase(fetchFulfilledOrders.pending, (state) => {
+        state.orders.status = "loading";
+      })
+      .addCase(fetchFulfilledOrders.fulfilled, (state, action) => {
+        state.orders.status = "succeeded";
+        state.orders.data = action.payload;
+      })
+      .addCase(fetchFulfilledOrders.rejected, (state, action) => {
+        state.orders.status = "failed";
+        state.orders.error = action.payload;
       });
   },
 });

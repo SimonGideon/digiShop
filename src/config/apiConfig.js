@@ -17,4 +17,10 @@ export const API_ENDPOINTS = {
   PRODUCT_BY_CATEGORY_AND_SUBCATEGORY: (category, subcategory) =>
     `${API_BASE_URL}/products/${category}/${subcategory}`,
   ADD_PRODUCT: `${API_BASE_URL}/products`,
+  CUSTOMERS_COUNT: `${API_BASE_URL}/customers/count`,
+  PRODUCTS_COUNT: `${API_BASE_URL}/in-stock/count`,
+  DELETE_PRODUCT: (productId) => `${API_BASE_URL}/products/${productId}`,
+  REVENUE: `${API_BASE_URL}/revenue`,
+  CATEGORIES_COUNT: `${API_BASE_URL}/categories/count`,
+  FULLFILLED_ORDERS: `${API_BASE_URL}/orders/fulfilled`,
 };

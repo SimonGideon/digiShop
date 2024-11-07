@@ -1,18 +1,18 @@
 import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts } from "../../redux/adminSlice";
+import { fetchProducts, deleteProduct } from "../../redux/adminSlice";
 import {
   InventoryTable,
   IndividualItem,
   Loader,
   Modal,
+  ConfirmationModal,
 } from "../../components";
 import { PlusCircle } from "feather-icons-react";
 import { Link } from "react-router-dom";
 
 const StockList = () => {
   const dispatch = useDispatch();
-
   const { products, loading, error } = useSelector((state) => ({
     products: state.adminData.products.data || [],
     loading: state.adminData.products.status === "loading",
@@ -27,6 +27,7 @@ const StockList = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalTitle, setModalTitle] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
@@ -50,7 +51,8 @@ const StockList = () => {
   };
 
   const handleDelete = (productId) => {
-    console.log("Delete product with ID:", productId);
+    setIsModalOpen(true);
+    dispatch(deleteProduct(productId));
     setDropdownVisible(null);
   };
 
@@ -96,12 +98,6 @@ const StockList = () => {
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 View
-              </Link>
-              <Link
-                to={`/products/edit/${row.id}`}
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                Edit
               </Link>
               <button
                 onClick={() => handleDelete(row.id)}
@@ -249,6 +245,15 @@ const StockList = () => {
           content={modalContent}
         />
       )}
+
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={() => setIsModalOpen(false)}
+        title="Delete Product"
+        message="Are you sure you want to delete this product?"
+        submessage="This action cannot be undone."
+      />
     </div>
   );
 };
