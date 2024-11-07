@@ -95,7 +95,14 @@ const Categories = () => {
 
   return (
     <div>
-      <ToastContainer />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnFocusLoss
+        pauseOnHover
+      />
       <div className="relative flex justify-end">
         <button
           onClick={toggleDropdown}

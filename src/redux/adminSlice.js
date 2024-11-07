@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { API_ENDPOINTS } from "../config";
 
-// Initial state for different data types
 const initialState = {
   products: { data: [], status: "idle", error: null },
   customers: { data: [], status: "idle", error: null },
@@ -255,6 +254,26 @@ export const postBrand = createAsyncThunk(
   }
 );
 
+export const PostProduct = createAsyncThunk(
+  "admin/postProduct",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.ADD_PRODUCT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to add product");
+      }
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 // deleteProduct
 export const deleteProduct = createAsyncThunk(
   "admin/deleteProduct",
@@ -464,6 +483,20 @@ const adminSlice = createSlice({
       .addCase(fetchFulfilledOrders.rejected, (state, action) => {
         state.orders.status = "failed";
         state.orders.error = action.payload;
+      });
+
+    // Post Product
+    builder
+      .addCase(PostProduct.pending, (state) => {
+        state.products.status = "loading";
+      })
+      .addCase(PostProduct.fulfilled, (state, action) => {
+        state.products.status = "succeeded";
+        state.products.data.push(action.payload);
+      })
+      .addCase(PostProduct.rejected, (state, action) => {
+        state.products.status = "failed";
+        state.products.error = action.payload;
       });
   },
 });

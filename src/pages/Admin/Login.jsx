@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../redux/authSlice";
 import { faUserTie, faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify"; // Importing toast from react-toastify
+import "react-toastify/dist/ReactToastify.css"; // Import the CSS for toast notifications
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -17,30 +21,40 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Add logic for form submission
+
+    // Dispatch the loginUser action
+    try {
+      const action = await dispatch(loginUser(formData));
+      if (loginUser.fulfilled.match(action)) {
+        // Successful login
+        toast.success("Login successful! Redirecting..."); // Show success toast
+        setTimeout(() => {
+          window.location.href = "/admin/dashboard"; // Or use a routing method
+        }, 2000); // Redirect after 2 seconds
+      } else {
+        toast.error("Login failed. Please check your credentials."); // Show error toast
+      }
+    } catch (error) {
+      toast.error(`An error occurred during login: ${error.message}`); // Show error toast
+    }
   };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="w-80 rounded-lg shadow h-auto p-6 bg-white relative overflow-hidden">
-        {/* Icon above the form */}
         <div className="flex flex-col justify-center items-center space-y-2">
           <div className="text-center bg-navbg text-white rounded-full w-14 h-14 flex justify-center items-center">
             <FontAwesomeIcon icon={faUserTie} className="w-7 h-7" />
           </div>
         </div>
 
-        {/* Form Title */}
         <div className="flex flex-col justify-center items-center space-y-2">
           <h2 className="text-2xl font-medium text-slate-700">Login</h2>
         </div>
 
-        {/* Form */}
         <form className="w-full mt-4 space-y-3" onSubmit={handleSubmit}>
-          {/* Username Field with Icon */}
           <div>
             <label htmlFor="username" className="text-slate-500">
               Username
@@ -77,18 +91,24 @@ const Login = () => {
             </div>
           </div>
 
-          <Link to="/admin/dashboard" className="text-blue-500 text-sm">
-            <button
-              className="w-full justify-center py-1 bg-green-500 border-none hover:bg-green-400 rounded-md text-white font-semibold mt-5"
-              id="login"
-              name="login"
-              type="submit"
-            >
-              Login
-            </button>
-          </Link>
+          <button
+            type="submit"
+            className="w-full py-1 bg-green-500 border-none hover:bg-green-400 rounded-md text-white font-semibold mt-5"
+          >
+            Login
+          </button>
         </form>
       </div>
+
+      {/* Add Toast container where toasts will appear */}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnFocusLoss
+        pauseOnHover
+      />
     </div>
   );
 };

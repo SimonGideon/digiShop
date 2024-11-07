@@ -7,7 +7,6 @@ import {
   fetchStockCount,
   fetchRevenue,
   fetchCategoryCount,
-  fetchFulfilledOrders,
 } from "../../redux/adminSlice";
 
 const Dashboard = () => {

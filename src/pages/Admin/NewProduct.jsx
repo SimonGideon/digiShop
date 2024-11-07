@@ -17,9 +17,11 @@ import {
   fetchCategories,
   fetchBrands,
   fetchTags,
+  PostProduct,
 } from "../../redux/adminSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const NewProduct = () => {
   const [ImageArrayObj, setImageArrayObj] = useState([]);
@@ -32,6 +34,7 @@ const NewProduct = () => {
   const [price, setPrice] = useState("");
   const [discountPrice, setDiscountPrice] = useState("");
   const [stock, setStock] = useState(0);
+  const [rating, setRatingk] = useState(0);
   const [tagDescriptionSets, setTagDescriptionSets] = useState([
     { tags: [], inputValue: "", description: "" },
   ]);
@@ -123,11 +126,12 @@ const NewProduct = () => {
       price,
       discountPrice,
       stock,
+      rating,
       specifications: specifications,
       images: ImageArrayObj,
       tags: tagNameDescriptionArray,
     };
-    console.log(productData);
+    dispatch(PostProduct(productData));
   };
 
   useEffect(() => {
@@ -201,7 +205,6 @@ const NewProduct = () => {
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-4">Add New Product</h1>
       <form onSubmit={handleSubmit}>
-        {/* Product Name */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
             Product Name
@@ -234,7 +237,14 @@ const NewProduct = () => {
                 placeholder="Select Category"
                 required
               />
-              <ToastContainer />
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                closeOnClick
+                pauseOnFocusLoss
+                pauseOnHover
+              />
               <div className="flex items-center">
                 <button
                   className="bg-blue-500 text-white px-3 py-2 rounded-md shadow text-nowrap flex gap-1"
@@ -417,7 +427,7 @@ const NewProduct = () => {
           </button>
         </fieldset>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Price (KSH)
@@ -454,6 +464,24 @@ const NewProduct = () => {
               required
             />
           </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Ratings
+            </label>
+            <select
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+              value={stock}
+              onChange={(e) => setRatingk(e.target.value)}
+              required
+            >
+              <option value="">Select a rating</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
         </div>
         <Specifications setSpecifications={setSpecifications} />
         <ImageUpload setImageArrayObj={setImageArrayObj} />
@@ -467,7 +495,6 @@ const NewProduct = () => {
         </div>
       </form>
 
-      {/* Modal */}
       {modalOpen && (
         <Modal
           closeModal={toggleModal}
