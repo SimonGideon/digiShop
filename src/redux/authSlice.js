@@ -1,6 +1,6 @@
-// src/redux/authSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { API_ENDPOINTS } from "../config";
+import Cookies from "js-cookie"; // Import js-cookie
 
 // Async thunk for login
 export const loginUser = createAsyncThunk(
@@ -28,9 +28,9 @@ export const loginUser = createAsyncThunk(
 );
 
 const initialState = {
-  token: null,
-  user: null,
-  isAuthenticated: false,
+  token: Cookies.get("token") || null, // Retrieve token from cookies if available
+  user: Cookies.get("user") || null, // Retrieve user from cookies if available
+  isAuthenticated: Cookies.get("token") ? true : false, // Check if token exists to set authentication status
   loading: false,
   error: null,
 };
@@ -43,6 +43,10 @@ const authSlice = createSlice({
       state.token = null;
       state.user = null;
       state.isAuthenticated = false;
+
+      // Remove token and user from cookies
+      Cookies.remove("token");
+      Cookies.remove("user");
     },
   },
   extraReducers: (builder) => {
@@ -53,10 +57,18 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
+        console.log("API Response:", action.payload); // Log the API response to check its structure
         state.token = action.payload.token;
         state.user = action.payload.user;
         state.isAuthenticated = true;
+
+        // Save token and user to cookies on successful login
+        Cookies.set("token", action.payload.token, { expires: 7 }); // Store for 7 days
+        Cookies.set("user", JSON.stringify(action.payload.user), {
+          expires: 7,
+        }); // Store for 7 days (use JSON.stringify for objects)
       })
+
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "An error occurred";

@@ -36,7 +36,14 @@ function Layout() {
   return (
     <>
       {!isAdminRoute && <NavBar />}
-      <ToastContainer />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnFocusLoss
+        pauseOnHover
+      />
       <Outlet />
     </>
   );

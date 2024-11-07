@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { API_ENDPOINTS } from "../config";
+const token = localStorage.getItem("token") || "";
+const headers = {
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${token}`,
+};
 
 const initialState = {
   products: { data: [], status: "idle", error: null },
@@ -33,7 +38,9 @@ export const fetchCustomerCount = createAsyncThunk(
   "admin/fetchCustomerCount",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(API_ENDPOINTS.CUSTOMERS_COUNT);
+      const response = await fetch(API_ENDPOINTS.CUSTOMERS_COUNT, {
+        headers,
+      });
       if (!response.ok) throw new Error("Failed to fetch customer count");
       return await response.json();
     } catch (error) {
@@ -46,7 +53,9 @@ export const fetchStockCount = createAsyncThunk(
   "admin/fetchStockCount",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(API_ENDPOINTS.PRODUCTS_COUNT);
+      const response = await fetch(API_ENDPOINTS.PRODUCTS_COUNT, {
+        headers,
+      });
       if (!response.ok) throw new Error("Failed to fetch stock count");
       return await response.json();
     } catch (error) {
@@ -59,7 +68,9 @@ export const fetchRevenue = createAsyncThunk(
   "admin/fetchRevenue",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(API_ENDPOINTS.REVENUE);
+      const response = await fetch(API_ENDPOINTS.REVENUE, {
+        headers,
+      });
       if (!response.ok) throw new Error("Failed to fetch revenue");
       return await response.json();
     } catch (error) {
@@ -72,7 +83,9 @@ export const fetchCategoryCount = createAsyncThunk(
   "admin/fetchCategoryCount",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(API_ENDPOINTS.CATEGORIES_COUNT);
+      const response = await fetch(API_ENDPOINTS.CATEGORIES_COUNT, {
+        headers,
+      });
       if (!response.ok) throw new Error("Failed to fetch category count");
       return await response.json();
     } catch (error) {
@@ -86,7 +99,9 @@ export const fetchProducts = createAsyncThunk(
   "admin/fetchProducts",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(API_ENDPOINTS.PRODUCTS);
+      const response = await fetch(API_ENDPOINTS.PRODUCTS, {
+        headers,
+      });
       if (!response.ok) throw new Error("Failed to fetch products");
       return await response.json();
     } catch (error) {
@@ -99,7 +114,9 @@ export const fetchCustomers = createAsyncThunk(
   "admin/fetchCustomers",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(API_ENDPOINTS.CUSTOMERS);
+      const response = await fetch(API_ENDPOINTS.CUSTOMERS, {
+        headers,
+      });
       if (!response.ok) throw new Error("Failed to fetch customers");
       return await response.json();
     } catch (error) {
@@ -112,7 +129,9 @@ export const fetchOrders = createAsyncThunk(
   "admin/fetchOrders",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(API_ENDPOINTS.ORDERS);
+      const response = await fetch(API_ENDPOINTS.ORDERS, {
+        headers,
+      });
       if (!response.ok) throw new Error("Failed to fetch orders");
       return await response.json();
     } catch (error) {
@@ -125,7 +144,9 @@ export const fetchTags = createAsyncThunk(
   "admin/fetchTags",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(API_ENDPOINTS.TAGS);
+      const response = await fetch(API_ENDPOINTS.TAGS, {
+        headers,
+      });
       if (!response.ok) throw new Error("Failed to fetch tags");
       return await response.json();
     } catch (error) {
@@ -138,7 +159,9 @@ export const fetchCategories = createAsyncThunk(
   "admin/fetchCategories",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(API_ENDPOINTS.CATEGORIES);
+      const response = await fetch(API_ENDPOINTS.CATEGORIES, {
+        headers,
+      });
       if (!response.ok) throw new Error("Failed to fetch categories");
       return await response.json();
     } catch (error) {
@@ -151,7 +174,9 @@ export const fetchBrands = createAsyncThunk(
   "admin/fetchBrands",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(API_ENDPOINTS.BRANDS);
+      const response = await fetch(API_ENDPOINTS.BRANDS, {
+        headers,
+      });
       if (!response.ok) throw new Error("Failed to fetch brands");
       return await response.json();
     } catch (error) {
@@ -165,7 +190,10 @@ export const fetchCustomerOrders = createAsyncThunk(
   async (customerId, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `${API_ENDPOINTS.CUSTOMERS}/${customerId}/orders`
+        `${API_ENDPOINTS.CUSTOMERS}/${customerId}/orders`,
+        {
+          headers,
+        }
       );
       if (!response.ok) throw new Error("Failed to fetch customer orders");
       return await response.json();
@@ -179,7 +207,9 @@ export const fetchFulfilledOrders = createAsyncThunk(
   "admin/fetchFulfilledOrders",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(API_ENDPOINTS.FULLFILLED_ORDERS);
+      const response = await fetch(API_ENDPOINTS.FULLFILLED_ORDERS, {
+        headers,
+      });
       if (!response.ok) throw new Error("Failed to fetch fulfilled orders");
       return await response.json();
     } catch (error) {
@@ -195,7 +225,7 @@ export const postCategory = createAsyncThunk(
     try {
       const response = await fetch(API_ENDPOINTS.CATEGORIES, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: headers,
         body: JSON.stringify(data),
       });
       if (!response.ok) {
@@ -260,7 +290,7 @@ export const PostProduct = createAsyncThunk(
     try {
       const response = await fetch(API_ENDPOINTS.ADD_PRODUCT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: headers,
         body: JSON.stringify(data),
       });
       if (!response.ok) {
@@ -281,6 +311,7 @@ export const deleteProduct = createAsyncThunk(
     try {
       const response = await fetch(API_ENDPOINTS.DELETE_PRODUCT(productId), {
         method: "DELETE",
+        headers: headers,
       });
       const responseData = await response.json();
 
