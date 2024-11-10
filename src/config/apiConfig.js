@@ -24,4 +24,5 @@ export const API_ENDPOINTS = {
   CATEGORIES_COUNT: `${API_BASE_URL}/categories/count`,
   FULLFILLED_ORDERS: `${API_BASE_URL}/orders/fulfilled`,
   LOG_IN: `${API_BASE_URL}/login`,
+  CHANGE_PASSWORD: `${API_BASE_URL}/change-password`,
 };

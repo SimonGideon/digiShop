@@ -1,59 +1,69 @@
 import { useState } from "react";
-
+import { useDispatch, useSelector } from "react-redux";
+import { changePassword } from "../../redux/adminSlice"; // Import your Redux action for password change
+import Cookies from "js-cookie";
 const AccountsPage = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [newUser, setNewUser] = useState({
-    username: "",
-    phone: "",
-    password: "",
-  });
+  const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChangePassword = (e) => {
+  // get username from cookie
+  const username = Cookies.get("user");
+
+  const dispatch = useDispatch();
+  const {
+    loading,
+    passwordChanged,
+    error: changePasswordError,
+  } = useSelector((state) => state.admin || {});
+
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  const handleChangePassword = async (e) => {
     e.preventDefault();
 
-    // Check if the new password and confirmation match
-    if (newPassword !== confirmPassword) {
-      alert("Passwords do not match!");
+    // Reset errors
+    setError(null);
+
+    // Validate if current password is entered
+    if (!currentPassword) {
+      setError("Current password is required.");
       return;
     }
 
-    // Create FormData for password change
-    const formData = new FormData();
-    formData.append("currentPassword", currentPassword);
-    formData.append("newPassword", newPassword);
+    // Check if new password and confirmation match
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
 
-    console.log("Changing password...");
-    /*
-    fetch("/api/change-password", {
-      method: "POST",
-      body: formData,
-    }).then(response => {
-      // Handle response
-    });
-    */
+    // Validate password strength
+    if (!validatePassword(newPassword)) {
+      setError(
+        "Password must be at least 8 characters long, contain at least one uppercase letter and one number."
+      );
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await dispatch(
+        changePassword({ currentPassword, newPassword, username })
+      );
+    } catch (err) {
+      setError(err.message || "An error occurred while changing the password.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleAddUser = (e) => {
-    e.preventDefault();
-
-    // Create FormData for adding a new user
-    const formData = new FormData();
-    formData.append("username", newUser.username);
-    formData.append("phone", newUser.phone);
-    formData.append("password", newUser.password);
-
-    console.log("Adding new user:", newUser);
-    /*
-    fetch("/api/add-user", {
-      method: "POST",
-      body: formData,
-    }).then(response => {
-      // Handle response
-    });
-    */
-  };
+  const errorMessage = error || changePasswordError;
 
   return (
     <div>
@@ -64,6 +74,10 @@ const AccountsPage = () => {
           className="mb-8 bg-white shadow-lg rounded-lg p-6 md:w-1/2 md:mr-4"
         >
           <h2 className="text-xl font-semibold mb-4">Change Password</h2>
+          {errorMessage && (
+            <div className="text-red-500 mb-4">{errorMessage}</div>
+          )}
+
           <div className="mb-4">
             <label className="block mb-1" htmlFor="currentPassword">
               Current Password
@@ -105,66 +119,19 @@ const AccountsPage = () => {
           </div>
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            className={`bg-blue-500 text-white px-4 py-2 rounded-md ${
+              isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={isSubmitting}
           >
-            Change Password
+            {isSubmitting ? "Changing..." : "Change Password"}
           </button>
-        </form>
 
-        <form
-          onSubmit={handleAddUser}
-          className="mb-8 bg-white shadow-lg rounded-lg p-6 md:w-1/2 md:mr-4"
-        >
-          <h2 className="text-xl font-semibold mb-4">Add New Admin User</h2>
-          <div className="mb-4">
-            <label className="block mb-1" htmlFor="username">
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              value={newUser.username}
-              onChange={(e) =>
-                setNewUser({ ...newUser, username: e.target.value })
-              }
-              className="w-full p-2 border rounded-md"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block mb-1" htmlFor="confirmPassword">
-              Confirm New Password
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full p-2 border rounded-md"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block mb-1" htmlFor="newUserPassword">
-              Password
-            </label>
-            <input
-              type="password"
-              id="newUserPassword"
-              value={newUser.password}
-              onChange={(e) =>
-                setNewUser({ ...newUser, password: e.target.value })
-              }
-              className="w-full p-2 border rounded-md"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-green-500 text-white px-4 py-2 rounded-md"
-          >
-            Add Admin User
-          </button>
+          {passwordChanged && (
+            <div className="mt-4 text-green-500">
+              Password changed successfully!
+            </div>
+          )}
         </form>
       </div>
     </div>

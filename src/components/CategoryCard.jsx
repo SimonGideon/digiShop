@@ -17,7 +17,7 @@ const Category = ({ icon, title, items }) => {
             <a
               href={
                 item.id === "hot-deals"
-                  ? `products/hot-deals/`
+                  ? `products/${item.category}/`
                   : `/products/${title}/${item.name}`
               }
               aria-label={`Go to ${item.name}`}

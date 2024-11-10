@@ -41,6 +41,8 @@ const Home = () => {
           items: hotDealsItems.slice(0, 12).map((deal) => ({
             id: deal.id,
             name: deal.name,
+            category: deal.category,
+            subCategory: deal.subcategory,
           })),
         },
         ...categoriesItems,

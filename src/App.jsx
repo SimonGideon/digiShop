@@ -12,6 +12,7 @@ import { AdminLayout } from "./components";
 import "./App.css";
 import { NotFound } from "./pages";
 
+// Lazy-loaded components
 const Home = lazy(() => import("./pages/Home"));
 const ProductDetailsPage = lazy(() => import("./pages/ProductDetailsPage"));
 const ProductItem = lazy(() => import("./pages/ProductItem"));
@@ -58,179 +59,53 @@ const router = createBrowserRouter([
       </Suspense>
     ),
     children: [
-      {
-        path: "/",
-        element: (
-          <Suspense fallback={<Loader />}>
-            <Home />
-          </Suspense>
-        ),
-      },
-      {
-        path: "/products",
-        element: (
-          <Suspense fallback={<Loader />}>
-            <ProductDetailsPage />
-          </Suspense>
-        ),
-      },
-      {
-        path: "/products/:productId",
-        element: (
-          <Suspense fallback={<Loader />}>
-            <ProductItem />
-          </Suspense>
-        ),
-      },
+      { path: "/", element: <Home /> },
+      { path: "/products", element: <ProductDetailsPage /> },
+      { path: "/products/:productId", element: <ProductItem /> },
       {
         path: "/products/:productName/:subCategory",
-        element: (
-          <Suspense fallback={<Loader />}>
-            <ProductDetailsPage />
-          </Suspense>
-        ),
+        element: <ProductDetailsPage />,
       },
-      {
-        path: "products/favorite",
-        element: (
-          <Suspense fallback={<Loader />}>
-            <FavoritePage />
-          </Suspense>
-        ),
-      },
-      {
-        path: "/products/cart",
-        element: (
-          <Suspense fallback={<Loader />}>
-            <CartPage />
-          </Suspense>
-        ),
-      },
-      {
-        path: "/products/compare",
-        element: (
-          <Suspense fallback={<Loader />}>
-            <ComparePage />
-          </Suspense>
-        ),
-      },
-      {
-        path: "/products/checkout",
-        element: (
-          <Suspense fallback={<Loader />}>
-            <CheckoutPage />
-          </Suspense>
-        ),
-      },
-      {
-        path: "*",
-        element: (
-          <Suspense fallback={<Loader />}>
-            <NotFound />
-          </Suspense>
-        ),
-      },
-    ],
+      { path: "/products/favorite", element: <FavoritePage /> },
+      { path: "/products/cart", element: <CartPage /> },
+      { path: "/products/compare", element: <ComparePage /> },
+      { path: "/products/checkout", element: <CheckoutPage /> },
+      { path: "*", element: <NotFound /> },
+    ].map((route) => ({
+      ...route,
+      element: <Suspense fallback={<Loader />}>{route.element}</Suspense>,
+    })),
   },
   {
     path: "/admin",
-    element: (
-      <Suspense fallback={<Loader />}>
-        <Login />
-      </Suspense>
-    ),
+    element: <Login />,
   },
   {
     path: "/admin",
     element: (
       <ProtectedRoute>
         <Suspense fallback={<Loader />}>
-          <AdminLayout />{" "}
+          <AdminLayout />
         </Suspense>
       </ProtectedRoute>
     ),
     children: [
-      {
-        path: "dashboard",
-        element: (
-          <ProtectedRoute>
-            <Suspense fallback={<Loader />}>
-              <Dashboard />
-            </Suspense>
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/accounts",
-        element: (
-          <ProtectedRoute>
-            <Suspense fallback={<Loader />}>
-              <AccountsPage />
-            </Suspense>
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/products",
-        element: (
-          <ProtectedRoute>
-            <Suspense fallback={<Loader />}>
-              <StockList />
-            </Suspense>
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/products/new",
-        element: (
-          <ProtectedRoute>
-            <Suspense fallback={<Loader />}>
-              <NewProduct />
-            </Suspense>
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/orders",
-        element: (
-          <ProtectedRoute>
-            <Suspense fallback={<Loader />}>
-              <Orders />
-            </Suspense>
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/customers",
-        element: (
-          <ProtectedRoute>
-            <Suspense fallback={<Loader />}>
-              <Customers />
-            </Suspense>
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/categories",
-        element: (
-          <ProtectedRoute>
-            <Suspense fallback={<Loader />}>
-              <Categories />
-            </Suspense>
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/customers/:customerId",
-        element: (
-          <ProtectedRoute>
-            <Suspense fallback={<Loader />}>
-              <CustomerDetails />
-            </Suspense>
-          </ProtectedRoute>
-        ),
-      },
-    ],
+      { path: "dashboard", element: <Dashboard /> },
+      { path: "accounts", element: <AccountsPage /> },
+      { path: "products", element: <StockList /> },
+      { path: "products/new", element: <NewProduct /> },
+      { path: "orders", element: <Orders /> },
+      { path: "customers", element: <Customers /> },
+      { path: "categories", element: <Categories /> },
+      { path: "customers/:customerId", element: <CustomerDetails /> },
+    ].map((route) => ({
+      ...route,
+      element: (
+        <ProtectedRoute>
+          <Suspense fallback={<Loader />}>{route.element}</Suspense>
+        </ProtectedRoute>
+      ),
+    })),
   },
 ]);
 

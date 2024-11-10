@@ -203,6 +203,26 @@ export const fetchCustomerOrders = createAsyncThunk(
   }
 );
 
+export const changePassword = createAsyncThunk(
+  "admin/changePassword",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await fetch(API_ENDPOINTS.CHANGE_PASSWORD, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to change password");
+      }
+      return await response.json(); // Returning the response on success
+    } catch (error) {
+      return rejectWithValue(error.message); // Reject with the error message
+    }
+  }
+);
+
 export const fetchFulfilledOrders = createAsyncThunk(
   "admin/fetchFulfilledOrders",
   async (_, { rejectWithValue }) => {
@@ -528,6 +548,22 @@ const adminSlice = createSlice({
       .addCase(PostProduct.rejected, (state, action) => {
         state.products.status = "failed";
         state.products.error = action.payload;
+      });
+
+    // Reducer part (slices)
+    builder
+      .addCase(changePassword.pending, (state) => {
+        state.loading = true;
+        state.error = null; // Clear any previous errors
+      })
+      .addCase(changePassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.passwordChanged = true; // Flag indicating password change was successful
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "An error occurred"; // Show error message
       });
   },
 });

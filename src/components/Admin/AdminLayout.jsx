@@ -5,6 +5,7 @@ import { Sidebar, UserProfileDropdown } from "./../../components";
 import { Outlet, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import "./../../assets/Styles/AdminLayout.css";
+import { startTransition } from "react";
 
 const AdminLayout = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -44,7 +45,9 @@ const AdminLayout = () => {
   const handleLogout = () => {
     Cookies.remove("token");
     Cookies.remove("user");
-    navigate("/admin");
+    startTransition(() => {
+      navigate("/admin");
+    });
   };
 
   const toggleDropdown = () => {
